@@ -27,6 +27,7 @@ ActiveRecord::Schema.define(version: 20161018211850) do
     t.datetime "reset_sent_at"
     t.datetime "created_at",        null: false
     t.datetime "updated_at",        null: false
+    t.index ["email"], name: "index_users_on_email", using: :btree
   end
 
 end
