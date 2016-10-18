@@ -1,1 +1,9 @@
-<%= link_to "Home", root_path %>
+<div class="navbar navbar-fixed-top navbar-inverse">
+	<div class="container">
+	<%= link_to "Fringr", root_path, class: "navbar-brand" %>
+		<ul class="nav navbar-nav navbar-right">
+			<li><%= link_to "Home", root_path %></li>
+			<li><%= link_to "Log In", '#' %></li>
+		</ul>
+	</div>
+</div>
