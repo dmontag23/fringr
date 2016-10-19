@@ -9,6 +9,7 @@ class UsersController < ApplicationController
   def create
     @user = User.new(secure_params)
     if @user.save
+    	log_in @user
       flash[:success] = "Welcome to Fringr #{@user.name}!"
       redirect_to root_path
     else

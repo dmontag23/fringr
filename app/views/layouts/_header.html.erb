@@ -3,7 +3,11 @@
 	<%= link_to "Fringr", root_path, class: "navbar-brand" %>
 		<ul class="nav navbar-nav navbar-right">
 			<li><%= link_to "Home", root_path %></li>
-			<li><%= link_to "Log In", '#' %></li>
+			<% if logged_in? %>
+				<li><%= link_to "Log out", logout_path, method: "delete" %></li>
+			<% else %>
+				<li><%= link_to "Log In", login_path %></li>
+			<% end %>
 		</ul>
 	</div>
 </div>
