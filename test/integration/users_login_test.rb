@@ -25,6 +25,8 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
     follow_redirect!
     assert_template 'static_pages/home'
     assert_select "a[href=?]", logout_path, count: 1
+    assert_select "a[href=?]", signup_path, count: 0
+    assert_select "a[href=?]", login_path,  count: 0
     delete logout_path
     assert_not is_logged_in?
     assert_redirected_to root_url
@@ -32,6 +34,7 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
     follow_redirect!
     assert_template 'static_pages/home'
     assert_select "a[href=?]", login_path,       count: 2
+    assert_select "a[href=?]", signup_path,      count: 1
     assert_select "a[href=?]", logout_path,      count: 0
   end
 

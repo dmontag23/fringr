@@ -1,7 +1,5 @@
-<div class="jumbotron">
-	<div class="container center">
-		<h1>Welcome to Fringr!</h1>
-		<%= link_to "Log in", login_path, class: "btn btn-lg btn-primary" %>
-		<%= link_to "Sign up", signup_path, class: "btn btn-lg btn-primary" %>
-	</div>
-</div>
+<% if logged_in? %>
+	<%= render 'shared/logged_in_home' %>
+<% else %>
+	<%= render 'shared/not_logged_in_home' %>
+<% end %>
