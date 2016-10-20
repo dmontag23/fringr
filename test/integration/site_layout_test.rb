@@ -23,6 +23,11 @@ class SiteLayoutTest < ActionDispatch::IntegrationTest
     get login_path
     assert_template 'sessions/new'
     assert_select "title", full_title("Login")
+    assert_select "a[href=?]", password_resets_new_path, count: 1
+    assert_select "a[href=?]", signup_path,              count: 1
+    get password_resets_new_path
+    assert_template 'password_resets/new'
+    assert_select "title", full_title("Forgot password")
   end
   
 end
