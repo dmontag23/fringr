@@ -5,9 +5,10 @@ class PasswordResetsTest < ActionDispatch::IntegrationTest
   def setup
     ActionMailer::Base.deliveries.clear
     @user = users(:michael)
+    @other_user = users(:archer)
   end
 
-  test "password resets" do
+  test "password resets via email" do
     get new_password_reset_path
     assert_template 'password_resets/new'
     # Invalid email
@@ -76,6 +77,23 @@ class PasswordResetsTest < ActionDispatch::IntegrationTest
     assert_response :redirect
     follow_redirect!
     assert_match /expired/i, response.body
+  end
+
+  test "password reset via website" do
+    log_in_as(@user)
+    get edit_password_reset_path(@user)
+    assert_template 'password_resets/edit'
+    patch password_reset_path(@other_user, 
+          params: {  user: { password:              "foobar",
+                             password_confirmation: "foobar" } })
+    assert_redirected_to root_path
+    patch password_reset_path(@user, 
+          params: {  user: { password:              "foobar",
+                             password_confirmation: "foobar" } })
+    assert_redirected_to root_path
+    follow_redirect!
+    assert_template 'static_pages/home'
+    assert !flash.empty?
   end
 
 end

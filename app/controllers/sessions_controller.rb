@@ -2,6 +2,9 @@ class SessionsController < ApplicationController
   
   # Get request to /sessions/new (/login)
   def new
+    if logged_in?
+      redirect_to root_path
+    end
   end
 
 	# Post request to /login
@@ -11,12 +14,13 @@ class SessionsController < ApplicationController
       if @user.activated?
         log_in @user
         params[:session][:remember_me] == '1' ? remember(@user) : forget(@user)
+        redirect_to root_path
       else
         message  = "Account not activated. "
         message += "Check your email for the activation link."
         flash[:warning] = message
+        render 'new'
       end
-      redirect_to root_path
     else
       flash.now[:danger] = "Invalid email and/or password"
       render 'new'
