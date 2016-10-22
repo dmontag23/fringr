@@ -1,0 +1,5 @@
+<li id="location-<%= location.id %>">
+  <%= location.name %>
+  <%= button_to "Delete", location_path(location), method: :delete,
+                          data: { confirm: "Are you sure? All corresponding locations will be removed from your schedules." } %>
+</li>

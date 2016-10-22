@@ -1,0 +1,21 @@
+porter:
+  name: "Porter"
+  user: michael
+
+box:
+  name: "Black Box"
+  user: michael
+
+hub:
+  name: "Hub"
+  user: michael
+
+stairs:
+  name: "Stairs by Porter"
+  user: michael
+
+<% 30.times do |n| %>
+location_<%= n %>:
+  name: <%= Faker::Address.city %>
+  user: michael
+<% end %>

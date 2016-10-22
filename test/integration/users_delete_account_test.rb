@@ -10,10 +10,11 @@ class UsersDeleteAccountTest < ActionDispatch::IntegrationTest
 	test "delte user account" do
     assert_no_difference 'User.count' do
     	delete user_path(@user)
-			assert_redirected_to root_path
+			assert_redirected_to login_path
     	delete user_path(@other_user)
-			assert_redirected_to root_path
+			assert_redirected_to login_path
 			log_in_as (@user)
+			assert_redirected_to root_path
     	delete user_path(@other_user)
 			assert_redirected_to root_path
 		end

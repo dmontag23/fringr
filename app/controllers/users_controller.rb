@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
 
-  before_action :correct_user, only: [:destroy] 
+  before_action :logged_in_user, only: :destroy 
+  before_action :correct_user, only: :destroy 
   
   # Get request to /users/new (/signup)
   def new
@@ -33,10 +34,10 @@ class UsersController < ApplicationController
       params.require(:user).permit(:name, :email, :password, :password_confirmation)
     end
 
-    # Confirms the correct user.
+    # Confirms the correct user for deleting items.
     def correct_user
       @user = User.find(params[:id])
       redirect_to root_url unless current_user? @user
     end
-
+    
 end

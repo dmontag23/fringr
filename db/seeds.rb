@@ -16,3 +16,8 @@ User.create!(name:  "Example User",
               activated_at: Time.zone.now)
 end
 
+user = User.first
+50.times do
+  content = Faker::GameOfThrones.city
+  user.locations.create!(name: content)
+end

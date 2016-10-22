@@ -76,4 +76,12 @@ class UserTest < ActiveSupport::TestCase
     assert_not @user.authenticated?(:activation, '')
   end
 
+  test "associated locations should be destroyed" do
+    @user.save
+    @user.locations.create!(name: "Porter")
+    assert_difference 'Location.count', -1 do
+      @user.destroy
+    end
+  end
+
 end
