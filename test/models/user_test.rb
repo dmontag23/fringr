@@ -84,4 +84,12 @@ class UserTest < ActiveSupport::TestCase
     end
   end
 
+  test "associated contacts should be destroyed" do
+    @user.save
+    @user.contacts.create!(name: "Felicia", email: "fskr@example.com")
+    assert_difference 'Contact.count', -1 do
+      @user.destroy
+    end
+  end
+
 end

@@ -3,8 +3,7 @@ require 'test_helper'
 class LocationTest < ActiveSupport::TestCase
 
   def setup
-    @user = users(:michael)
-		@location = @user.locations.build(name: "Porter")
+		@location = users(:michael).locations.build(name: "Porter")
   end
 
   test "initial location should be valid" do

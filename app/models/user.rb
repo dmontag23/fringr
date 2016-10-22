@@ -1,6 +1,7 @@
 class User < ApplicationRecord
 
   has_many :locations, dependent: :destroy
+  has_many :contacts, dependent: :destroy
 
   attr_accessor :remember_token, :activation_token, :reset_token
   before_save   :downcase_email
@@ -8,7 +9,6 @@ class User < ApplicationRecord
 
   # validations
 	validates :name, presence: true, length: { maximum: 50 }
-  VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/i
 	validates :email, presence: true, length: { maximum: 255 },
 	                  format: { with: VALID_EMAIL_REGEX }, uniqueness: { case_sensitive: false }             
 	has_secure_password # enforce validations on virtual password and password_confirmation attributes from bycrypt
@@ -74,11 +74,6 @@ class User < ApplicationRecord
   end
 
   private
-
-    # Converts email to all lower-case.
-    def downcase_email
-      email.downcase!
-    end
 
     # Creates and assigns the activation token and digest.
     def create_activation_digest
