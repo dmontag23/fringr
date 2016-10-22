@@ -1,0 +1,6 @@
+<li id="contact-<%= contact.id %>">
+  <%= contact.name %>
+  <%= contact.email %>
+  <%= button_to "Delete", contact_path(contact), method: :delete,
+                          data: { confirm: "Are you sure? #{contact.name} will be removed from all your schedules." } %>
+</li>

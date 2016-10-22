@@ -10,6 +10,7 @@ two:
 
 <% 30.times do |n| %>
 contact_<%= n %>:
-  name: <%= Faker::GameOfThrones.character %>
+  name: <%= Faker::Internet.name %>
+  email: <%= Faker::Internet.email %>
   user: michael
 <% end %>

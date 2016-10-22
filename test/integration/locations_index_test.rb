@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class LocationLayoutTest < ActionDispatch::IntegrationTest
+class LocationIndexTest < ActionDispatch::IntegrationTest
 
   def setup
     @user = users(:michael)

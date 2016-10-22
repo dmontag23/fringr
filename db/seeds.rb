@@ -21,3 +21,10 @@ user = User.first
   content = Faker::GameOfThrones.city
   user.locations.create!(name: content)
 end
+
+user = User.first
+50.times do
+  name_content = Faker::GameOfThrones.character
+  email_content = Faker::Internet.email
+  user.contacts.create!(name: name_content, email: email_content)
+end

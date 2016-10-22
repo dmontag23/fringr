@@ -1,0 +1,21 @@
+<% provide(:title, 'Contacts') %>
+<div class="row">
+	<div class="col-md-6 col-md-offset-3 center">
+    <h3>Contacts (<%= @contacts.count %>)</h3>
+    <%= form_for(@contact) do |f| %>
+      <%= render 'shared/error_messages', object: f.object %>
+        
+      <%= f.text_field  :name, class: 'form-control' %>
+      <%= f.email_field :email, class: 'form-control' %>
+      <%= f.submit "Add Contact", class: "btn btn-primary form-control" %>
+    <% end %>
+    <%= link_to "Done", root_path %>
+    <% if @contacts.any? %>
+    	<ul class="contacts">
+      	<%= render @contacts %>
+    	</ul>
+    	<%= will_paginate @contacts %>
+  	<% end %>
+	</div>
+</div>
+
