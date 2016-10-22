@@ -8,7 +8,7 @@ class LocationsController < ApplicationController
   	@location = current_user.locations.build(secure_params)
     if @location.save
       flash[:success] = "#{@location.name} added"
-      redirect_to locations_path
+			redirect_to locations_path
     else
     	render 'index'
     end
@@ -35,6 +35,7 @@ class LocationsController < ApplicationController
     	@locations = current_user.locations.paginate(page: params[:page], per_page: 10).order('name ASC')
     end
 
+    # Confirms the correct user for deleting items
     def correct_user
       @location = current_user.locations.find_by(id: params[:id])
       redirect_to root_url if @location.nil?

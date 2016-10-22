@@ -31,7 +31,9 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
     follow_redirect!
     assert_template 'static_pages/home'
     assert_select "a[href=?]", edit_password_reset_path(@user), count: 1
+    assert_select "a[href=?]", user_path(@user),                count: 1
     assert_select "a[href=?]", logout_path,                     count: 1
+    assert_select "a[href=?]", locations_path,                  count: 1
     assert_select "a[href=?]", signup_path,                     count: 0
     assert_select "a[href=?]", login_path,                      count: 0
     get login_path

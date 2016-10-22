@@ -1,21 +1,20 @@
 <% provide(:title, 'Locations') %>
 <div class="row">
-	<div class="col-md-6">
-  	<% if @locations.any? %>
-  	<div class="container center">
-    	<h3>Locations (<%= @locations.count %>)</h3>
+	<div class="col-md-6 col-md-offset-3 center">
+    <% if @locations.any? %>
+      <h3>Locations (<%= @locations.count %>)</h3>
       <%= form_for(@location) do |f| %>
         <%= render 'shared/error_messages', object: f.object %>
         
         <%= f.text_field :name, class: 'form-control' %>
         <%= f.submit "Add Location", class: "btn btn-primary form-control" %>
       <% end %>
+      <%= link_to "Done", root_path %>
     	<ul class="locations">
       	<%= render @locations %>
     	</ul>
     	<%= will_paginate @locations %>
   	<% end %>
-  	</div>
 	</div>
 </div>
 

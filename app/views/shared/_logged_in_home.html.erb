@@ -1,1 +1,12 @@
 <h1> Welcome to Fringr <%= current_user.name %>!</h1>
+<div class="row">
+	<div class="col-md-4 center">
+		<%= link_to "New Schedule", "#" %>
+	</div>
+	<div class="col-md-4 center">
+		<%= link_to "Contacts", "#" %>
+	</div>
+	<div class="col-md-4 center">
+		<%= link_to "Locations", locations_path %>
+	</div>
+</div>
