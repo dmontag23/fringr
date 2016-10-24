@@ -1,7 +1,8 @@
 class User < ApplicationRecord
 
+  has_many :schedules, dependent: :destroy
   has_many :locations, dependent: :destroy
-  has_many :contacts, dependent: :destroy
+  has_many :contacts,  dependent: :destroy
 
   attr_accessor :remember_token, :activation_token, :reset_token
   before_save   :downcase_email

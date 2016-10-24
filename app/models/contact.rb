@@ -1,6 +1,8 @@
 class Contact < ApplicationRecord
   
   belongs_to :user
+	has_many :participants
+	has_many :pieces, through: :participants, dependent: :destroy
 
   before_save   :downcase_email
 
