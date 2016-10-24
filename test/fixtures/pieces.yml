@@ -1,0 +1,44 @@
+manburns:
+  title: The Man Burns in 5 Days
+  length: 30
+  setup: 10
+  cleanup: 10
+  location: porter
+  rating: 3
+  schedule: fringe2016
+
+stardust:
+  title: Stardust
+  length: 15
+  setup: 5
+  cleanup: 5
+  location: box
+  rating: 1
+  schedule: fringe2016
+
+sinner:
+  title: The Sinner and the Saint
+  length: 45
+  setup: 20
+  cleanup: 15
+  location: porter
+  rating: 4
+  schedule: fringe2016
+
+etoiles:
+  title: Des Etoiles
+  length: 20
+  setup: 15
+  cleanup: 10
+  location: hub
+  rating: 2
+  schedule: fringe2016
+
+arthur:
+  title: The Once and Future King
+  length: 15
+  setup: 5
+  cleanup: 15
+  location: stairs
+  rating: 2
+  schedule: fringe2016 
