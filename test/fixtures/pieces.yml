@@ -5,6 +5,7 @@ manburns:
   cleanup: 10
   location: porter
   rating: 3
+  day: day1
   schedule: fringe2016
 
 stardust:
@@ -14,6 +15,7 @@ stardust:
   cleanup: 5
   location: box
   rating: 1
+  day: day1
   schedule: fringe2016
 
 sinner:
@@ -23,6 +25,7 @@ sinner:
   cleanup: 15
   location: porter
   rating: 4
+  day: day2
   schedule: fringe2016
 
 etoiles:
@@ -39,6 +42,5 @@ arthur:
   length: 15
   setup: 5
   cleanup: 15
-  location: stairs
   rating: 2
   schedule: fringe2016 

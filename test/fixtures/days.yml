@@ -1,14 +1,14 @@
-2016day1:
+day1:
   start_date: <%= Time.zone.parse('2016-04-08 7:00pm') %>
   end_date: <%= Time.zone.parse('2016-04-08 8:00pm') %>
   schedule: fringe2016
 
-2016day2:
+day2:
   start_date: <%= Time.zone.parse('2016-04-09 7:00pm') %>
   end_date: <%= Time.zone.parse('2016-04-09 9:00pm') %>
   schedule: fringe2016
 
-2016day3:
+day3:
   start_date: <%= Time.zone.parse('2016-04-10 7:00pm') %>
   end_date: <%= Time.zone.parse('2016-04-10 10:00pm') %>
   schedule: fringe2016

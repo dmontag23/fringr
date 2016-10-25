@@ -3,7 +3,7 @@ require 'test_helper'
 class LocationTest < ActiveSupport::TestCase
 
   def setup
-		@location = users(:michael).locations.build(name: "Porter")
+		@location = locations(:porter)
   end
 
   test "initial location should be valid" do
@@ -23,6 +23,14 @@ class LocationTest < ActiveSupport::TestCase
   test "name should not be too long" do
     @location.name = "a" * 151
     assert_not @location.valid?
+  end
+
+  test "associated pieces should have null location" do
+    @location.save
+    assert_no_difference 'Piece.count' do
+      @location.destroy
+      assert_nil pieces(:manburns).location_id
+    end
   end
 
 end

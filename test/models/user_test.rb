@@ -76,10 +76,10 @@ class UserTest < ActiveSupport::TestCase
     assert_not @user.authenticated?(:activation, '')
   end
 
-  test "associated locations should be destroyed" do
+    test "associated schedules should be destroyed" do
     @user.save
-    @user.locations.create!(name: "Porter")
-    assert_difference 'Location.count', -1 do
+    @user.schedules.create!(name: "Fringe 2016", actor_transition_time: 10)
+    assert_difference 'Schedule.count', -1 do
       @user.destroy
     end
   end
@@ -88,6 +88,14 @@ class UserTest < ActiveSupport::TestCase
     @user.save
     @user.contacts.create!(name: "Felicia", email: "fskr@example.com")
     assert_difference 'Contact.count', -1 do
+      @user.destroy
+    end
+  end
+
+  test "associated locations should be destroyed" do
+    @user.save
+    @user.locations.create!(name: "Porter")
+    assert_difference 'Location.count', -1 do
       @user.destroy
     end
   end

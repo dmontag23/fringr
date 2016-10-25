@@ -3,7 +3,7 @@ require 'test_helper'
 class ContactTest < ActiveSupport::TestCase
   
   def setup
-		@contact = users(:michael).contacts.build(name: "Zach Smith", email: "zs@example.com")
+    @contact = users(:michael).contacts.build(name: "Zach Smith", email: "zs@example.com")
   end
 
   test "initial contact with name and email should be valid" do
@@ -65,6 +65,23 @@ class ContactTest < ActiveSupport::TestCase
     @contact.email = mixed_case_email
     @contact.save
     assert_equal mixed_case_email.downcase, @contact.reload.email
+  end
+
+  test "associated participants should be destroyed" do
+    @contact.save
+    @contact.participants.create!(piece: pieces(:manburns))
+    assert_difference 'Participant.count', -1 do
+      @contact.destroy
+    end
+  end
+
+  test "associated pieces should not contain the contact" do
+    @contact.save
+    manburns = pieces(:manburns)
+    @contact.participants.create!(piece: manburns)
+    assert_difference 'manburns.contacts.count', -1 do
+      @contact.destroy
+    end
   end
 
 end
