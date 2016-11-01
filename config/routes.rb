@@ -1,5 +1,11 @@
 Rails.application.routes.draw do
   
+  get 'schedules/new'
+
+  get 'schedules/edit'
+
+  get 'schedules/show'
+
   get 'password_resets/new'
 
   get 'password_resets/edit'
