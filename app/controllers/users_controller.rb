@@ -34,7 +34,7 @@ class UsersController < ApplicationController
       params.require(:user).permit(:name, :email, :password, :password_confirmation)
     end
 
-    # Confirms the correct user for deleting items.
+    # Confirms the correct user for deleting info
     def correct_user
       @user = User.find(params[:id])
       redirect_to root_url unless current_user? @user

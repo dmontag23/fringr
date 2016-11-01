@@ -12,12 +12,12 @@ class LocationsControllerTest < ActionDispatch::IntegrationTest
     assert_no_difference 'Location.count' do
       post locations_path, params: { location: { name: "Lorem ipsum" } }
     end
-    assert_redirected_to login_url
+    assert_redirected_to login_path
   end
 
   test "should redirect index when not logged in" do
   	get locations_path
-    assert_redirected_to login_url
+    assert_redirected_to login_path
     assert !flash.empty?
   end
 
@@ -25,7 +25,7 @@ class LocationsControllerTest < ActionDispatch::IntegrationTest
     assert_no_difference 'Location.count' do
       delete location_path(@location)
     end
-    assert_redirected_to login_url
+    assert_redirected_to login_path
   end
 
   test "should not create user locations for anyone but current user" do
@@ -40,7 +40,7 @@ class LocationsControllerTest < ActionDispatch::IntegrationTest
     assert_no_difference 'Location.count' do
       delete location_path(@location)
     end
-    assert_redirected_to root_url
+    assert_redirected_to root_path
   end
 
   test "successful access of locations with friendly forwarding" do

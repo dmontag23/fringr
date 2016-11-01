@@ -33,6 +33,7 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
     assert_select "a[href=?]", edit_password_reset_path(@user), count: 1
     assert_select "a[href=?]", user_path(@user),                count: 1
     assert_select "a[href=?]", logout_path,                     count: 1
+    assert_select "a[href=?]", new_schedule_path,               count: 1
     assert_select "a[href=?]", contacts_path,                   count: 1
     assert_select "a[href=?]", locations_path,                  count: 1
     assert_select "a[href=?]", signup_path,                     count: 0

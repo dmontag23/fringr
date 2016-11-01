@@ -26,7 +26,7 @@ class LocationsController < ApplicationController
 
 	private
 
-	  	# Ensures the use of strong parameters
+	  # Ensures the use of strong parameters
     def secure_params
       params.require(:location).permit(:name)
     end
