@@ -1,2 +1,20 @@
-<h1>Schedules#show</h1>
-<p>Find me in app/views/schedules/show.html.erb</p>
+<% provide(:title, "#{@schedule.name}") %>
+
+<h1><%= "#{@schedule.name}" %></h1>
+
+<div class="col-md-3 center">
+	<%= link_to "Add Piece", "#" %>
+</div>
+<div class="col-md-2 center">
+	<%= link_to "View Schedule", "#" %>
+</div>
+<div class="col-md-2 center">
+	<%= link_to "Schedule Settings", "#" %>
+</div>
+<div class="col-md-2 center">
+	<%= link_to "Contacts", contacts_path %>
+</div>
+<div class="col-md-2 center">
+	<%= link_to "Locations", locations_path %>
+</div>
+

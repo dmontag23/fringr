@@ -3,7 +3,7 @@ require 'test_helper'
 class DayTest < ActiveSupport::TestCase
 
 	def setup
-		@day1 = days(:day1)
+		@day1 = days(:day1michael)
 	end
 
   test "initial day should be valid" do

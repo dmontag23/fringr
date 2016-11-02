@@ -5,6 +5,7 @@ class SchedulesControllerTest < ActionDispatch::IntegrationTest
   def setup
     @user = users(:michael)
     @other_user = users(:archer)
+    @schedule = @user.schedules.find_by(name: "Fringe 2016")
   end
 
   test "should redirect new when not logged in" do
@@ -35,6 +36,17 @@ class SchedulesControllerTest < ActionDispatch::IntegrationTest
     assert !flash.empty?
   end
 
+  test "should redirect destroy when not logged in" do
+    assert_no_difference 'Schedule.count' do
+      delete schedule_path(@schedule)
+    end
+    assert_redirected_to login_url
+    assert_no_difference 'Schedule.count' do
+      log_in_as(@user)
+      assert_redirected_to root_url
+    end
+  end
+
   test "should redirect edit when logged in as other user" do
     log_in_as(@user)
     get edit_schedule_path(@other_user)
@@ -44,6 +56,14 @@ class SchedulesControllerTest < ActionDispatch::IntegrationTest
   test "should redirect show when logged in as other user" do
     log_in_as(@user)
     get schedule_path(@other_user)
+    assert_redirected_to root_path
+  end
+
+  test "should redirect destroy when logged in as other user" do
+    log_in_as(@other_user)
+    assert_no_difference 'Schedule.count' do
+      delete schedule_path(@schedule)
+    end
     assert_redirected_to root_path
   end
 

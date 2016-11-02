@@ -1,4 +1,16 @@
-fringe2016:
+fringe2016michael:
   name: Fringe 2016
   actor_transition_time: 15
   user: michael
+
+fringe2016archer:
+  name: Fringe 2016
+  actor_transition_time: 5
+  user: archer
+
+<% 30.times do |n| %>
+schedule_<%= n %>:
+  name: <%= "Fringe  #{n}" %>
+  actor_transition_time: <%= Faker::Number.between(1, 60) %>
+  user: michael
+<% end %>

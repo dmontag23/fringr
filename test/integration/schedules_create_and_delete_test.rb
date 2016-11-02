@@ -1,9 +1,10 @@
 require 'test_helper'
 
-class SchedulesCreateNewTest < ActionDispatch::IntegrationTest
+class SchedulesCreateAndDeleteTest < ActionDispatch::IntegrationTest
   
   def setup
     @user = users(:michael)
+    @schedule = @user.schedules.find_by(name: "Fringe 2016")
     log_in_as @user
   end
 
@@ -11,6 +12,8 @@ class SchedulesCreateNewTest < ActionDispatch::IntegrationTest
     get new_schedule_path
     assert_template 'schedules/new'
     assert_select 'title', full_title("New Schedule")
+    assert_select 'a[class=?]', "remove_fields", count: 1
+    assert_select 'a[class=?]', "add_fields", count: 1
   end
 
   test "unsucessful addition of a schedule" do 
@@ -42,6 +45,18 @@ class SchedulesCreateNewTest < ActionDispatch::IntegrationTest
 	      assert_select 'div[class=?]', 'alert alert-success'
 	    end
     end
+  end
+
+  test "sucessful deletion of a schedule" do
+  	assert_difference 'Schedule.count', -1 do
+  		assert_difference 'Day.count', -3 do
+	      delete schedule_path(@schedule)
+	      assert_redirected_to root_path
+	      follow_redirect!
+	      assert !flash.empty?
+	      assert_select 'div[class=?]', 'alert alert-success'
+  		end
+  	end
   end
 
 end

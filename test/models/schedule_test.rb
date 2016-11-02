@@ -3,7 +3,7 @@ require 'test_helper'
 class ScheduleTest < ActiveSupport::TestCase
   
 	def setup
-		@schedule = schedules(:fringe2016)
+		@schedule = schedules(:fringe2016michael)
 	end
 
   test "initial schedule should be valid" do

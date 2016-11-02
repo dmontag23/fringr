@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class UsersLoginTest < ActionDispatch::IntegrationTest
+class UsersHomepageTest < ActionDispatch::IntegrationTest
 
   def setup
     @user = users(:michael)
@@ -38,6 +38,13 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
     assert_select "a[href=?]", locations_path,                  count: 1
     assert_select "a[href=?]", signup_path,                     count: 0
     assert_select "a[href=?]", login_path,                      count: 0
+    assert_select 'div.pagination', count:2
+    @user.schedules.paginate(page: 1, per_page: 10).each do |schedule|
+      assert_match schedule.name, response.body
+      assert_select "a[href=?]", schedule_path(schedule)
+      assert_select "a[href=?]", edit_schedule_path(schedule)
+      assert_select 'a', text: "Delete"
+    end
     get login_path
     assert_redirected_to root_path
     delete logout_path

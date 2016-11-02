@@ -28,3 +28,14 @@ user = User.first
   email_content = Faker::Internet.email
   user.contacts.create!(name: name_content, email: email_content)
 end
+
+user = User.first
+21.times do
+  name_content = Faker::GameOfThrones.house
+  number_content = Faker::Number.between(1,60)
+  user.schedules.create!(name: name_content, actor_transition_time: number_content, days_attributes: [ 
+                                                  { start_date: Time.now, end_date: Time.now + 180 },
+                                                  { start_date: Time.now, end_date: Time.now + 180 },
+                                                  { start_date: Time.now, end_date: Time.now + 120 } 
+                                                ])
+end

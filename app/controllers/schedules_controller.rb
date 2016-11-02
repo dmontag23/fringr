@@ -1,7 +1,7 @@
 class SchedulesController < ApplicationController
 
 	before_action :logged_in_user
-	before_action :correct_user, only: [:edit, :show]
+	before_action :correct_user, only: [:edit, :show, :destroy]
 
   def new
   	@schedule = current_user.schedules.new
@@ -22,6 +22,12 @@ class SchedulesController < ApplicationController
   end
 
   def show
+  end
+
+  def destroy
+  	@schedule.destroy
+    flash[:success] = "#{@schedule.name} deleted"
+    redirect_to root_path
   end
 
   private

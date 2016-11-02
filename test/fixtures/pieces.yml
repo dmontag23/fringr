@@ -5,8 +5,8 @@ manburns:
   cleanup: 10
   location: porter
   rating: 3
-  day: day1
-  schedule: fringe2016
+  day: day1michael
+  schedule: fringe2016michael
 
 stardust:
   title: Stardust
@@ -15,8 +15,8 @@ stardust:
   cleanup: 5
   location: box
   rating: 1
-  day: day1
-  schedule: fringe2016
+  day: day1michael
+  schedule: fringe2016michael
 
 sinner:
   title: The Sinner and the Saint
@@ -25,8 +25,8 @@ sinner:
   cleanup: 15
   location: porter
   rating: 4
-  day: day2
-  schedule: fringe2016
+  day: day2michael
+  schedule: fringe2016michael
 
 etoiles:
   title: Des Etoiles
@@ -35,7 +35,7 @@ etoiles:
   cleanup: 10
   location: hub
   rating: 2
-  schedule: fringe2016
+  schedule: fringe2016michael
 
 arthur:
   title: The Once and Future King
@@ -43,4 +43,4 @@ arthur:
   setup: 5
   cleanup: 15
   rating: 2
-  schedule: fringe2016 
+  schedule: fringe2016michael
