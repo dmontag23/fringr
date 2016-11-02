@@ -14,12 +14,10 @@
     		<%= f.select :actor_transition_time, (0..12).map{ |item| item*5 } %>
     		<%= f.label :minutes %>
   		</p>
-  		<%= f.fields_for :days do |df| %>
-    		<%= df.label :start_time %> 
-    		<%= df.datetime_select :start_date, :ampm => true, :minute_step => 5 %>
-    		<%= df.label :end_time %> 
-    		<%= df.datetime_select :end_date, :ampm => true, :minute_step => 5 %> <br />
+  		<%= f.fields_for :days do |builder| %>
+				<%= render 'day_fields', f: builder %>
   		<% end %>
+  		<%= link_to_add_fields "Add Day", f, :days %>
   		<p><%= f.submit "Save" %></p>
 		<% end %>
 	</div>

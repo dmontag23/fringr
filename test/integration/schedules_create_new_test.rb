@@ -33,6 +33,7 @@ class SchedulesCreateNewTest < ActionDispatch::IntegrationTest
                                                  actor_transition_time: 10,
                                                  days_attributes: [ 
                                                  	{ start_date: Time.now, end_date: Time.now + 5 },
+                                                  { start_date: Time.now, end_date: Time.now + 5, _destroy: "1" },
                                                   { start_date: Time.now, end_date: Time.now + 5 } 
                                                 ] } }
 	      assert_redirected_to @user.schedules.find_by(name: "Lorem Ipsum")

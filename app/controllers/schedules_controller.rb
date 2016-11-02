@@ -5,7 +5,7 @@ class SchedulesController < ApplicationController
 
   def new
   	@schedule = current_user.schedules.new
-  	3.times { @schedule.days.build }
+  	@schedule.days.build
   end
 
   def create
@@ -28,7 +28,7 @@ class SchedulesController < ApplicationController
 
 	  # Ensures the use of strong parameters
     def secure_params
-      params.require(:schedule).permit(:name, :actor_transition_time, days_attributes: [:start_date, :end_date])
+      params.require(:schedule).permit(:name, :actor_transition_time, days_attributes: [:start_date, :end_date, :_destroy])
     end
 
     # Confirms the correct user for accessing schedules

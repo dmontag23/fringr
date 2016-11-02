@@ -1,0 +1,8 @@
+<fieldset>
+	<%= f.label :start_time %> 
+	<%= f.datetime_select :start_date, :ampm => true, :minute_step => 5 %>
+	<%= f.label :end_time %> 
+	<%= f.datetime_select :end_date, :ampm => true, :minute_step => 5 %> 
+	<%= f.hidden_field :_destroy %>
+	<%= link_to "Remove", "#", class: "remove_fields" %>
+</fieldset>
