@@ -19,6 +19,8 @@ Rails.application.routes.draw do
   resources :password_resets,     only: [:new, :create, :edit, :update]
   resources :locations,           only: [:create, :index, :destroy]
   resources :contacts,            only: [:create, :index, :destroy]
-  resources :schedules,           except: [:index]
+  resources :schedules,           except: [:index] do
+    resources :pieces
+  end
 
 end
