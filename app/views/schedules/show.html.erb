@@ -9,7 +9,7 @@
 	<%= link_to "View Schedule", "#" %>
 </div>
 <div class="col-md-2 center">
-	<%= link_to "Schedule Settings", "#" %>
+	<%= link_to "Schedule Settings", edit_schedule_path(@schedule), method: :get %>
 </div>
 <div class="col-md-2 center">
 	<%= link_to "Contacts", contacts_path %>

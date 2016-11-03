@@ -1,7 +1,7 @@
 class SchedulesController < ApplicationController
 
 	before_action :logged_in_user
-	before_action :correct_user, only: [:edit, :show, :destroy]
+	before_action :correct_user, only: [:edit, :update, :show, :destroy]
 
   def new
   	@schedule = current_user.schedules.new
@@ -21,6 +21,15 @@ class SchedulesController < ApplicationController
   def edit
   end
 
+  def update
+    if @schedule.update_attributes(secure_params) 
+      flash[:success] = "#{@schedule.name} has been updated."
+      redirect_to @schedule
+    else
+      render 'edit' 
+    end
+  end
+
   def show
   end
 
@@ -34,7 +43,7 @@ class SchedulesController < ApplicationController
 
 	  # Ensures the use of strong parameters
     def secure_params
-      params.require(:schedule).permit(:name, :actor_transition_time, days_attributes: [:start_date, :end_date, :_destroy])
+      params.require(:schedule).permit(:name, :actor_transition_time, days_attributes: [:id, :start_date, :end_date, :_destroy])
     end
 
     # Confirms the correct user for accessing schedules

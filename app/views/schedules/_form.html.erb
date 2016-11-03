@@ -1,0 +1,19 @@
+<%= form_for(@schedule, url: yield(:url_path)) do |f| %>
+
+  <%= render 'shared/error_messages', object: f.object %>
+
+  <p>
+  	<%= f.label :name %><br />
+  	<%= f.text_field :name %> <br />
+  	<%= f.label :actor_transition_time %><br />
+  	<%= f.select :actor_transition_time, (0..12).map{ |item| item*5 } %>
+  	<%= f.label :minutes %>
+  </p>
+  <%= f.fields_for :days do |builder| %>
+  	<%= render 'day_fields', f: builder %>
+  <% end %>
+  <%= link_to_add_fields "Add Day", f, :days %>
+  <p>
+    <%= f.submit "Save" %>
+  </p>
+<% end %>

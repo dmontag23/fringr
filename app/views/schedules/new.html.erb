@@ -1,24 +1,9 @@
 <% provide(:title, 'New Schedule') %>
+<% provide(:url_path, schedules_path) %>
 
 <h1>New Schedule</h1>
-<div class="row">
-  <div class="col-xs-8 col-xs-offset-2">
-		<%= form_for @schedule do |f| %>
-
-		  <%= render 'shared/error_messages', object: f.object %>
-
-  		<p>
-    		<%= f.label :name %><br />
-    		<%= f.text_field :name %> <br />
-    		<%= f.label :actor_transition_time %><br />
-    		<%= f.select :actor_transition_time, (0..12).map{ |item| item*5 } %>
-    		<%= f.label :minutes %>
-  		</p>
-  		<%= f.fields_for :days do |builder| %>
-				<%= render 'day_fields', f: builder %>
-  		<% end %>
-  		<%= link_to_add_fields "Add Day", f, :days %>
-  		<p><%= f.submit "Save" %></p>
-		<% end %>
+<div class="row center">
+  <div class="col-xs-10 col-xs-offset-1">
+    <%= render 'form' %>
 	</div>
 </div>
