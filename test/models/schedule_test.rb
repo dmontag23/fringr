@@ -37,7 +37,7 @@ class ScheduleTest < ActiveSupport::TestCase
   end
 
   test "associated pieces should be destroyed" do
-    assert_difference 'Piece.count', -5 do
+    assert_difference 'Piece.count', -15 do
       @schedule.destroy
     end
   end

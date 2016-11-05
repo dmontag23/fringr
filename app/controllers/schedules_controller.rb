@@ -31,6 +31,7 @@ class SchedulesController < ApplicationController
   end
 
   def show
+    @pieces = @schedule.pieces.paginate(page: params[:page], per_page: 10)
   end
 
   def destroy

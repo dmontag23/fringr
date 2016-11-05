@@ -32,10 +32,26 @@ end
 user = User.first
 21.times do
   name_content = Faker::GameOfThrones.house
-  number_content = Faker::Number.between(1,60)
+  number_content = Faker::Number.between(1, 60)
   user.schedules.create!(name: name_content, actor_transition_time: number_content, days_attributes: [ 
                                                   { start_date: Time.now, end_date: Time.now + 180 },
                                                   { start_date: Time.now, end_date: Time.now + 180 },
                                                   { start_date: Time.now, end_date: Time.now + 120 } 
                                                 ])
+end
+
+schedule = User.first.schedules.first
+21.times do
+  title_content = Faker::Lorem.word
+  length_content = Faker::Number.between(1, 60)
+  setup_content = Faker::Number.between(1, 20)
+  cleanup_content = Faker::Number.between(1, 20)
+  location_content = Faker::Number.between(1, 50)
+  rating_content = Faker::Number.between(1, 4)
+  first_content = Faker::Number.between(1, 50)
+  second_content = Faker::Number.between(1, 50)
+  third_content = Faker::Number.between(1, 50)
+  schedule.pieces.create!(title: title_content, length: length_content, setup: setup_content , 
+    cleanup: cleanup_content, location_id: location_content, rating: rating_content, 
+    participants_attributes: [{contact_id: first_content}, {contact_id: second_content}, {contact_id: third_content}])
 end

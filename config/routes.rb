@@ -20,7 +20,7 @@ Rails.application.routes.draw do
   resources :locations,           only: [:create, :index, :destroy]
   resources :contacts,            only: [:create, :index, :destroy]
   resources :schedules,           except: [:index] do
-    resources :pieces
+    resources :pieces,            except: [:index]
   end
 
 end

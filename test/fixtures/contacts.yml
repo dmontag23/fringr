@@ -1,11 +1,19 @@
 zach:
+  id: 1
   name: Zach Smith
   email: zsmith@example.com
   user: michael
 
 elle:
+  id: 2
   name: Elle Landis
   email: elandis@example.com
+  user: michael
+
+andrew:
+  id: 3
+  name: Andrew Rannells
+  email: arannells@example.com
   user: michael
 
 <% 30.times do |n| %>

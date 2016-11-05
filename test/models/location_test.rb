@@ -4,6 +4,8 @@ class LocationTest < ActiveSupport::TestCase
 
   def setup
 		@location = locations(:porter)
+    @piece = pieces(:manburns)
+    @piece.location_id = 1
   end
 
   test "initial location should be valid" do
@@ -29,7 +31,7 @@ class LocationTest < ActiveSupport::TestCase
     @location.save
     assert_no_difference 'Piece.count' do
       @location.destroy
-      assert_nil pieces(:manburns).location_id
+      assert_nil @piece.reload.location_id
     end
   end
 

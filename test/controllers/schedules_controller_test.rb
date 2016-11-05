@@ -105,14 +105,18 @@ class SchedulesControllerTest < ActionDispatch::IntegrationTest
     log_in_as(@user)
     assert_redirected_to new_schedule_path
     assert_nil session[:forwarding_url]
-    post schedules_path, params: { schedule: { name: "Lorem pipsum", 
-                                               actor_transition_time: 15,
-                                               days_attributes: [start_date: Time.now, 
-                                                                 end_date: Time.now + 120] } }
-    follow_redirect!
-    assert_template 'schedules/show'
-    assert !flash.empty?
-    assert_select 'div[class=?]', 'alert alert-success'
+    assert_difference 'Schedule.count', +1 do
+      assert_difference 'Day.count', +1 do
+        post schedules_path, params: { schedule: { name: "Lorem pipsum", 
+                                                   actor_transition_time: 15,
+                                                   days_attributes: [start_date: Time.now, 
+                                                                     end_date: Time.now + 120] } }
+        follow_redirect!
+        assert_template 'schedules/show'
+        assert !flash.empty?
+        assert_select 'div[class=?]', 'alert alert-success'
+      end
+    end
   end
 
   test "successful editing of schedule with friendly forwarding" do
@@ -121,15 +125,19 @@ class SchedulesControllerTest < ActionDispatch::IntegrationTest
     log_in_as(@user)
     assert_redirected_to edit_schedule_path(@schedule)
     assert_nil session[:forwarding_url]
-    patch schedule_path(@schedule), params: { schedule: { name: "Lorem pipsum", 
-                                                          actor_transition_time: 45,
-                                                          days_attributes: [start_date: Time.now, 
-                                                                            end_date: Time.now + 120] } }
-    assert_not_equal @schedule.name, @schedule.reload.name
-    follow_redirect!
-    assert_template 'schedules/show'
-    assert !flash.empty?
-    assert_select 'div[class=?]', 'alert alert-success'
+    assert_no_difference 'Schedule.count' do
+      assert_difference 'Day.count', +1 do
+        patch schedule_path(@schedule), params: { schedule: { name: "Lorem pipsum", 
+                                                              actor_transition_time: 45,
+                                                              days_attributes: [start_date: Time.now, 
+                                                                                end_date: Time.now + 120] } }
+        assert_not_equal @schedule.name, @schedule.reload.name
+        follow_redirect!
+        assert_template 'schedules/show'
+        assert !flash.empty?
+        assert_select 'div[class=?]', 'alert alert-success'
+      end
+    end
   end
 
 end

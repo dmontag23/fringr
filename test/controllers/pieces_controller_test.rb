@@ -1,19 +1,154 @@
 require 'test_helper'
 
 class PiecesControllerTest < ActionDispatch::IntegrationTest
-  test "should get new" do
-    get pieces_new_url
-    assert_response :success
+
+  def setup
+    @user = users(:michael)
+    @other_user = users(:archer)
+    @schedule = schedules(:fringe2016michael)
+    @piece = pieces(:manburns)
   end
 
-  test "should get edit" do
-    get pieces_edit_url
-    assert_response :success
+  test "should redirect new when not logged in" do
+    get new_schedule_piece_path(@schedule)
+    assert_redirected_to login_path
+    follow_redirect!
+    assert !flash.empty?
+    assert_select 'div[class=?]', "alert alert-danger"
   end
 
-  test "should get show" do
-    get pieces_show_url
-    assert_response :success
+  test "should redirect create when not logged in" do
+    assert_no_difference 'Piece.count' do
+      assert_no_difference 'Participant.count' do
+        post schedule_pieces_path(@schedule), params: { piece: { title: "Test", length: 30, setup: 15 , cleanup: 5, 
+                                                                 location_id: 1, rating: 3, participants_attributes: [
+                                                                {contact_id: 1}, 
+                                                                {contact_id: 3, _destroy: 1}, 
+                                                                {contact_id: 2}]}}
+      end
+    end
+    assert_redirected_to login_path
+    follow_redirect!
+    assert !flash.empty?
+    assert_select 'div[class=?]', "alert alert-danger"
+  end
+
+  test "should redirect edit when not logged in" do
+    get edit_schedule_piece_path(@schedule, @piece)
+    assert_redirected_to login_path
+    follow_redirect!
+    assert !flash.empty?
+    assert_select 'div[class=?]', 'alert alert-danger'
+  end
+
+  test "should redirect update when not logged in" do
+    patch schedule_piece_path(@schedule, @piece), params: { piece: { title: "Test", length: 30, setup: 15 , cleanup: 5, 
+                                                                     location_id: 1, rating: 3, participants_attributes: [
+                                                                    {contact_id: 1}, 
+                                                                    {contact_id: 3, _destroy: 1}, 
+                                                                    {contact_id: 2}]}}
+    assert_redirected_to login_path
+    follow_redirect!
+    assert !flash.empty?
+    assert_select 'div[class=?]', 'alert alert-danger'
+  end
+
+  test "should redirect show when not logged in" do
+    get schedule_piece_path(@schedule, @piece)
+    assert_redirected_to login_path
+    follow_redirect!
+    assert !flash.empty?
+    assert_select 'div[class=?]', 'alert alert-danger'
+  end
+
+  test "should redirect destroy when not logged in" do
+    assert_no_difference 'Piece.count' do
+      assert_no_difference 'Participant.count' do
+        delete schedule_piece_path(@schedule, @piece)
+      end
+    end
+    assert_redirected_to login_url
+    follow_redirect!
+    assert !flash.empty?
+    assert_select 'div[class=?]', 'alert alert-danger'
+    assert_no_difference 'Schedule.count' do
+      assert_no_difference 'Participant.count' do
+        log_in_as(@user)
+        assert_redirected_to root_url
+      end
+    end
+  end
+
+  test "should redirect edit when logged in as other user" do
+    log_in_as(@other_user)
+    get edit_schedule_piece_path(@schedule, @piece)
+    assert_redirected_to root_path
+  end
+
+  test "should redirect update when logged in as other user" do
+    log_in_as(@other_user)
+    patch schedule_piece_path(@schedule, @piece), params: { piece: { title: "Test", length: 30, setup: 15 , cleanup: 5, 
+                                                                     location_id: 1, rating: 3, participants_attributes: [
+                                                                     {contact_id: 1}, 
+                                                                     {contact_id: 3, _destroy: 1}, 
+                                                                     {contact_id: 2}]}}
+    assert_redirected_to root_path
+  end
+
+  test "should redirect show when logged in as other user" do
+    log_in_as(@other_user)
+    get schedule_piece_path(@schedule, @piece)
+    assert_redirected_to root_path
+  end
+
+  test "should redirect destroy when logged in as other user" do
+    log_in_as(@other_user)
+    assert_no_difference 'Schedule.count' do
+      assert_no_difference 'Participant.count' do
+        delete schedule_piece_path(@schedule, @piece)
+      end
+    end
+    assert_redirected_to root_path
+  end
+
+  test "successful creation of piece with friendly forwarding" do
+    get new_schedule_piece_path(@schedule)
+    assert_redirected_to login_path
+    log_in_as(@user)
+    assert_redirected_to new_schedule_piece_path(@schedule)
+    assert_nil session[:forwarding_url]
+    assert_difference 'Piece.count', +1 do
+      assert_difference 'Participant.count', +2 do
+        post schedule_pieces_path(@schedule), params: { piece: { title: "Test", length: 30, setup: 15 , cleanup: 5, 
+                                                                 location_id: 1, rating: 3, participants_attributes: [
+                                                                  {contact_id: 1}, 
+                                                                  {contact_id: 3, _destroy: 1}, 
+                                                                  {contact_id: 2}]}}
+        follow_redirect!
+        assert_template 'schedules/show'
+        assert !flash.empty?
+        assert_select 'div[class=?]', 'alert alert-success'
+      end
+    end
+  end
+
+  test "successful editing of piece with friendly forwarding" do
+    get edit_schedule_piece_path(@schedule, @piece)
+    assert_redirected_to login_path
+    log_in_as(@user)
+    assert_redirected_to edit_schedule_piece_path(@schedule, @piece)
+    assert_nil session[:forwarding_url]
+    assert_no_difference 'Piece.count' do
+      assert_no_difference 'Participant.count' do
+        patch schedule_piece_path(@schedule, @piece), params: { piece: { title: "Test", length: 30, setup: 15 , cleanup: 5, 
+                                                                        location_id: 1, rating: 3 } }
+        assert_not_equal @piece.title, @piece.reload.title
+        follow_redirect!
+        assert_template 'schedules/show'
+        assert !flash.empty?
+        assert_select 'div[class=?]', 'alert alert-success'
+      end
+    end
   end
 
 end

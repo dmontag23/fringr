@@ -3,7 +3,6 @@ manburns:
   length: 30
   setup: 10
   cleanup: 10
-  location: porter
   rating: 3
   day: day1michael
   schedule: fringe2016michael
@@ -13,7 +12,6 @@ stardust:
   length: 15
   setup: 5
   cleanup: 5
-  location: box
   rating: 1
   day: day1michael
   schedule: fringe2016michael
@@ -23,7 +21,6 @@ sinner:
   length: 45
   setup: 20
   cleanup: 15
-  location: porter
   rating: 4
   day: day2michael
   schedule: fringe2016michael
@@ -33,7 +30,6 @@ etoiles:
   length: 20
   setup: 15
   cleanup: 10
-  location: hub
   rating: 2
   schedule: fringe2016michael
 
@@ -44,3 +40,13 @@ arthur:
   cleanup: 15
   rating: 2
   schedule: fringe2016michael
+
+<% 10.times do |n| %>
+piece_<%= n %>:
+  title:  <%= "Piece #{n}" %>
+  length: <%= Faker::Number.between(1, 60) %>
+  setup: <%= Faker::Number.between(1, 20) %>
+  cleanup: <%= Faker::Number.between(1, 20) %>
+  rating: <%= Faker::Number.between(1, 4) %>
+  schedule: fringe2016michael
+<% end %>

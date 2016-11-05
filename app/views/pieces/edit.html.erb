@@ -1,2 +1,9 @@
-<h1>Pieces#edit</h1>
-<p>Find me in app/views/pieces/edit.html.erb</p>
+<% provide(:title, 'Edit Schedule') %>
+<% provide(:url_path, schedule_piece_path(@schedule, @piece)) %>
+
+<h1>Edit Schedule</h1>
+<div class="row center">
+  <div class="col-xs-10 col-xs-offset-1">
+    <%= render 'form' %>
+	</div>
+</div>

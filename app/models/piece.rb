@@ -3,8 +3,10 @@ class Piece < ApplicationRecord
 	belongs_to :schedule
 	belongs_to :day, optional: true
 	belongs_to :location, optional: true
-	has_many :participants
+	has_many :participants, inverse_of: :piece
 	has_many :contacts, through: :participants, dependent: :destroy
+	accepts_nested_attributes_for :participants, allow_destroy: true 
+	default_scope -> { order(created_at: :desc) }
 
 	# Validations
 	validates :title, presence: true, length: { maximum: 150 }
