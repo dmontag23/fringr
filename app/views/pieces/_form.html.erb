@@ -12,10 +12,11 @@
     <%= f.label :cleanup %><br />
     <%= f.text_field :cleanup %> <br />
   	<%= f.label :location %><br />
-  	<%= f.select :location, (0..5) %> <br />
+    <%= f.select :location_id, @locations.collect { |l| [ l.name, l.id ] }%> <br />
     <%= f.label :rating %><br />
     <%= f.select :rating, (1..4) %> <br />
+    <%= f.select :contact_ids, @contacts.collect {|c| [c.name, c.id]}, {}, :multiple => true %>
     <%= f.submit "Save" %>
-  </p>
+    </p>
 
 <% end %>

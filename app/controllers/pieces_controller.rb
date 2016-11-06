@@ -2,7 +2,8 @@ class PiecesController < ApplicationController
   
 	before_action :logged_in_user
 	before_action :find_schedule
-	before_action :correct_user, only: [:edit, :update, :show, :destroy]
+	before_action :find_piece, only: [:edit, :update, :show, :destroy]
+	before_action :find_locations_and_contacts, only: [:new, :create, :edit, :update]
 
   def new
   	@piece = @schedule.pieces.new
@@ -44,19 +45,25 @@ class PiecesController < ApplicationController
 	  # Ensures the use of strong parameters
     def secure_params
       params.require(:piece).permit(:title, :length, :setup, :cleanup, 
-      	:location_id, :rating, participants_attributes: [:id, :contact_id, :_destroy])
-    end
-
-    # Confirms the correct user for accessing pieces
-    def correct_user
-    	@piece = @schedule.pieces.find_by(id: params[:id])
-      redirect_to root_url if @piece.nil?
+      	:location_id, :rating, contact_ids: [])
     end
 
     # Finds the schedule associated with the piece being accessed 
     def find_schedule
       @schedule = current_user.schedules.find_by(id: params[:schedule_id])
-      redirect_to root_url if @schedule.nil?
+			redirect_to root_url if @schedule.nil?
+    end
+
+    # Finds the piece being accessed
+    def find_piece
+    	@piece = @schedule.pieces.find_by(id: params[:id])
+      redirect_to root_url if @piece.nil?
+    end
+
+    # Finds and orders all of the locations and contacts associated with the current user
+    def find_locations_and_contacts
+    	@locations = current_user.locations.all.order('name ASC')
+    	@contacts = current_user.contacts.all.order('name ASC')
     end
 
 end

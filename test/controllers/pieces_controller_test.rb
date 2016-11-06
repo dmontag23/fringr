@@ -21,10 +21,7 @@ class PiecesControllerTest < ActionDispatch::IntegrationTest
     assert_no_difference 'Piece.count' do
       assert_no_difference 'Participant.count' do
         post schedule_pieces_path(@schedule), params: { piece: { title: "Test", length: 30, setup: 15 , cleanup: 5, 
-                                                                 location_id: 1, rating: 3, participants_attributes: [
-                                                                {contact_id: 1}, 
-                                                                {contact_id: 3, _destroy: 1}, 
-                                                                {contact_id: 2}]}}
+                                                                 location_id: 1, rating: 3 } }
       end
     end
     assert_redirected_to login_path
@@ -43,10 +40,7 @@ class PiecesControllerTest < ActionDispatch::IntegrationTest
 
   test "should redirect update when not logged in" do
     patch schedule_piece_path(@schedule, @piece), params: { piece: { title: "Test", length: 30, setup: 15 , cleanup: 5, 
-                                                                     location_id: 1, rating: 3, participants_attributes: [
-                                                                    {contact_id: 1}, 
-                                                                    {contact_id: 3, _destroy: 1}, 
-                                                                    {contact_id: 2}]}}
+                                                                     location_id: 1, rating: 3 } }
     assert_redirected_to login_path
     follow_redirect!
     assert !flash.empty?
@@ -88,10 +82,7 @@ class PiecesControllerTest < ActionDispatch::IntegrationTest
   test "should redirect update when logged in as other user" do
     log_in_as(@other_user)
     patch schedule_piece_path(@schedule, @piece), params: { piece: { title: "Test", length: 30, setup: 15 , cleanup: 5, 
-                                                                     location_id: 1, rating: 3, participants_attributes: [
-                                                                     {contact_id: 1}, 
-                                                                     {contact_id: 3, _destroy: 1}, 
-                                                                     {contact_id: 2}]}}
+                                                                     location_id: 1, rating: 3 } }
     assert_redirected_to root_path
   end
 
@@ -118,12 +109,9 @@ class PiecesControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to new_schedule_piece_path(@schedule)
     assert_nil session[:forwarding_url]
     assert_difference 'Piece.count', +1 do
-      assert_difference 'Participant.count', +2 do
+      assert_difference 'Participant.count', +3 do
         post schedule_pieces_path(@schedule), params: { piece: { title: "Test", length: 30, setup: 15 , cleanup: 5, 
-                                                                 location_id: 1, rating: 3, participants_attributes: [
-                                                                  {contact_id: 1}, 
-                                                                  {contact_id: 3, _destroy: 1}, 
-                                                                  {contact_id: 2}]}}
+                                                                 location_id: 1, rating: 3, contact_ids: ["2", "1", "3"] } }
         follow_redirect!
         assert_template 'schedules/show'
         assert !flash.empty?
