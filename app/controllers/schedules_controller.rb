@@ -1,7 +1,7 @@
 class SchedulesController < ApplicationController
 
 	before_action :logged_in_user
-	before_action :correct_user, only: [:edit, :update, :show, :destroy]
+	before_action :correct_user, only: [:edit, :update, :show, :view, :destroy]
 
   def new
   	@schedule = current_user.schedules.new
@@ -32,6 +32,11 @@ class SchedulesController < ApplicationController
 
   def show
     @pieces = @schedule.pieces.paginate(page: params[:page], per_page: 10)
+  end
+
+  def view
+    @pieces_scheduled = @schedule.pieces.where.not(day_id: nil, start_time: nil).reorder(:day_id, :start_time).paginate(page: params[:page], per_page: 10)
+    @pieces_not_scheduled = @schedule.pieces.where(day_id: nil, start_time: nil).paginate(page: params[:page], per_page: 10)
   end
 
   def destroy

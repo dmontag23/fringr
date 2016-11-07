@@ -6,7 +6,7 @@
 	<%= link_to "Add Piece", new_schedule_piece_path(@schedule) %>
 </div>
 <div class="col-md-2 center">
-	<%= link_to "View Schedule", "#" %>
+	<%= link_to "View Schedule", view_schedule_path(@schedule) %>
 </div>
 <div class="col-md-2 center">
 	<%= link_to "Schedule Settings", edit_schedule_path(@schedule), method: :get %>

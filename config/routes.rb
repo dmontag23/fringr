@@ -21,6 +21,9 @@ Rails.application.routes.draw do
   resources :contacts,            only: [:create, :index, :destroy]
   resources :schedules,           except: [:index] do
     resources :pieces,            except: [:index]
+    member do
+      get 'view'
+    end
   end
 
 end

@@ -30,7 +30,7 @@ class SchedulesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should redirect edit when not logged in" do
-    get edit_schedule_path(@user)
+    get edit_schedule_path(@schedule)
     assert_redirected_to login_path
     follow_redirect!
     assert !flash.empty?
@@ -49,7 +49,15 @@ class SchedulesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should redirect show when not logged in" do
-    get schedule_path(@user)
+    get schedule_path(@schedule)
+    assert_redirected_to login_path
+    follow_redirect!
+    assert !flash.empty?
+    assert_select 'div[class=?]', 'alert alert-danger'
+  end
+
+  test "should redirect view when not logged in" do
+    get view_schedule_path(@schedule)
     assert_redirected_to login_path
     follow_redirect!
     assert !flash.empty?
@@ -71,8 +79,8 @@ class SchedulesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should redirect edit when logged in as other user" do
-    log_in_as(@user)
-    get edit_schedule_path(@other_user)
+    log_in_as(@other_user)
+    get edit_schedule_path(@schedule)
     assert_redirected_to root_path
   end
 
@@ -86,8 +94,14 @@ class SchedulesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should redirect show when logged in as other user" do
-    log_in_as(@user)
-    get schedule_path(@other_user)
+    log_in_as(@other_user)
+    get schedule_path(@schedule)
+    assert_redirected_to root_path
+  end
+
+  test "should redirect view when logged in as other user" do
+    log_in_as(@other_user)
+    get view_schedule_path(@schedule)
     assert_redirected_to root_path
   end
 
