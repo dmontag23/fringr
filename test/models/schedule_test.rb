@@ -42,4 +42,9 @@ class ScheduleTest < ActiveSupport::TestCase
     end
   end
 
+  test "at least one day should be present" do
+    @schedule.days.destroy_all
+    assert_not @schedule.valid?
+  end
+
 end

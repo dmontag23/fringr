@@ -10,5 +10,6 @@ class Schedule < ApplicationRecord
 	validates :name, presence: true, length: {maximum: 150}
 	validates :actor_transition_time, presence: true
 	validates_associated :days
+	validates_presence_of :days
 	
 end

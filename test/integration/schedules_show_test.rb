@@ -107,6 +107,8 @@ class SchedulesShowTest < ActionDispatch::IntegrationTest
     assert_template 'schedules/show'
     assert !flash.empty?
     assert_select 'div[class=?]', 'alert alert-danger'
+    get root_path
+    assert flash.empty?
   end
 
   test "sucessful scheduling of pieces" do 
