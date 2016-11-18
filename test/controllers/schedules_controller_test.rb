@@ -20,8 +20,8 @@ class SchedulesControllerTest < ActionDispatch::IntegrationTest
     assert_no_difference 'Schedule.count' do
       post schedules_path, params: { schedule: { name: "Lorem ipsum", 
                                                  actor_transition_time: 35,
-                                                 days_attributes: [start_date: Time.now, 
-                                                                   end_date: Time.now + 5] } }
+                                                 days_attributes: [start_time: Time.now, 
+                                                                   end_time: Time.now + 5] } }
     end
     assert_redirected_to login_path
     follow_redirect!
@@ -40,8 +40,8 @@ class SchedulesControllerTest < ActionDispatch::IntegrationTest
   test "should redirect update when not logged in" do
     patch schedule_path(@schedule), params: { schedule: { name: "Lorem pipsum", 
                                                           actor_transition_time: 15,
-                                                          days_attributes: [start_date: Time.now, 
-                                                                 end_date: Time.now + 120] } }
+                                                          days_attributes: [start_time: Time.now, 
+                                                                 end_time: Time.now + 120] } }
     assert_redirected_to login_path
     follow_redirect!
     assert !flash.empty?
@@ -96,8 +96,8 @@ class SchedulesControllerTest < ActionDispatch::IntegrationTest
     log_in_as(@other_user)
     patch schedule_path(@schedule), params: { schedule: { name: "Lorem pipsum", 
                                                           actor_transition_time: 15,
-                                                          days_attributes: [start_date: Time.now, 
-                                                                 end_date: Time.now + 120] } }
+                                                          days_attributes: [start_time: Time.now, 
+                                                                 end_time: Time.now + 120] } }
     assert_redirected_to root_path
   end
 
@@ -137,8 +137,8 @@ class SchedulesControllerTest < ActionDispatch::IntegrationTest
       assert_difference 'Day.count', +1 do
         post schedules_path, params: { schedule: { name: "Lorem pipsum", 
                                                    actor_transition_time: 15,
-                                                   days_attributes: [start_date: Time.now, 
-                                                                     end_date: Time.now + 120] } }
+                                                   days_attributes: [start_time: Time.now, 
+                                                                     end_time: Time.now + 120] } }
         follow_redirect!
         assert_template 'schedules/show'
         assert !flash.empty?
@@ -157,8 +157,8 @@ class SchedulesControllerTest < ActionDispatch::IntegrationTest
       assert_difference 'Day.count', +1 do
         patch schedule_path(@schedule), params: { schedule: { name: "Lorem pipsum", 
                                                               actor_transition_time: 45,
-                                                              days_attributes: [start_date: Time.now, 
-                                                                                end_date: Time.now + 120] } }
+                                                              days_attributes: [start_time: Time.now, 
+                                                                                end_time: Time.now + 120] } }
         assert_not_equal @schedule.name, @schedule.reload.name
         follow_redirect!
         assert_template 'schedules/show'

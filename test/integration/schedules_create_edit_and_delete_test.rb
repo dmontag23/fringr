@@ -30,8 +30,8 @@ class SchedulesCreateEditAndDeleteTest < ActionDispatch::IntegrationTest
         post schedules_path, params: { schedule: { name: "      ", 
                                                    actor_transition_time: 10,
                                                    days_attributes: [ 
-                                                   	{ start_date: Time.now, end_date: Time.now + 5 },
-                                                    { start_date: Time.now, end_date: Time.now + 5 } 
+                                                   	{ start_time: Time.now, end_time: Time.now + 5 },
+                                                    { start_time: Time.now, end_time: Time.now + 5 } 
                                                   ] } }
         assert_template 'schedules/new'
         assert_select 'div[class=?]', 'alert alert-danger'
@@ -45,9 +45,9 @@ class SchedulesCreateEditAndDeleteTest < ActionDispatch::IntegrationTest
 	      post schedules_path, params: { schedule: { name: "Lorem Ipsum", 
                                                  actor_transition_time: 10,
                                                  days_attributes: [ 
-                                                 	{ start_date: Time.now, end_date: Time.now + 5 },
-                                                  { start_date: Time.now, end_date: Time.now + 5, _destroy: "1" },
-                                                  { start_date: Time.now, end_date: Time.now + 5 } 
+                                                 	{ start_time: Time.now, end_time: Time.now + 5 },
+                                                  { start_time: Time.now, end_time: Time.now + 5, _destroy: "1" },
+                                                  { start_time: Time.now, end_time: Time.now + 5 } 
                                                 ] } }
 	      assert_redirected_to @user.schedules.find_by(name: "Lorem Ipsum")
 	      follow_redirect!
@@ -63,8 +63,8 @@ class SchedulesCreateEditAndDeleteTest < ActionDispatch::IntegrationTest
         patch schedule_path(@schedule), params: { schedule: { name: "      ", 
                                                               actor_transition_time: 10,
                                                               days_attributes: [ 
-                                                              { start_date: Time.now, end_date: Time.now + 5 },
-                                                              { start_date: Time.now, end_date: Time.now + 5 } 
+                                                              { start_time: Time.now, end_time: Time.now + 5 },
+                                                              { start_time: Time.now, end_time: Time.now + 5 } 
                                                   ] } }
         assert_template 'schedules/edit'
         assert_select 'div[class=?]', 'alert alert-danger'
@@ -78,8 +78,8 @@ class SchedulesCreateEditAndDeleteTest < ActionDispatch::IntegrationTest
         patch schedule_path(@schedule), params: { schedule: { name: "Lorem popsum", 
                                                               actor_transition_time: 45,
                                                               days_attributes: [ 
-                                                              { start_date: Time.zone.parse('2016-04-08 7:00pm'), end_date: Time.zone.parse('2016-04-08 8:00pm'), _destroy: "1"},
-                                                              { start_date: Time.now, end_date: Time.now + 5 } 
+                                                              { start_time: Time.zone.parse('2016-04-08 7:00pm'), end_time: Time.zone.parse('2016-04-08 8:00pm'), _destroy: "1"},
+                                                              { start_time: Time.now, end_time: Time.now + 5 } 
                                                   ] } }
         assert_redirected_to @schedule
         follow_redirect!

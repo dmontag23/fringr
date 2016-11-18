@@ -78,8 +78,8 @@ class UserTest < ActiveSupport::TestCase
 
     test "associated schedules should be destroyed" do
     @user.save
-    @user.schedules.create!(name: "Fringe 2016", actor_transition_time: 10, days_attributes: [start_date: Time.now, 
-                                                                                              end_date: Time.now + 5])
+    @user.schedules.create!(name: "Fringe 2016", actor_transition_time: 10, days_attributes: [start_time: Time.now, 
+                                                                                              end_time: Time.now + 5])
     assert_difference 'Schedule.count', -1 do
       @user.destroy
     end

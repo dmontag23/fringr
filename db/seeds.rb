@@ -4,7 +4,6 @@ User.create!(name:  "Example User",
              password_confirmation: "password",
              activated: true,
              activated_at: Time.zone.now)
-
 99.times do |n|
   name  = Faker::Name.name
   email = "example-#{n+1}@example.com"
@@ -34,9 +33,9 @@ user = User.first
   name_content = Faker::GameOfThrones.house
   number_content = Faker::Number.between(1, 60)
   user.schedules.create!(name: name_content, actor_transition_time: number_content, days_attributes: [ 
-                                                  { start_date: Time.now, end_date: Time.now + 180 },
-                                                  { start_date: Time.now, end_date: Time.now + 180 },
-                                                  { start_date: Time.now, end_date: Time.now + 120 } 
+                                                  { start_time: Time.now, end_time: Time.now + 180 },
+                                                  { start_time: Time.now, end_time: Time.now + 180 },
+                                                  { start_time: Time.now, end_time: Time.now + 120 } 
                                                 ])
 end
 

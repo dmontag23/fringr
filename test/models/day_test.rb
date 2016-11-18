@@ -10,13 +10,13 @@ class DayTest < ActiveSupport::TestCase
     assert @day1.valid?
   end
 
-  test "start_date should be present" do
-    @day1.start_date = nil
+  test "start_time should be present" do
+    @day1.start_time = nil
     assert_not @day1.valid?
   end
 
-  test "end_date should be present" do
-    @day1.end_date = nil
+  test "end_time should be present" do
+    @day1.end_time = nil
     assert_not @day1.valid?
   end
 
@@ -35,7 +35,7 @@ class DayTest < ActiveSupport::TestCase
   end
 
   test "end time should be greater than start time" do
-    @day1.end_date = Time.zone.parse('2016-04-08 7:00pm')
+    @day1.end_time = Time.zone.parse('2016-04-08 7:00pm')
     assert_not @day1.valid?
   end
 

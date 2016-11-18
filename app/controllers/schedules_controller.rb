@@ -3,7 +3,7 @@ class SchedulesController < ApplicationController
   include SchedulesHelper
 
 	before_action :logged_in_user
-	before_action :correct_user, only: [:edit, :update, :show, :view, :schedule, :destroy]
+	before_action :correct_user, except: [:new, :create]
   before_action :find_pieces, only: [:show, :schedule]
 
   def new
@@ -62,7 +62,7 @@ class SchedulesController < ApplicationController
 
 	  # Ensures the use of strong parameters
     def secure_params
-      params.require(:schedule).permit(:name, :actor_transition_time, days_attributes: [:id, :start_date, :end_date, :_destroy])
+      params.require(:schedule).permit(:name, :actor_transition_time, days_attributes: [:id, :start_time, :end_time, :_destroy])
     end
 
     # Confirms the correct user for accessing schedules

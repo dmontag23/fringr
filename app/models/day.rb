@@ -4,15 +4,15 @@ class Day < ApplicationRecord
   has_many :pieces, dependent: :nullify
 
 	# Validations
-	validates :start_date, presence: true
-	validates :end_date, presence: true
-	validate :end_date_is_greater_than_start_date
+	validates :start_time, presence: true
+	validates :end_time, presence: true
+	validate :end_time_is_greater_than_start_time
 
   private
 
-  	def end_date_is_greater_than_start_date
-  		if start_date && end_date 
-  		 errors.add(:end_date, "must be later than the start date") unless start_date < end_date
+  	def end_time_is_greater_than_start_time
+  		if start_time && end_time
+  		 errors.add(:end_time, "must be later than the start time") unless start_time < end_time
   		end
   	end
   
