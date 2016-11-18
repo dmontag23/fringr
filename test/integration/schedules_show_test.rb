@@ -4,6 +4,7 @@ class SchedulesShowTest < ActionDispatch::IntegrationTest
   
   def setup
     @user = users(:michael)
+    @other_user = users(:archer)
     @schedule = @user.schedules.find_by(name: "Fringe 2016")
     @piece = pieces(:manburns)
     @piece.participants.create!(contact_id: 4)
@@ -19,7 +20,7 @@ class SchedulesShowTest < ActionDispatch::IntegrationTest
     assert_select 'a[href=?]', edit_schedule_path(@schedule),      count: 1
     assert_select 'a[href=?]', contacts_path,                      count: 1
     assert_select 'a[href=?]', locations_path,                     count: 1
-    assert_select 'div.pagination', count:2
+    assert_select 'div.pagination', count:1
     @schedule.pieces.paginate(page: 1, per_page: 10).each do |piece|
       assert_match piece.title, response.body
       assert_select "a[href=?]", schedule_piece_path(@schedule, piece)
@@ -98,6 +99,23 @@ class SchedulesShowTest < ActionDispatch::IntegrationTest
         assert_select 'div[class=?]', 'alert alert-success'
       end
     end
+  end
+
+  test "unsucessful scheduling of pieces" do 
+    log_in_as @other_user
+    post view_schedule_path(schedules(:fringe2016archer))
+    assert_template 'schedules/show'
+    assert !flash.empty?
+    assert_select 'div[class=?]', 'alert alert-danger'
+  end
+
+  test "sucessful scheduling of pieces" do 
+    post view_schedule_path(@schedule)
+    assert_redirected_to view_schedule_path(@schedule)
+    follow_redirect!
+    assert_template 'schedules/view'
+    assert !flash.empty?
+    assert_select 'div[class=?]', 'alert alert-success'
   end
 
   test "sucessful deletion of a schedule" do

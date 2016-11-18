@@ -23,6 +23,7 @@ Rails.application.routes.draw do
     resources :pieces,            except: [:index]
     member do
       get 'view'
+      post 'view', to: 'schedules#schedule'
     end
   end
 

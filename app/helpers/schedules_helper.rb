@@ -9,4 +9,8 @@ module SchedulesHelper
 		link_to(name, "#", class: "add_fields", data: {id: id, fields: fields.gsub("\n", "")})
 	end
 
+	def schedule_all_pieces
+		false
+	end
+
 end

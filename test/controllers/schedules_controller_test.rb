@@ -64,6 +64,14 @@ class SchedulesControllerTest < ActionDispatch::IntegrationTest
     assert_select 'div[class=?]', 'alert alert-danger'
   end
 
+  test "should redirect schedule when not logged in" do
+    post view_schedule_path(@schedule)
+    assert_redirected_to login_path
+    follow_redirect!
+    assert !flash.empty?
+    assert_select 'div[class=?]', 'alert alert-danger'
+  end
+
   test "should redirect destroy when not logged in" do
     assert_no_difference 'Schedule.count' do
       delete schedule_path(@schedule)
@@ -102,6 +110,12 @@ class SchedulesControllerTest < ActionDispatch::IntegrationTest
   test "should redirect view when logged in as other user" do
     log_in_as(@other_user)
     get view_schedule_path(@schedule)
+    assert_redirected_to root_path
+  end
+
+  test "should redirect schedule when logged in as other user" do
+    log_in_as(@other_user)
+    post view_schedule_path(@schedule)
     assert_redirected_to root_path
   end
 
