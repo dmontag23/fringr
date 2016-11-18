@@ -4,7 +4,6 @@ class PieceTest < ActiveSupport::TestCase
 
 	def setup
 		@manburns = pieces(:manburns)
-		@manburns.participants.create!(contact: contacts(:zach))
 	end
 
   test "initial piece should be valid" do
@@ -96,5 +95,10 @@ class PieceTest < ActiveSupport::TestCase
       end
     end
   end
+
+  test "pieces should contain at least 1 participant" do 
+  	@manburns.participants.destroy_all
+  	assert_not @manburns.valid?
+	end
   
 end

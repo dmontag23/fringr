@@ -122,7 +122,7 @@ class SchedulesShowTest < ActionDispatch::IntegrationTest
 
   test "sucessful deletion of a schedule" do
     assert_difference 'Piece.count', -1 do
-      assert_difference 'Participant.count', -1 do
+      assert_difference 'Participant.count', -2 do
         delete schedule_piece_path(@schedule, @piece)
         assert_redirected_to @schedule
         follow_redirect!
