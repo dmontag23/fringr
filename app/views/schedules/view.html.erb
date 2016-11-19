@@ -5,8 +5,15 @@
 	<h3>Pieces Scheduled:</h3>
 	<% @schedule.days.each do |day| %>
 	<%= "#{day.start_time.to_date}" %> <br />
-  	<% day.scheduled_times.each do |scheduled_time| %>
-  		<%= "#{scheduled_time.piece.title}: #{scheduled_time.start_time}" %> <br />
+  	<% day.scheduled_times.reorder(:start_time).each do |scheduled_time| %>
+  		<%= "#{scheduled_time.piece.title}: #{(day.start_time + scheduled_time.start_time*60).strftime("at %l:%M %p") }" %> <br />
   		<% end %>
+	<% end %>
+	<h3>Pieces Not Scheduled:</h3>
+	<% @schedule.pieces.each do |piece| %>
+		<% piece_not_scheduled_count = piece.scheduled_times.where(day_id: nil).count %>
+		<% if  piece_not_scheduled_count > 0 %>
+			<%= "Could not schedule #{piece_not_scheduled_count} instances of #{piece.title}"	%>
+		<% end %>
 	<% end %>
 </div>
