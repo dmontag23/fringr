@@ -168,4 +168,28 @@ class SchedulesControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "unsucessful scheduling of pieces with null locations" do
+    log_in_as(@user)
+    post view_schedule_path(@schedule)
+    assert_template 'schedules/show'
+    assert !flash.empty?
+    assert_select 'div[class=?]', 'alert alert-danger'
+    get root_path
+    assert flash.empty?
+  end
+
+  test "sucessful scheduling of pieces with no null locations" do
+    pieces(:manburns).location_id = 1
+    pieces(:manburns).save
+    log_in_as(@user)
+    post view_schedule_path(@schedule)
+    assert_redirected_to view_schedule_path(@schedule)
+    follow_redirect!
+    assert_template 'schedules/view'
+    assert !flash.empty?
+    assert_select 'div[class=?]', 'alert alert-success'
+    get root_path
+    assert flash.empty?
+  end
+
 end

@@ -6,7 +6,12 @@
 	<h5>Length: <%= "#{@piece.length}" %></h5>
 	<h5>Setup: <%= "#{@piece.setup}" %></h5>
 	<h5>Cleanup: <%= "#{@piece.cleanup}" %></h5>
-	<h5>Location: <%= "#{@piece.location_id}" %></h5>
+	<h5>Location: <%= if @piece.location.nil? 
+											"No location selected"
+										else 
+											"#{@piece.location.name}" 
+										end %>
+	</h5>
 	<h5>Rating: <%= "#{@piece.rating}" %></h5>
 	<h5> Participants: </h5>
 	<% @piece.contacts.each do |person| %>

@@ -111,15 +111,6 @@ class SchedulesShowTest < ActionDispatch::IntegrationTest
     assert flash.empty?
   end
 
-  test "sucessful scheduling of pieces" do 
-    post view_schedule_path(@schedule)
-    assert_redirected_to view_schedule_path(@schedule)
-    follow_redirect!
-    assert_template 'schedules/view'
-    assert !flash.empty?
-    assert_select 'div[class=?]', 'alert alert-success'
-  end
-
   test "sucessful deletion of a schedule" do
     assert_difference 'Piece.count', -1 do
       assert_difference 'Participant.count', -2 do

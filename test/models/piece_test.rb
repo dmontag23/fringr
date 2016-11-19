@@ -56,8 +56,9 @@ class PieceTest < ActiveSupport::TestCase
 		assert_not @manburns.valid?
 	end
 
-	test "piece with no location should be valid" do
-		assert pieces(:arthur).valid?
+	test "location should be optional" do
+		@manburns.location = nil
+		assert @manburns.valid?
 	end
 
 	test "rating should be present" do
@@ -87,6 +88,14 @@ class PieceTest < ActiveSupport::TestCase
 		@manburns.schedule_id = nil
 		assert_not @manburns.valid?
 	end
+
+	test "associated scheduled times should be destroyed" do
+    assert_difference 'ScheduledTime.count', -2 do
+      assert_difference 'Piece.count', -1 do
+      	@manburns.destroy
+      end
+    end
+  end
   
   test "associated participants should be destroyed" do
     assert_difference 'Participant.count', -1 do

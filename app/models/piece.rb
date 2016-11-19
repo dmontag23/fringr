@@ -1,8 +1,8 @@
 class Piece < ApplicationRecord
   
 	belongs_to :schedule
-	belongs_to :day, optional: true
 	belongs_to :location, optional: true
+	has_many :scheduled_times, dependent: :destroy
 	has_many :participants, inverse_of: :piece, dependent: :destroy
 	has_many :contacts, through: :participants
 	default_scope -> { order(created_at: :desc) }

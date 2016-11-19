@@ -25,12 +25,12 @@ class DayTest < ActiveSupport::TestCase
     assert_not @day1.valid?
   end
 
-  test "associated pieces should be null" do
-    assert_no_difference 'Piece.count' do
+  test "associated scheduled times should be null" do
+    assert_no_difference 'ScheduledTime.count' do
     	@day1.destroy
-    	assert_nil pieces(:manburns).day_id
-    	assert_nil pieces(:stardust).day_id
-    	assert_not_nil pieces(:sinner).day_id
+    	assert_nil scheduled_times(:manburnsday1).day_id
+    	assert_nil scheduled_times(:stardustday1).day_id
+    	assert_not_nil scheduled_times(:sinnerday2).day_id
     end
   end
 

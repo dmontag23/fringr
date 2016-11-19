@@ -3,13 +3,10 @@
 <h1>Schedule for <%= "#{@schedule.name}" %></h1>
 <div class="center">
 	<h3>Pieces Scheduled:</h3>
-	<% @pieces_scheduled.each do |piece| %>
-  	<%= "#{piece.title}" %> <br /> 
-  	<%= "#{piece.day.start_date.to_date} #{Time.at(piece.start_time)}" %><br />
+	<% @schedule.days.each do |day| %>
+	<%= "#{day.start_time.to_date}" %> <br />
+  	<% day.scheduled_times.each do |scheduled_time| %>
+  		<%= "#{scheduled_time.piece.title}: #{scheduled_time.start_time}" %> <br />
+  		<% end %>
 	<% end %>
-	<h3>Pieces Not Scheduled:</h3>
-	<% @pieces_not_scheduled.each do |piece| %>
-  	<%= "#{piece.title}" %><br />
-	<% end %>
-	<%= will_paginate @pieces_not_scheduled %>
 </div>

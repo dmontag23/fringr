@@ -1,7 +1,7 @@
 class Day < ApplicationRecord
   
   belongs_to :schedule
-  has_many :pieces, dependent: :nullify
+  has_many :scheduled_times, dependent: :nullify
 
 	# Validations
 	validates :start_time, presence: true

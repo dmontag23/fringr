@@ -7,8 +7,6 @@ class CreatePieces < ActiveRecord::Migration[5.0]
       t.integer :cleanup
       t.references :location, foreign_key: true
       t.integer :rating
-      t.references :day, foreign_key: true
-      t.integer :start_time
       t.references :schedule, foreign_key: true
 
       t.timestamps

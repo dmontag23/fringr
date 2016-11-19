@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161024193428) do
+ActiveRecord::Schema.define(version: 20161118233429) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -57,14 +57,21 @@ ActiveRecord::Schema.define(version: 20161024193428) do
     t.integer  "cleanup"
     t.integer  "location_id"
     t.integer  "rating"
-    t.integer  "day_id"
-    t.integer  "start_time"
     t.integer  "schedule_id"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
-    t.index ["day_id"], name: "index_pieces_on_day_id", using: :btree
     t.index ["location_id"], name: "index_pieces_on_location_id", using: :btree
     t.index ["schedule_id"], name: "index_pieces_on_schedule_id", using: :btree
+  end
+
+  create_table "scheduled_times", force: :cascade do |t|
+    t.integer  "piece_id"
+    t.integer  "day_id"
+    t.integer  "start_time"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["day_id"], name: "index_scheduled_times_on_day_id", using: :btree
+    t.index ["piece_id"], name: "index_scheduled_times_on_piece_id", using: :btree
   end
 
   create_table "schedules", force: :cascade do |t|
@@ -96,8 +103,9 @@ ActiveRecord::Schema.define(version: 20161024193428) do
   add_foreign_key "locations", "users"
   add_foreign_key "participants", "contacts"
   add_foreign_key "participants", "pieces"
-  add_foreign_key "pieces", "days"
   add_foreign_key "pieces", "locations"
   add_foreign_key "pieces", "schedules"
+  add_foreign_key "scheduled_times", "days"
+  add_foreign_key "scheduled_times", "pieces"
   add_foreign_key "schedules", "users"
 end

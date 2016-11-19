@@ -1,0 +1,24 @@
+manburnsday1:
+  piece: manburns
+  day: day1michael
+  start_time: 40
+
+manburnsday2:
+  piece: manburns
+  day: day2michael
+  start_time: 0
+
+stardustday1:
+  piece: stardust
+  day: day1michael
+  start_time: 0
+
+stardustday2:
+  piece: stardust
+  day: day2michael
+  start_time: 100
+
+sinnerday2:
+  piece: sinner
+  day: day2michael
+  start_time: 40
