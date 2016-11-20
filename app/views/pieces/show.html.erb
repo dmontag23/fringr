@@ -13,6 +13,7 @@
 										end %>
 	</h5>
 	<h5>Rating: <%= "#{@piece.rating}" %></h5>
+	<h5>Number of running times: <%= "#{@piece.scheduled_times.count}" %>
 	<h5> Participants: </h5>
 	<% @piece.contacts.each do |person| %>
 		<h5><%= person.name %> </h5>
