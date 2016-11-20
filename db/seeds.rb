@@ -47,10 +47,13 @@ schedule = User.first.schedules.first
   cleanup_content = Faker::Number.between(1, 20)
   location_content = Faker::Number.between(1, 50)
   rating_content = Faker::Number.between(1, 4)
+  mycount_content = Faker::Number.between(1, 3)
   first_content = Faker::Number.between(1, 50)
   second_content = Faker::Number.between(1, 50)
   third_content = Faker::Number.between(1, 50)
-  schedule.pieces.create!(title: title_content, length: length_content, setup: setup_content , 
-    cleanup: cleanup_content, location_id: location_content, rating: rating_content, 
-    scheduled_times_attributes: [{}], contact_ids: [first_content, second_content, third_content])
+  piece = schedule.pieces.build(title: title_content, length: length_content, setup: setup_content , 
+    cleanup: cleanup_content, location_id: location_content, rating: rating_content, mycount: mycount_content,
+    contact_ids: [first_content, second_content, third_content])
+  mycount_content.to_i.times {piece.scheduled_times.build}
+  piece.save!
 end
