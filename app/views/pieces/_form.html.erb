@@ -1,22 +1,26 @@
+
 <%= form_for(@piece, url: yield(:url_path)) do |f| %>
 
   <%= render 'shared/error_messages', object: f.object %>
 
   <p>
-  	<%= f.label :title %><br />
-  	<%= f.text_field :title %> <br />
+    <%= f.label :title %><br />
+    <%= f.text_field :title %> <br />
     <%= f.label :length %><br />
     <%= f.text_field :length %> <br />
     <%= f.label :setup %><br />
     <%= f.text_field :setup %> <br />
     <%= f.label :cleanup %><br />
     <%= f.text_field :cleanup %> <br />
-  	<%= f.label :location %><br />
-    <%= f.select :location_id, @locations.collect { |l| [ l.name, l.id ] }%> <br />
+    <%= f.label :location %><br />
+    <%= f.select :location_id, @locations.collect { |l| [ l.name, l.id ] } %> <br />
     <%= f.label :rating %><br />
-    <%= f.select :rating, (1..4) %> <br />
-    <%= f.select :contact_ids, @contacts.collect {|c| [c.name, c.id]}, {}, :multiple => true %>
+    <%= f.select :rating, [["G", 1], ["PG", 2], ["PG-13", 3], ["R", 4]] %> <br />
+    <%= f.label :mycount %><br />
+    <%= f.text_field :mycount %> <br />
+    <%= f.label :participants %><br />
+    <%= f.select :contact_ids, @contacts.collect {|c| [c.name, c.id]}, {}, :multiple => true %> <br />
     <%= f.submit "Save" %>
-    </p>
+  </p>
 
 <% end %>

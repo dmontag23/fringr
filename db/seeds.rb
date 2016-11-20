@@ -52,5 +52,5 @@ schedule = User.first.schedules.first
   third_content = Faker::Number.between(1, 50)
   schedule.pieces.create!(title: title_content, length: length_content, setup: setup_content , 
     cleanup: cleanup_content, location_id: location_content, rating: rating_content, 
-    contact_ids: [first_content, second_content, third_content])
+    scheduled_times_attributes: [{}], contact_ids: [first_content, second_content, third_content])
 end

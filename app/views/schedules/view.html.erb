@@ -13,7 +13,7 @@
 	<% @schedule.pieces.each do |piece| %>
 		<% piece_not_scheduled_count = piece.scheduled_times.where(day_id: nil).count %>
 		<% if  piece_not_scheduled_count > 0 %>
-			<%= "Could not schedule #{piece_not_scheduled_count} instances of #{piece.title}"	%>
+			<%= "Could not schedule #{piece_not_scheduled_count} instances of #{piece.title}"	%> <br />
 		<% end %>
 	<% end %>
 </div>

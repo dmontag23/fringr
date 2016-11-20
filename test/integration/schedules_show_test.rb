@@ -56,10 +56,12 @@ class SchedulesShowTest < ActionDispatch::IntegrationTest
   test "unsucessful addition of a piece" do 
     assert_no_difference 'Piece.count' do
       assert_no_difference 'Participant.count' do
-        post schedule_pieces_path(@schedule), params: { piece: { title: "    ", length: 30, setup: 15 , cleanup: 5, 
-                                                                     location_id: 1, rating: 3, contact_ids: ["1", "3"] } }
-        assert_template 'pieces/new'
-        assert_select 'div[class=?]', 'alert alert-danger'
+        assert_no_difference 'ScheduledTime.count' do
+          post schedule_pieces_path(@schedule), params: { piece: { title: "    ", length: 30, setup: 15 , cleanup: 5, 
+                                                                       location_id: 1, rating: 3, contact_ids: ["1", "3"] } }
+          assert_template 'pieces/new'
+          assert_select 'div[class=?]', 'alert alert-danger'
+        end
       end
     end
   end
@@ -67,12 +69,14 @@ class SchedulesShowTest < ActionDispatch::IntegrationTest
   test "sucessful creation of a piece" do 
     assert_difference 'Piece.count', +1 do
       assert_difference 'Participant.count', +2 do
-        post schedule_pieces_path(@schedule), params: { piece: { title: "Test", length: 30, setup: 15 , cleanup: 5, 
-                                                                     location_id: 1, rating: 3, contact_ids: ["1", "3"] } }
-        assert_redirected_to @schedule
-        follow_redirect!
-        assert !flash.empty?
-        assert_select 'div[class=?]', 'alert alert-success'
+        assert_difference 'ScheduledTime.count', +3 do
+          post schedule_pieces_path(@schedule), params: { piece: { title: "Test", length: 30, setup: 15 , cleanup: 5, 
+                                                                       location_id: 1, rating: 3, mycount: 3, contact_ids: ["1", "3"] } }
+          assert_redirected_to @schedule
+          follow_redirect!
+          assert !flash.empty?
+          assert_select 'div[class=?]', 'alert alert-success'
+        end
       end
     end
   end
@@ -80,10 +84,12 @@ class SchedulesShowTest < ActionDispatch::IntegrationTest
   test "unsucessful edit of a piece" do 
     assert_no_difference 'Piece.count' do
       assert_no_difference 'Participant.count' do
-        patch schedule_piece_path(@schedule, @piece), params: { piece: { title: "Test", length: -30, setup: 15 , cleanup: 5, 
-                                                                     location_id: 1, rating: 3 } }
-        assert_template 'pieces/edit'
-        assert_select 'div[class=?]', 'alert alert-danger'
+        assert_no_difference 'ScheduledTime.count' do
+          patch schedule_piece_path(@schedule, @piece), params: { piece: { title: "Test", length: -30, setup: 15 , cleanup: 5, 
+                                                                           location_id: 1, rating: 3 } }
+          assert_template 'pieces/edit'
+          assert_select 'div[class=?]', 'alert alert-danger'
+        end
       end
     end
   end
@@ -91,12 +97,14 @@ class SchedulesShowTest < ActionDispatch::IntegrationTest
   test "sucessful edit of a piece" do 
     assert_no_difference 'Piece.count' do
       assert_difference 'Participant.count', +2 do
-        patch schedule_piece_path(@schedule, @piece), params: { piece: { title: "Test", length: 30, setup: 15 , cleanup: 5, 
-                                                                     location_id: 1, rating: 3, contact_ids: ["1", "3", "2"] } }
-        assert_redirected_to @schedule
-        follow_redirect!
-        assert !flash.empty?
-        assert_select 'div[class=?]', 'alert alert-success'
+        assert_difference 'ScheduledTime.count', +1 do
+          patch schedule_piece_path(@schedule, @piece), params: { piece: { title: "Test", length: 30, setup: 15 , cleanup: 5, 
+                                                                           location_id: 1, rating: 3, mycount: 3, contact_ids: ["1", "3", "2"] } }
+          assert_redirected_to @schedule
+          follow_redirect!
+          assert !flash.empty?
+          assert_select 'div[class=?]', 'alert alert-success'
+        end
       end
     end
   end
@@ -114,13 +122,15 @@ class SchedulesShowTest < ActionDispatch::IntegrationTest
   test "sucessful deletion of a schedule" do
     assert_difference 'Piece.count', -1 do
       assert_difference 'Participant.count', -2 do
-        delete schedule_piece_path(@schedule, @piece)
-        assert_redirected_to @schedule
-        follow_redirect!
-        assert !flash.empty?
-        assert_select 'div[class=?]', 'alert alert-success'
+        assert_difference 'ScheduledTime.count', -2 do
+          delete schedule_piece_path(@schedule, @piece)
+          assert_redirected_to @schedule
+          follow_redirect!
+          assert !flash.empty?
+          assert_select 'div[class=?]', 'alert alert-success'
+        end
       end
     end
   end
-  
+
 end

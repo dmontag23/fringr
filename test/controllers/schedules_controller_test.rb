@@ -179,8 +179,7 @@ class SchedulesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "sucessful scheduling of pieces with no null locations" do
-    pieces(:manburns).location_id = 1
-    pieces(:manburns).save
+    pieces(:manburns).update_column(:location_id, 1)
     log_in_as(@user)
     post view_schedule_path(@schedule)
     assert_redirected_to view_schedule_path(@schedule)

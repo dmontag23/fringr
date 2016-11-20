@@ -6,11 +6,12 @@ class PiecesController < ApplicationController
 	before_action :find_locations_and_contacts, only: [:new, :create, :edit, :update]
 
   def new
-  	@piece = @schedule.pieces.new
+    @piece = @schedule.pieces.new
   end
 
   def create
     @piece = @schedule.pieces.build(secure_params)
+    @piece.mycount.to_i.times {@piece.scheduled_times.build}
     if @piece.save
       flash[:success] = "#{@piece.title} added"
 			redirect_to @schedule
@@ -20,10 +21,13 @@ class PiecesController < ApplicationController
   end
 
   def edit
+    @piece.mycount = @piece.scheduled_times.count
   end
 
   def update
     if @piece.update_attributes(secure_params) 
+      @piece.scheduled_times.destroy_all
+      @piece.mycount.to_i.times {@piece.scheduled_times.create}
       flash[:success] = "#{@piece.title} has been updated."
       redirect_to @schedule
     else
@@ -45,7 +49,7 @@ class PiecesController < ApplicationController
 	  # Ensures the use of strong parameters
     def secure_params
       params.require(:piece).permit(:title, :length, :setup, :cleanup, 
-      	:location_id, :rating, contact_ids: [])
+      	:location_id, :rating, :mycount, contact_ids: [])
     end
 
     # Finds the schedule associated with the piece being accessed 

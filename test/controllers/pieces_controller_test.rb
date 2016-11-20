@@ -110,12 +110,15 @@ class PiecesControllerTest < ActionDispatch::IntegrationTest
     assert_nil session[:forwarding_url]
     assert_difference 'Piece.count', +1 do
       assert_difference 'Participant.count', +3 do
-        post schedule_pieces_path(@schedule), params: { piece: { title: "Test", length: 30, setup: 15 , cleanup: 5, 
-                                                                 location_id: 1, rating: 3, contact_ids: ["2", "1", "3"] } }
-        follow_redirect!
-        assert_template 'schedules/show'
-        assert !flash.empty?
-        assert_select 'div[class=?]', 'alert alert-success'
+        assert_difference 'ScheduledTime.count', +1 do
+          post schedule_pieces_path(@schedule), params: { piece: { title: "Test", length: 30, setup: 15 , cleanup: 5, 
+                                                                 location_id: 1, rating: 3, mycount: 1, contact_ids: ["2", "1", "3"] } }
+          assert_redirected_to @schedule
+          follow_redirect!
+          assert_template 'schedules/show'
+          assert !flash.empty?
+          assert_select 'div[class=?]', 'alert alert-success'
+        end
       end
     end
   end
@@ -128,13 +131,15 @@ class PiecesControllerTest < ActionDispatch::IntegrationTest
     assert_nil session[:forwarding_url]
     assert_no_difference 'Piece.count' do
       assert_no_difference 'Participant.count' do
-        patch schedule_piece_path(@schedule, @piece), params: { piece: { title: "Test", length: 30, setup: 15 , cleanup: 5, 
-                                                                        location_id: 1, rating: 3 } }
-        assert_not_equal @piece.title, @piece.reload.title
-        follow_redirect!
-        assert_template 'schedules/show'
-        assert !flash.empty?
-        assert_select 'div[class=?]', 'alert alert-success'
+        assert_no_difference 'ScheduledTime.count' do
+          patch schedule_piece_path(@schedule, @piece), params: { piece: { title: "Test", length: 30, setup: 15 , cleanup: 5, mycount: 2, 
+                                                                          location_id: 1, rating: 3 } }
+          assert_not_equal @piece.title, @piece.reload.title
+          follow_redirect!
+          assert_template 'schedules/show'
+          assert !flash.empty?
+          assert_select 'div[class=?]', 'alert alert-success'
+        end
       end
     end
   end

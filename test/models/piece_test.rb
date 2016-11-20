@@ -4,6 +4,7 @@ class PieceTest < ActiveSupport::TestCase
 
 	def setup
 		@manburns = pieces(:manburns)
+		@manburns.mycount = @manburns.scheduled_times.count
 	end
 
   test "initial piece should be valid" do
@@ -80,8 +81,16 @@ class PieceTest < ActiveSupport::TestCase
 		end
 	end
 
-	test "piece with no day and start_time should be valid" do
-		assert pieces(:etoiles).valid?
+	test "mycount should be present" do
+		@manburns.mycount = nil
+		assert_not @manburns.valid?
+	end
+
+	test "mycount should not be 0 or negative" do
+		@manburns.mycount = 0
+		assert_not @manburns.valid?
+		@manburns.mycount = -5
+		assert_not @manburns.valid?
 	end
 
 	test "schedule_id should be present" do
@@ -100,10 +109,17 @@ class PieceTest < ActiveSupport::TestCase
   test "associated participants should be destroyed" do
     assert_difference 'Participant.count', -1 do
       assert_no_difference 'Contact.count' do
-      	@manburns.destroy
+      	assert_difference 'ScheduledTime.count', -2 do
+      		@manburns.destroy
+      	end
       end
     end
   end
+
+	test "pieces should contain at least 1 scheduled time" do 
+  	@manburns.scheduled_times.destroy_all
+  	assert_not @manburns.valid?
+	end
 
   test "pieces should contain at least 1 participant" do 
   	@manburns.participants.destroy_all
