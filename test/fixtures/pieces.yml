@@ -3,6 +3,7 @@ manburns:
   length: 30
   setup: 10
   cleanup: 10
+  location_id: 1
   rating: 3
   schedule: fringe2016michael
 
@@ -11,7 +12,7 @@ stardust:
   length: 15
   setup: 5
   cleanup: 5
-  location: porter
+  location_id: 3
   rating: 1
   schedule: fringe2016michael
 
@@ -20,7 +21,7 @@ sinner:
   length: 45
   setup: 20
   cleanup: 15
-  location: box
+  location_id: 4
   rating: 4
   schedule: fringe2016michael
 
@@ -29,7 +30,7 @@ etoiles:
   length: 20
   setup: 15
   cleanup: 10
-  location: porter
+  location_id: 1
   rating: 2
   schedule: fringe2016michael
 
@@ -38,7 +39,7 @@ arthur:
   length: 15
   setup: 5
   cleanup: 15
-  location: stairs
+  location_id: 2
   rating: 2
   schedule: fringe2016michael
 

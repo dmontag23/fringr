@@ -169,6 +169,7 @@ class SchedulesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "unsucessful scheduling of pieces with null locations" do
+    pieces(:manburns).update_attribute(:location_id, nil)
     log_in_as(@user)
     post view_schedule_path(@schedule)
     assert_template 'schedules/show'
@@ -179,7 +180,6 @@ class SchedulesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "sucessful scheduling of pieces with no null locations" do
-    pieces(:manburns).update_column(:location_id, 1)
     log_in_as(@user)
     post view_schedule_path(@schedule)
     assert_redirected_to view_schedule_path(@schedule)

@@ -20,6 +20,6 @@ stairs:
 
 <% 30.times do |n| %>
 location_<%= n %>:
-  name: <%= Faker::Address.city %>
+  name: <%= Faker::Address.state %>
   user: michael
 <% end %>

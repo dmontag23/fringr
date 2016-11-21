@@ -4,7 +4,7 @@ User.create!(name:  "Example User",
              password_confirmation: "password",
              activated: true,
              activated_at: Time.zone.now)
-99.times do |n|
+5.times do |n|
   name  = Faker::Name.name
   email = "example-#{n+1}@example.com"
   User.create!(name:  name,
@@ -16,7 +16,7 @@ User.create!(name:  "Example User",
 end
 
 user = User.first
-50.times do
+5.times do
   content = Faker::GameOfThrones.city
   user.locations.create!(name: content)
 end
@@ -29,25 +29,24 @@ user = User.first
 end
 
 user = User.first
-21.times do
+5.times do
   name_content = Faker::GameOfThrones.house
-  number_content = Faker::Number.between(1, 60)
+  number_content = Faker::Number.between(1, 12) * 5
   user.schedules.create!(name: name_content, actor_transition_time: number_content, days_attributes: [ 
-                                                  { start_time: Time.now, end_time: Time.now + 180 },
-                                                  { start_time: Time.now, end_time: Time.now + 180 },
-                                                  { start_time: Time.now, end_time: Time.now + 120 } 
+                                                  { start_time: Time.zone.parse('2016-04-08 7:00pm'), end_time: Time.zone.parse('2016-04-08 10:00pm') },
+                                                  { start_time: Time.zone.parse('2016-04-09 7:00pm'), end_time: Time.zone.parse('2016-04-09 10:00pm') }
                                                 ])
 end
 
 schedule = User.first.schedules.first
 21.times do
   title_content = Faker::Lorem.word
-  length_content = Faker::Number.between(1, 60)
-  setup_content = Faker::Number.between(1, 20)
-  cleanup_content = Faker::Number.between(1, 20)
-  location_content = Faker::Number.between(1, 50)
+  length_content = Faker::Number.between(1, 12) * 5
+  setup_content = Faker::Number.between(1, 4) * 5
+  cleanup_content = Faker::Number.between(1, 4) * 5
+  location_content = Faker::Number.between(1, 5)
   rating_content = Faker::Number.between(1, 4)
-  mycount_content = Faker::Number.between(1, 3)
+  mycount_content = Faker::Number.between(1, 2)
   first_content = Faker::Number.between(1, 50)
   second_content = Faker::Number.between(1, 50)
   third_content = Faker::Number.between(1, 50)

@@ -22,3 +22,20 @@ sinnerday2:
   piece: sinner
   day: day2michael
   start_time: 40
+
+etioles:
+  piece: etioles
+  day: nil
+  start_time: nil
+
+arthur:
+  piece: arthur
+  day: nil
+  start_time: nil
+
+<% 10.times do |n| %>
+<%= n %>_scheduled_time:
+  piece: piece_<%= n %>
+  day: nil
+  start_time: nil
+<% end %>
