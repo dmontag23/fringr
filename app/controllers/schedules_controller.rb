@@ -41,13 +41,14 @@ class SchedulesController < ApplicationController
   end
 
   def schedule
-    if @pieces.count != 0
-      @pieces.each { |piece| piece.scheduled_times.each { |time| time.update_attributes(day: nil, start_time: nil) } }
+    if @pieces_to_check.count != 0
+      @pieces_to_check.each { |piece| piece.scheduled_times.each { |time| time.update_attributes(day: nil, start_time: nil) } }
       schedule_all_pieces
       flash[:success] = "Your schedule has been sucessfully created"
       redirect_to view_schedule_path(@schedule)
     else
       flash.now[:danger] = "Please add pieces to schedule"
+      @pieces = @pieces_to_check.paginate(page: params[:page], per_page: 10)
       render 'show'
     end
   end
@@ -73,14 +74,15 @@ class SchedulesController < ApplicationController
 
     # Checks all locations of the pieces to be scheduled to make sure they are non-null
     def check_nonnull_locations
-      @pieces = @schedule.pieces
-      nil_locations = @pieces.where(location: nil)
+      @pieces_to_check = @schedule.pieces
+      nil_locations = @pieces_to_check.where(location: nil)
       if nil_locations.count > 0
         bad_locations = ""
         nil_locations.each do |piece|
           bad_locations += "#{piece.title} "
         end
         flash.now[:danger] = "The following pieces have no location: " + bad_locations
+        @pieces = @pieces_to_check.paginate(page: params[:page], per_page: 10)
         render 'show'
       end
     end
