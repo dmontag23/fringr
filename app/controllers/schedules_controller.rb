@@ -48,7 +48,6 @@ class SchedulesController < ApplicationController
       redirect_to view_schedule_path(@schedule)
     else
       flash.now[:danger] = "Please add pieces to schedule"
-      @pieces = @pieces_to_check.paginate(page: params[:page], per_page: 10)
       render 'show'
     end
   end
@@ -75,6 +74,7 @@ class SchedulesController < ApplicationController
     # Checks all locations of the pieces to be scheduled to make sure they are non-null
     def check_nonnull_locations
       @pieces_to_check = @schedule.pieces
+      @pieces = @pieces_to_check.paginate(page: params[:page], per_page: 10)
       nil_locations = @pieces_to_check.where(location: nil)
       if nil_locations.count > 0
         bad_locations = ""
@@ -82,7 +82,6 @@ class SchedulesController < ApplicationController
           bad_locations += "#{piece.title} "
         end
         flash.now[:danger] = "The following pieces have no location: " + bad_locations
-        @pieces = @pieces_to_check.paginate(page: params[:page], per_page: 10)
         render 'show'
       end
     end

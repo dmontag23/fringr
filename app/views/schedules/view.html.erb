@@ -6,7 +6,7 @@
 	<% @schedule.days.each do |day| %>
 	<%= "#{day.start_time.to_date}" %> <br />
   	<% day.scheduled_times.reorder(:start_time).each do |scheduled_time| %>
-  		<%= "#{scheduled_time.piece.title}: #{(day.start_time + scheduled_time.start_time*60).strftime("at %l:%M %p") } in #{scheduled_time.piece.location.name}" %> <br />
+  		<%= "#{scheduled_time.piece.title}: #{(day.start_time + scheduled_time.start_time*60).strftime("at %l:%M %p") } in #{scheduled_time.piece.location.nil? ? "Location not found" : scheduled_time.piece.location.name}" %> <br />
   		<% end %>
 	<% end %>
 	<h3>Pieces Not Scheduled:</h3>
