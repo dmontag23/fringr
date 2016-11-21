@@ -4,7 +4,6 @@ class SchedulesController < ApplicationController
 
 	before_action :logged_in_user
 	before_action :correct_user, except: [:new, :create]
-  before_action :find_pieces, only: [:show, :schedule]
   before_action :check_nonnull_locations, only: :schedule
 
   def new
@@ -35,6 +34,7 @@ class SchedulesController < ApplicationController
   end
 
   def show
+    @pieces = @schedule.pieces.paginate(page: params[:page], per_page: 10)
   end
 
   def view
@@ -71,13 +71,9 @@ class SchedulesController < ApplicationController
       redirect_to root_url if @schedule.nil?
     end
 
-    # Finds all of the pieces associated with the current schedule
-    def find_pieces
-      @pieces = @schedule.pieces.paginate(page: params[:page], per_page: 10)
-    end
-
     # Checks all locations of the pieces to be scheduled to make sure they are non-null
     def check_nonnull_locations
+      @pieces = @schedule.pieces
       nil_locations = @pieces.where(location: nil)
       if nil_locations.count > 0
         bad_locations = ""

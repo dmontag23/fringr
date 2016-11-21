@@ -35,7 +35,7 @@ module SchedulesHelper
 
 					# collect all possible start times that the next piece could start at in all_possible_start_times_for_piece
 					all_possible_start_times_for_piece = Array.new
-					while start_time <= (day.end_time - day.start_time).to_i
+					while start_time <= ((day.end_time - day.start_time)/60).to_i
 						all_possible_start_times_for_piece.push(start_time)
 						start_time += 5
 					end
