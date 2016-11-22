@@ -10,7 +10,12 @@ module SchedulesHelper
 	end
 
 	def schedule_all_pieces
-		@pieces_left_to_schedule =  @schedule.pieces.to_a
+		@pieces_left_to_schedule =  []
+		@schedule.pieces.each do |piece|
+			piece.scheduled_times.each do |time|
+				@pieces_left_to_schedule.push(piece)
+			end
+		end
 		@resource_monitor = Array.new(@schedule.days.count) { DayResourceMonitor.new(current_user.locations, current_user.contacts) }
 		run_pass
 	end
@@ -58,7 +63,7 @@ module SchedulesHelper
 			if piece_chosen.nil?
 				start_times.shift
 			else
-				@pieces_left_to_schedule.shift
+				@pieces_left_to_schedule.delete(piece_chosen)
 				break
 			end
 		end
@@ -130,9 +135,8 @@ module SchedulesHelper
 	end
 
 	def schedule_piece(start_time, day, day_index, extended_interval, piece_chosen)
-
     # schedule piece in database
-		piece_chosen.scheduled_times.first.update_attributes(start_time: start_time, day: day) 
+		piece_chosen.scheduled_times.where(start_time: nil, day: nil).first.update_attributes(start_time: start_time, day: day) 
 
 		#update the resource monitor to include the scheduled piece
 		current_day_resources = @resource_monitor[day_index]
