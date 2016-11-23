@@ -80,9 +80,7 @@ module SchedulesHelper
 		if pieces_to_select.empty?
 			return nil
 		else
-			#scored_pieces = score_pieces
-			#piece_chosen = scored_pieces.DO_SOMETHING
-			piece_chosen = pieces_to_select.first # DELETE THIS
+			piece_chosen = score_pieces(start_time, day, pieces_to_select) # weight the pieces and pick the piece with the highest weight
 			interval_length_of_piece[1] = start_time + piece_chosen.length
 			extended_interval = [interval_length_of_piece[0] - piece_chosen.setup, interval_length_of_piece[1] + piece_chosen.cleanup]
 			valid_piece = check_piece(day, day_index, interval_length_of_piece, extended_interval, piece_chosen)
@@ -90,13 +88,10 @@ module SchedulesHelper
 				schedule_piece(start_time, day, day_index, extended_interval, piece_chosen)
 				return piece_chosen
 			else
-				pieces_to_select.delete(piece_chosen) # THIS WILL NOT WORK SINCE THERE ARE NOT DUPLICATE PIECES REPRESENTING A PIECE TO BE SCHEDULED TWICE!
+				pieces_to_select.delete(piece_chosen)
 				return select_piece(start_time, day, day_index, pieces_to_select)
 			end
 		end
-	end
-
-	def score_pieces
 	end
 
 	# returns false if a piece cannot be scheduled in a given time slot and true if it can
@@ -135,6 +130,7 @@ module SchedulesHelper
 	end
 
 	def schedule_piece(start_time, day, day_index, extended_interval, piece_chosen)
+    
     # schedule piece in database
 		piece_chosen.scheduled_times.where(start_time: nil, day: nil).first.update_attributes(start_time: start_time, day: day) 
 
@@ -146,6 +142,64 @@ module SchedulesHelper
 		people_involved_in_piece.each do |person|
 			current_day_resources.people_schedules[person.id].push [extended_interval[0], extended_interval[1] + @schedule.actor_transition_time]
 		end
+
+	end
+
+	# given a list of pieces, weight them and return the piece with the highest score
+	def score_pieces(start_time, day, pieces_to_score)
+		final_scores = {}
+		pieces_to_score.each do |piece|
+			final_scores[piece] = score_piece(start_time, day, piece)
+		end
+		return final_scores.sort_by{|k, v| v}.reverse.first[0]
+	end
+
+	# weights and individual piece
+	def score_piece(start_time, day, piece)
+		fourth_of_day = (day.end_time - day.start_time)/240
+		
+		if start_time < fourth_of_day
+			start_index = 1
+		elsif start_time < (fourth_of_day * 2)
+			start_index = 2
+		elsif start_time < (fourth_of_day * 3)
+			start_index = 3
+		else
+			start_index = 4
+		end
+				
+		
+		invert_start_index = { 1=>4, 2=>3, 3=>2, 4=>1 }
+		return time_dependent_score(invert_start_index[start_index], piece.rating)*1.5 +  # rating score
+           time_dependent_score(invert_start_index[start_index], calc_original_score("length", piece))*1.5 + 
+           time_dependent_score(invert_start_index[start_index], calc_original_score("setup", piece)) + 
+           time_dependent_score(start_index, calc_original_score("cleanup", piece))
+	end
+
+  # gives a discrete score between 1 and 4 based off of a continuous average
+	def calc_original_score(continuous_value, piece_chosen)
+		total = 0
+		@schedule.pieces.each do |piece|
+			total += piece.send(continuous_value)
+		end
+		half_of_average = total / (@schedule.pieces.count * 2)
+		value = piece_chosen.send(continuous_value)
+		
+		if value < half_of_average
+			return 1
+		elsif value < (half_of_average * 2)
+			return 2
+		elsif value < (half_of_average * 3)
+			return 3
+		else
+			return 4
+		end
+	end
+
+	# calculates the final score based on the time of night
+	def time_dependent_score(start_index, original_score)
+		hash_for_inversion = { 1=>{ 1=>1, 2=>2, 3=>3, 4=>4}, 2=>{ 1=>1, 2=>2, 3=>4, 4=>3}, 3=>{ 1=>3, 2=>4, 3=>2, 4=>1} , 4=>{ 1=>4, 2=>3, 3=>2, 4=>1} }
+		return hash_for_inversion[start_index][original_score]
 	end
 
 end
