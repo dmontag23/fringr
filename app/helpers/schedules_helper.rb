@@ -18,6 +18,7 @@ module SchedulesHelper
 		end
 		@resource_monitor = Array.new(@schedule.days.count) { DayResourceMonitor.new(current_user.locations, current_user.contacts) }
 		run_pass
+		run_pass
 	end
 
 	def run_pass
