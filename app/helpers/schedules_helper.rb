@@ -42,7 +42,7 @@ module SchedulesHelper
 					# collect all possible start times that the next piece could start at in all_possible_start_times_for_piece
 					all_possible_start_times_for_piece = Array.new
 					while start_time <= ((day.end_time - day.start_time)/60).to_i
-						all_possible_start_times_for_piece.push(start_time)
+						all_possible_start_times_for_piece.push start_time
 						start_time += 5
 					end
 
@@ -64,7 +64,7 @@ module SchedulesHelper
 			if piece_chosen.nil?
 				start_times.shift
 			else
-				@pieces_left_to_schedule.delete(piece_chosen)
+				@pieces_left_to_schedule.delete_at(@pieces_left_to_schedule.find_index(piece_chosen))
 				break
 			end
 		end
@@ -76,7 +76,7 @@ module SchedulesHelper
 	def select_piece(start_time, day, day_index, pieces_left_to_schedule)
 		interval_length_of_piece = Array.new(2, start_time); #initialize the length of the piece
 
-		pieces_to_select = pieces_left_to_schedule.dup # ensures the original array is not changed during recursion
+		pieces_to_select = pieces_left_to_schedule.dup # ensures the original array is not changed if any recursion occurs
 		
 		if pieces_to_select.empty?
 			return nil
@@ -131,7 +131,7 @@ module SchedulesHelper
 	end
 
 	def schedule_piece(start_time, day, day_index, extended_interval, piece_chosen)
-    
+
     # schedule piece in database
 		piece_chosen.scheduled_times.where(start_time: nil, day: nil).first.update_attributes(start_time: start_time, day: day) 
 
@@ -157,7 +157,7 @@ module SchedulesHelper
 
 	# weights and individual piece
 	def score_piece(start_time, day, piece)
-		fourth_of_day = (day.end_time - day.start_time)/240
+		fourth_of_day = (day.end_time - day.start_time)/240.0
 		
 		if start_time < fourth_of_day
 			start_index = 1
@@ -171,15 +171,15 @@ module SchedulesHelper
 				
 		
 		invert_start_index = { 1=>4, 2=>3, 3=>2, 4=>1 }
-		return time_dependent_score(invert_start_index[start_index], piece.rating)*1.5 +  # rating score
-           time_dependent_score(invert_start_index[start_index], calc_original_score("length", piece))*1.5 + 
-           time_dependent_score(invert_start_index[start_index], calc_original_score("setup", piece)) + 
-           time_dependent_score(start_index, calc_original_score("cleanup", piece))
+		return time_dependent_score(invert_start_index[start_index], piece.rating)*1.5 +                           # rating score
+           time_dependent_score(invert_start_index[start_index], calc_original_score("length", piece))*1.5 +   # length score
+           time_dependent_score(start_index, calc_original_score("setup", piece)) +                            # setup score
+           time_dependent_score(invert_start_index[start_index], calc_original_score("cleanup", piece))        # cleanup score
 	end
 
   # gives a discrete score between 1 and 4 based off of a continuous average
 	def calc_original_score(continuous_value, piece_chosen)
-		total = 0
+		total = 0.0
 		@schedule.pieces.each do |piece|
 			total += piece.send(continuous_value)
 		end

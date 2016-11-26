@@ -2,15 +2,15 @@ manburns:
   title: The Man Burns in 5 Days
   length: 30
   setup: 10
-  cleanup: 10
+  cleanup: 15
   location_id: 1
   rating: 3
   schedule: fringe2016michael
 
 stardust:
   title: Stardust
-  length: 15
-  setup: 5
+  length: 10
+  setup: 30
   cleanup: 5
   location_id: 3
   rating: 1
@@ -18,9 +18,9 @@ stardust:
 
 sinner:
   title: The Sinner and the Saint
-  length: 45
+  length: 50
   setup: 20
-  cleanup: 15
+  cleanup: 10
   location_id: 4
   rating: 4
   schedule: fringe2016michael
@@ -43,7 +43,7 @@ arthur:
   rating: 2
   schedule: fringe2016michael
 
-<% 10.times do |n| %>
+<% 11.times do |n| %>
 piece_<%= n %>:
   title:  <%= "Piece #{n}" %>
   length: <%= Faker::Number.between(1, 60) %>
@@ -51,5 +51,5 @@ piece_<%= n %>:
   cleanup: <%= Faker::Number.between(1, 20) %>
   location_id: <%= Faker::Number.between(1,4) %>
   rating: <%= Faker::Number.between(1, 4) %>
-  schedule: fringe2016michael
+  schedule: schedule_1
 <% end %>

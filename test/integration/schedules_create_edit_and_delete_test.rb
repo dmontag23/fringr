@@ -20,7 +20,7 @@ class SchedulesCreateEditAndDeleteTest < ActionDispatch::IntegrationTest
     get edit_schedule_path(@schedule)
     assert_template 'schedules/edit'
     assert_select 'title', full_title("Edit Schedule")
-    assert_select 'a[class=?]', "remove_fields", count: 3
+    assert_select 'a[class=?]', "remove_fields", count: 2
     assert_select 'a[class=?]', "add_fields", count: 1
   end
 
@@ -91,7 +91,7 @@ class SchedulesCreateEditAndDeleteTest < ActionDispatch::IntegrationTest
 
   test "sucessful deletion of a schedule" do
   	assert_difference 'Schedule.count', -1 do
-  		assert_difference 'Day.count', -3 do
+  		assert_difference 'Day.count', -2 do
 	      delete schedule_path(@schedule)
 	      assert_redirected_to root_path
 	      follow_redirect!

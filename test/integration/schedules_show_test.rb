@@ -5,26 +5,27 @@ class SchedulesShowTest < ActionDispatch::IntegrationTest
   def setup
     @user = users(:michael)
     @other_user = users(:archer)
-    @schedule = @user.schedules.find_by(name: "Fringe 2016")
+    @schedule = schedules(:fringe2016michael)
+    @alt_schedule = schedules(:schedule_1)
     @piece = pieces(:manburns)
     @piece.participants.create!(contact_id: 4)
     log_in_as @user
   end
 
   test "schedule display" do
-    get schedule_path(@schedule)
+    get schedule_path(@alt_schedule)
     assert_template 'schedules/show'
-    assert_select 'title', full_title("#{@schedule.name}")
-    assert_select 'a[href=?]', new_schedule_piece_path(@schedule), count: 1
-    assert_select 'a[href=?]', view_schedule_path(@schedule),      count: 1
-    assert_select 'a[href=?]', edit_schedule_path(@schedule),      count: 1
+    assert_select 'title', full_title("#{@alt_schedule.name}")
+    assert_select 'a[href=?]', new_schedule_piece_path(@alt_schedule), count: 1
+    assert_select 'a[href=?]', view_schedule_path(@alt_schedule),      count: 1
+    assert_select 'a[href=?]', edit_schedule_path(@alt_schedule),      count: 1
     assert_select 'a[href=?]', contacts_path,                      count: 1
     assert_select 'a[href=?]', locations_path,                     count: 1
     assert_select 'div.pagination', count:1
-    @schedule.pieces.paginate(page: 1, per_page: 10).each do |piece|
+    @alt_schedule.pieces.paginate(page: 1, per_page: 10).each do |piece|
       assert_match piece.title, response.body
-      assert_select "a[href=?]", schedule_piece_path(@schedule, piece)
-      assert_select "a[href=?]", edit_schedule_piece_path(@schedule, piece)
+      assert_select "a[href=?]", schedule_piece_path(@alt_schedule, piece)
+      assert_select "a[href=?]", edit_schedule_piece_path(@alt_schedule, piece)
       assert_select 'a', text: "Delete"
     end
   end

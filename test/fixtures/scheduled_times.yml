@@ -13,18 +13,13 @@ stardustday1:
   day: day1michael
   start_time: 0
 
-stardustday2:
-  piece: stardust
-  day: day2michael
-  start_time: 100
-
 sinnerday2:
   piece: sinner
   day: day2michael
   start_time: 40
 
 etioles:
-  piece: etioles
+  piece: etoiles
   day: nil
   start_time: nil
 

@@ -31,13 +31,13 @@ class ScheduleTest < ActiveSupport::TestCase
   end
 
   test "associated days should be destroyed" do
-    assert_difference 'Day.count', -3 do
+    assert_difference 'Day.count', -2 do
       @schedule.destroy
     end
   end
 
   test "associated pieces should be destroyed" do
-    assert_difference 'Piece.count', -15 do
+    assert_difference 'Piece.count', -5 do
       @schedule.destroy
     end
   end
