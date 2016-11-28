@@ -1,19 +1,30 @@
-<%= form_for(@schedule, url: yield(:url_path)) do |f| %>
+<%= form_for(@schedule, url: yield(:url_path), html: {class: "form-horizontal"}) do |f| %>
+  
+  <div class="center"><%= render 'shared/error_messages', object: f.object %></div>
 
-  <%= render 'shared/error_messages', object: f.object %>
+  <div class="form-group">
+    <%= f.label :name, class: "control-label col-md-1 col-md-offset-4" %>
+    <div class="col-md-2"><%= f.text_field :name, class: "form-control" %></div>
+  </div>
 
-  <p>
-  	<%= f.label :name %><br />
-  	<%= f.text_field :name %> <br />
-  	<%= f.label :actor_transition_time %><br />
-  	<%= f.select :actor_transition_time, (0..12).map{ |item| item*5 } %>
-  	<%= f.label :minutes %>
-  </p>
+  <div class="form-group">
+    <%= f.label :actor_transition_time, class: "control-label col-md-2 col-md-offset-3" %>
+    <div class="col-md-2">
+      <%= f.select :actor_transition_time, (0..12).map{ |item| item*5 }, class: "form-control" %>
+      <medium>minutes</medium>
+    </div>
+  </div>
+
   <%= f.fields_for :days do |builder| %>
-  	<%= render 'day_fields', f: builder %>
+    <%= render 'day_fields', f: builder %>
   <% end %>
-  <%= link_to_add_fields "Add Day", f, :days %>
-  <p>
-    <%= f.submit "Save" %>
-  </p>
+  <div class="center"><%= link_to_add_fields "Add Day", f, :days %></div><br />
+  <div class="form-group">
+    <div class="col-md-1 col-md-offset-5">
+      <%= f.submit "Save", class: "btn btn-lg btn-primary" %>
+    </div>
+    <div class="col-md-1">
+      <%= link_to "Cancel", previous_url, class: "btn btn-lg btn-primary" %>
+    </div>
+  </div>
 <% end %>

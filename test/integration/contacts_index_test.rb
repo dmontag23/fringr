@@ -14,7 +14,7 @@ class ContactsIndexTest < ActionDispatch::IntegrationTest
     assert_select 'title', full_title("Contacts")
     assert_match @user.contacts.count.to_s, response.body
     assert_select 'div.pagination', count: 1
-    assert_select 'a[href=?]', root_path, text: "Done"
+    assert_select 'a[href=?]', root_path, text: "Back"
     items_per_page = 10
     assert_select 'input[value=?]', "Delete", count: items_per_page
     @user.contacts.paginate(page: 1, per_page: items_per_page).order('name ASC').each do |contact|
@@ -26,8 +26,7 @@ class ContactsIndexTest < ActionDispatch::IntegrationTest
   test "sucessful deletion of contacts" do
     assert_difference 'Contact.count', -1 do
       delete contact_path(@contact)
-      assert_redirected_to contacts_path
-      follow_redirect!
+      assert_template 'contacts/index'
       assert !flash.empty?
       assert_select 'div[class=?]', 'alert alert-success'
     end
@@ -44,8 +43,7 @@ class ContactsIndexTest < ActionDispatch::IntegrationTest
   test "sucessful addition of contacts" do 
     assert_difference 'Contact.count', +1 do
       post contacts_path, params: { contact: { name: "Lorem ipsem", email: "lorem@ipsem.com" } }
-      assert_redirected_to contacts_path
-      follow_redirect!
+      assert_template 'contacts/index'
       assert !flash.empty?
       assert_select 'div[class=?]', 'alert alert-success'
     end

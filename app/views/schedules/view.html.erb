@@ -1,19 +1,37 @@
 <% provide(:title, "Schedule for #{@schedule.name}") %>
 
-<h1>Schedule for <%= "#{@schedule.name}" %></h1>
-<div class="center">
-	<h3>Pieces Scheduled:</h3>
-	<% @schedule.days.each do |day| %>
-	<%= "#{day.start_time.to_date}" %> <br />
-  	<% day.scheduled_times.reorder(:start_time).each do |scheduled_time| %>
-  		<%= "#{scheduled_time.piece.title}: #{(day.start_time + scheduled_time.start_time*60).strftime("at %l:%M %p") } in #{scheduled_time.piece.location.nil? ? "Location not found" : scheduled_time.piece.location.name}" %> <br />
-  		<% end %>
-	<% end %>
-	<h3>Pieces Not Scheduled:</h3>
-	<% @schedule.pieces.each do |piece| %>
-		<% piece_not_scheduled_count = piece.scheduled_times.where(day_id: nil).count %>
-		<% if  piece_not_scheduled_count > 0 %>
-			<%= "Could not schedule #{piece_not_scheduled_count} instances of #{piece.title}"	%> <br />
+<div class="container">
+	<h1>Schedule for <%= "#{@schedule.name}" %></h1>
+	<div class="center"><h3>Pieces Scheduled:</h3></div>
+
+	<table class="view_schedule table table-striped table-hover">
+		<% @schedule.days.each do |day| %>
+		<th colspan=<%= day.scheduled_times.count %>><%= "#{day.start_time.to_date}" %></th>
+		<tr id="day-<%= day.id %>">
+	  	<% day.scheduled_times.reorder(:start_time).each do |scheduled_time| %>
+	  		<td> 
+	  			<%= "#{scheduled_time.piece.title}: #{(day.start_time + scheduled_time.start_time*60).strftime("at %l:%M %p") } in #{scheduled_time.piece.location.nil? ? "Location not found" : scheduled_time.piece.location.name}" %>
+	  		</td>
+	  	<% end %>
+	  </tr>
 		<% end %>
-	<% end %>
+	</table>
+
+
+	<div class="row">
+		<div class="col-md-4 col-md-offset-4">
+			<div class="center"><h3>Pieces Not Scheduled:</h3></div>
+			<ul class="list-unstyled">
+			<% @schedule.pieces.each do |piece| %>
+				<% piece_not_scheduled_count = piece.scheduled_times.where(day_id: nil).count %>
+				<% if  piece_not_scheduled_count > 0 %>
+					<li><%= "Could not schedule #{pluralize(piece_not_scheduled_count, "performance")} of #{piece.title}"	%></li>
+				<% end %>
+			<% end %>
+			</ul>
+		</div>
+	</div>
+
+	<div class="center"><%= link_to "Back", schedule_path(@schedule), class: "btn btn-lg btn-primary" %></div>
+	
 </div>

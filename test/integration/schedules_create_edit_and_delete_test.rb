@@ -12,16 +12,12 @@ class SchedulesCreateEditAndDeleteTest < ActionDispatch::IntegrationTest
     get new_schedule_path
     assert_template 'schedules/new'
     assert_select 'title', full_title("New Schedule")
-    assert_select 'a[class=?]', "remove_fields", count: 1
-    assert_select 'a[class=?]', "add_fields", count: 1
   end
 
   test "edit schedule display" do
     get edit_schedule_path(@schedule)
     assert_template 'schedules/edit'
     assert_select 'title', full_title("Edit Schedule")
-    assert_select 'a[class=?]', "remove_fields", count: 2
-    assert_select 'a[class=?]', "add_fields", count: 1
   end
 
   test "unsucessful addition of a schedule" do 

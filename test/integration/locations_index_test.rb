@@ -14,7 +14,7 @@ class LocationIndexTest < ActionDispatch::IntegrationTest
     assert_select 'title', full_title("Locations")
     assert_match @user.locations.count.to_s, response.body
     assert_select 'div.pagination', count: 1
-    assert_select 'a[href=?]', root_path, text: "Done"
+    assert_select 'a[href=?]', root_path, text: "Back"
     items_per_page = 10
     assert_select 'input[value=?]', "Delete", count: items_per_page
     @user.locations.paginate(page: 1, per_page: items_per_page).order('name ASC').each do |location|
@@ -25,8 +25,7 @@ class LocationIndexTest < ActionDispatch::IntegrationTest
   test "sucessful deletion of locations" do
     assert_difference 'Location.count', -1 do
       delete location_path(@location)
-      assert_redirected_to locations_path
-      follow_redirect!
+      assert_template 'locations/index'
       assert !flash.empty?
       assert_select 'div[class=?]', 'alert alert-success'
     end
@@ -43,8 +42,7 @@ class LocationIndexTest < ActionDispatch::IntegrationTest
   test "sucessful addition of locations" do 
     assert_difference 'Location.count', +1 do
       post locations_path, params: { location: { name: "Lorem ipsem" } }
-      assert_redirected_to locations_path
-      follow_redirect!
+      assert_template 'locations/index'
       assert !flash.empty?
       assert_select 'div[class=?]', 'alert alert-success'
     end

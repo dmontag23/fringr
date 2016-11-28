@@ -1,17 +1,16 @@
 class ContactsController < ApplicationController
 
 	before_action :logged_in_user
-	before_action :load_contacts, only: [:create, :index]
-	before_action :correct_user,  only: :destroy 
+	before_action :load_contacts
+	before_action :correct_user,  only: :destroy
 
   def create
   	@contact = current_user.contacts.build(secure_params)
     if @contact.save
-      flash[:success] = "#{@contact.name} added"
-			redirect_to contacts_path
-    else
-    	render 'index'
+      flash.now[:success] = "#{@contact.name} added"
+      @contact = current_user.contacts.build
     end
+    render 'index'
   end
 	
 	def index
@@ -20,8 +19,9 @@ class ContactsController < ApplicationController
 
 	def destroy
 		@contact.destroy
-    flash[:success] = "#{@contact.name} deleted"
-    redirect_to contacts_path
+    flash.now[:success] = "#{@contact.name} deleted"
+    @contact = current_user.contacts.build
+    render 'index'
 	end
 
 	private

@@ -1,20 +1,25 @@
 <% provide(:title, 'Locations') %>
-<div class="row">
-	<div class="col-md-6 col-md-offset-3 center">
-    <h3>Locations (<%= @locations.count %>)</h3>
-    <%= form_for(@location) do |f| %>
-      <%= render 'shared/error_messages', object: f.object %>
-        
-      <%= f.text_field :name, class: 'form-control' %>
-      <%= f.submit "Add Location", class: "btn btn-primary form-control" %>
-    <% end %>
-    <%= link_to "Done", root_path %>
-    <% if @locations.any? %>
-    	<ul class="locations">
-      	<%= render @locations %>
-    	</ul>
-    	<%= will_paginate @locations %>
-  	<% end %>
-	</div>
+<div class="container">
+  <h3 class="center">Locations (<%= @locations.count %>)</h3>
+  <%= form_for(@location) do |f| %>
+    <div class="center"><%= render 'shared/error_messages', object: f.object %></div>
+    <div class="form-group row">
+      <div class="col-md-3 col-md-offset-3"><%= f.text_field :name, class: "form-control", placeholder: "Name" %></div>
+      <div class="col-md-2"><%= f.submit "Add Location", class: "btn btn-primary form-control" %></div>
+      <div class="col-md-1"><%= link_to "Back", previous_url, class: "btn btn-primary form-control" %></div>
+    </div>
+  <% end %>
+  <% if @locations.any? %>
+    <div class="row">
+      <div class="col-md-6 col-md-offset-3">
+        <table class="locations table table-striped table-hover">
+          <tr>
+            <th colspan=2>Name</th>
+          </tr>
+    	    <%= render @locations %>
+        </table>
+  	    <%= will_paginate @locations %>
+      </div>
+    </div>
+	<% end %>
 </div>
-

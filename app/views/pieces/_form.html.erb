@@ -1,26 +1,51 @@
+<%= form_for(@piece, url: yield(:url_path), html: {class: "form-horizontal"}) do |f| %>
 
-<%= form_for(@piece, url: yield(:url_path)) do |f| %>
+<div class="center"><%= render 'shared/error_messages', object: f.object %></div>
 
-  <%= render 'shared/error_messages', object: f.object %>
+  <div class="form-group">
+    <%= f.label :title, class: "control-label col-md-1 col-md-offset-4" %>
+    <div class="col-md-2"><%= f.text_field :title, class: "form-control" %></div>
+  </div>
 
-  <p>
-    <%= f.label :title %><br />
-    <%= f.text_field :title %> <br />
-    <%= f.label :length %><br />
-    <%= f.text_field :length %> <br />
-    <%= f.label :setup %><br />
-    <%= f.text_field :setup %> <br />
-    <%= f.label :cleanup %><br />
-    <%= f.text_field :cleanup %> <br />
-    <%= f.label :location %><br />
-    <%= f.select :location_id, @locations.collect { |l| [ l.name, l.id ] } %> <br />
-    <%= f.label :rating %><br />
-    <%= f.select :rating, [["G", 1], ["PG", 2], ["PG-13", 3], ["R", 4]] %> <br />
-    <%= f.label :mycount %><br />
-    <%= f.text_field :mycount %> <br />
-    <%= f.label :participants %><br />
-    <%= f.select :contact_ids, @contacts.collect {|c| [c.name, c.id]}, {}, :multiple => true %> <br />
-    <%= f.submit "Save" %>
-  </p>
+  <div class="form-group">
+    <%= f.label :length, class: "control-label col-md-1 col-md-offset-1" %>
+    <div class="col-md-2"><%= f.text_field :length, class: "form-control" %></div>
+    <%= f.label :setup, class: "control-label col-md-1" %>
+    <div class="col-md-2"><%= f.text_field :setup, class: "form-control" %></div>
+    <%= f.label :cleanup, class: "control-label col-md-1" %>
+    <div class="col-md-2"><%= f.text_field :cleanup, class: "form-control" %></div>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :location, class: "control-label col-md-1 col-md-offset-1" %>
+    <div class="col-md-2">
+        <%= f.select :location_id, @locations.collect { |l| [ l.name, l.id ] }, class: "form-control" %>
+        <br />
+        <%= link_to "Add Location", locations_path %>
+    </div>
+    <%= f.label :mycount, "Times to Perform", class: "control-label col-md-2" %>
+    <div class="col-md-1"><%= f.text_field :mycount, class: "form-control" %></div>
+    <%= f.label :rating, class: "control-label col-md-1" %>
+    <div class="col-md-1">
+        <%= f.select :rating, [["G", 1], ["PG", 2], ["PG-13", 3], ["R", 4]], class: "form-control" %> 
+    </div>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :participants, class: "control-label col-md-1 col-md-offset-4" %>
+    <div class="col-md-2">
+        <%= f.select :contact_ids, @contacts.collect {|c| [c.name, c.id]}, {}, :multiple => true, class: "form-control" %> 
+        <%= link_to "Add Contact", contacts_path %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div class="col-md-1 col-md-offset-5">
+      <%= f.submit "Save", class: "btn btn-lg btn-primary" %>
+    </div>
+    <div class="col-md-1">
+      <%= link_to "Cancel", schedule_path(@schedule), class: "btn btn-lg btn-primary" %>
+    </div>
+  </div>
 
 <% end %>

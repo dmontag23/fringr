@@ -1,28 +1,33 @@
 <% provide(:title, "#{@schedule.name}") %>
 
-<h1><%= "#{@schedule.name}" %></h1>
+<div class="container">
+	
+	<h1><%= "#{@schedule.name}" %></h1>
+	
+	<div class="row">
+		<div class="col-md-2 center"><%= link_to "Add Piece", new_schedule_piece_path(@schedule), class: "btn btn-default" %></div>
+		<div class="col-md-3 center"><%= link_to "View Schedule", view_schedule_path(@schedule), class: "btn btn-default" %></div>
+		<div class="col-md-2 center"><%= link_to "Schedule Settings", edit_schedule_path(@schedule), method: :get, class: "btn btn-default" %></div>
+		<div class="col-md-3 center"><%= link_to "Contacts", contacts_path, class: "btn btn-default" %></div>
+		<div class="col-md-2 center"><%= link_to "Locations", locations_path, class: "btn btn-default" %></div>
+	</div>
 
-<div class="col-md-3 center">
-	<%= link_to "Add Piece", new_schedule_piece_path(@schedule) %>
-</div>
-<div class="col-md-2 center">
-	<%= link_to "View Schedule", view_schedule_path(@schedule) %>
-</div>
-<div class="col-md-2 center">
-	<%= link_to "Schedule Settings", edit_schedule_path(@schedule), method: :get %>
-</div>
-<div class="col-md-2 center">
-	<%= link_to "Contacts", contacts_path %>
-</div>
-<div class="col-md-3 center">
-	<%= link_to "Locations", locations_path %>
-</div>
-
-<div class="center">
-	<h3> Pieces </h3>
-	<%= will_paginate @pieces %>
-	<ol class="pieces">
-	  <%= render @pieces %>
-	</ol>
-	<%= button_to "Schedule!", view_schedule_path(@schedule) %>
+	<h3 class="center"> Pieces </h3>
+  <% if @pieces.any? %>
+    <div class="row center">
+    	<%= button_to "Schedule!", view_schedule_path(@schedule), class: "btn btn-lg btn-primary" %>
+    </div>
+    <br/>
+    <div class="row">
+      <div class="col-md-6 col-md-offset-3">
+        <table class="pieces table table-striped table-hover">
+        	<tr>
+            <th colspan=2>Name</th>
+          </tr>
+          <%= render @pieces %>
+      	</table>
+      	<div class="center"><%= will_paginate @pieces %></div>
+      </div>
+    </div>
+  <% end %>
 </div>

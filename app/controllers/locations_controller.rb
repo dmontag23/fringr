@@ -1,17 +1,16 @@
 class LocationsController < ApplicationController
 
 	before_action :logged_in_user
-	before_action :load_locations, only: [:create, :index]
+	before_action :load_locations
 	before_action :correct_user, only: :destroy 
 
   def create
   	@location = current_user.locations.build(secure_params)
     if @location.save
-      flash[:success] = "#{@location.name} added"
-			redirect_to locations_path
-    else
-    	render 'index'
+      flash.now[:success] = "#{@location.name} added"
+      @location = current_user.locations.build
     end
+    render 'index'
   end
 	
 	def index
@@ -20,8 +19,9 @@ class LocationsController < ApplicationController
 
 	def destroy
 		@location.destroy
-    flash[:success] = "#{@location.name} deleted"
-    redirect_to locations_path
+    flash.now[:success] = "#{@location.name} deleted"
+    @location = current_user.locations.build
+    render 'index'
 	end
 
 	private

@@ -55,9 +55,32 @@ module SessionsHelper
     session.delete(:forwarding_url)
   end
 
-  # Stores the URL trying to be accessed.
+  # Stores the URL trying to be accessed
   def store_location
     session[:forwarding_url] = request.original_url if request.get?
+  end
+
+    # Stores the previous url
+  def store_previous_url
+    if request.referrer.nil?
+      session[:forwarding_url] = root_path
+    elsif request.get?  && !request.original_url.split("?").last.include?("page")
+      content = request.referrer
+      # take care of posting to /schedule/:id/pieces with errors
+      if content.split("/").last == "pieces"
+        session[:forwarding_url] = content + "/new"
+      # take care of posting to /schedule/:id/pieces/:id with errors
+      elsif (content.split("/").last != "new" && content.split("/")[-2] == "pieces")
+        session[:forwarding_url] = content + "/edit"
+      else
+        session[:forwarding_url] = content
+      end
+    end
+  end
+
+  # Returns the user to the previous url or the root page
+  def previous_url
+    session[:forwarding_url] || root_path
   end
     
 end

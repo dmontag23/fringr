@@ -1,21 +1,52 @@
 <% provide(:title, "#{@piece.title}") %>
 
-<h1><%= "#{@piece.title}" %></h1>
-<div class="center">
-	<h5>Title: <%= "#{@piece.title}" %></h5>
-	<h5>Length: <%= "#{@piece.length}" %></h5>
-	<h5>Setup: <%= "#{@piece.setup}" %></h5>
-	<h5>Cleanup: <%= "#{@piece.cleanup}" %></h5>
-	<h5>Location: <%= if @piece.location.nil? 
-											"No location selected"
-										else 
-											"#{@piece.location.name}" 
-										end %>
-	</h5>
-	<h5>Rating: <%= "#{@piece.rating}" %></h5>
-	<h5>Number of running times: <%= "#{@piece.scheduled_times.count}" %>
-	<h5> Participants: </h5>
-	<% @piece.contacts.each do |person| %>
-		<h5><%= person.name %> </h5>
-		<% end %>
+<div class="container">
+	<h1><%= "#{@piece.title}" %></h1>
+	
+	<div class="row">
+		<div class="col-md-1 col-md-offset-5 right"><h4>Title:</h4></div>
+		<div class="col-md-1"><h4><%= "#{@piece.title}" %></h4></div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-1 col-md-offset-5 right"><h4>Length:</h4></div>
+		<div class="col-md-1"><h4><%= "#{@piece.length}" %></h4></div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-1 col-md-offset-5 right"><h4>Setup:</h4></div>
+		<div class="col-md-1"><h4><%= "#{@piece.setup}" %></h4></div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-1 col-md-offset-5 right"><h4>Cleanup:</h4></div>
+		<div class="col-md-1"><h4><%= "#{@piece.cleanup}" %></h4></div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-1 col-md-offset-5 right"><h4>Location:</h4></div>
+		<div class="col-md-1"><h4><%= @piece.location.nil? ? "No location selected" : "#{@piece.location.name}" %></h4></div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-1 col-md-offset-5 right"><h4>Rating:</h4></div>
+		<div class="col-md-1"><h4><%= "#{@piece.rating}" %></h4></div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-3 col-md-offset-3 right"><h4>Number of Performances:</h4></div>
+		<div class="col-md-1"><h4><%= "#{@piece.scheduled_times.count}" %></h4></div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-3 col-md-offset-3 right"><h4>Participants:</h4></div>
+		<div class="col-md-2">
+			<% @piece.contacts.each do |person| %>
+				<h4><%= "#{person.name}" %></h4>
+			<% end %>
+		</div>
+	</div>
+
+	<div class="center"><%= link_to "Back", schedule_path(@schedule), class: "btn btn-lg btn-primary" %></div>
+
 </div>

@@ -7,6 +7,8 @@ gem 'rails', '~> 5.0.0', '>= 5.0.0.1'
 gem 'bootstrap-sass', '3.3.6'
 gem 'will_paginate',  '3.1.0'
 gem 'bootstrap-will_paginate', '0.0.10'
+gem 'momentjs-rails', '>= 2.9.0'
+gem 'bootstrap3-datetimepicker-rails', '~> 4.17.43'
 # Use postgresql as the database for Active Record
 gem 'pg', '~> 0.18'
 # Use Puma as the app server

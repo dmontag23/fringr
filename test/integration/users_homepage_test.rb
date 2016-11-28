@@ -38,7 +38,7 @@ class UsersHomepageTest < ActionDispatch::IntegrationTest
     assert_select "a[href=?]", locations_path,                  count: 1
     assert_select "a[href=?]", signup_path,                     count: 0
     assert_select "a[href=?]", login_path,                      count: 0
-    assert_select 'div.pagination', count:2
+    assert_select 'div.pagination', count:1
     @user.schedules.paginate(page: 1, per_page: 10).each do |schedule|
       assert_match schedule.name, response.body
       assert_select "a[href=?]", schedule_path(schedule)
