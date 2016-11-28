@@ -5,42 +5,42 @@
 	
 	<div class="row">
 		<div class="col-md-1 col-md-offset-5 right"><h4>Title:</h4></div>
-		<div class="col-md-1"><h4><%= "#{@piece.title}" %></h4></div>
+		<div class="col-md-3"><h4><%= "#{@piece.title}" %></h4></div>
 	</div>
 
 	<div class="row">
 		<div class="col-md-1 col-md-offset-5 right"><h4>Length:</h4></div>
-		<div class="col-md-1"><h4><%= "#{@piece.length}" %></h4></div>
+		<div class="col-md-3"><h4><%= "#{@piece.length}" %></h4></div>
 	</div>
 
 	<div class="row">
 		<div class="col-md-1 col-md-offset-5 right"><h4>Setup:</h4></div>
-		<div class="col-md-1"><h4><%= "#{@piece.setup}" %></h4></div>
+		<div class="col-md-3"><h4><%= "#{@piece.setup}" %></h4></div>
 	</div>
 
 	<div class="row">
 		<div class="col-md-1 col-md-offset-5 right"><h4>Cleanup:</h4></div>
-		<div class="col-md-1"><h4><%= "#{@piece.cleanup}" %></h4></div>
+		<div class="col-md-3"><h4><%= "#{@piece.cleanup}" %></h4></div>
 	</div>
 
 	<div class="row">
 		<div class="col-md-1 col-md-offset-5 right"><h4>Location:</h4></div>
-		<div class="col-md-1"><h4><%= @piece.location.nil? ? "No location selected" : "#{@piece.location.name}" %></h4></div>
+		<div class="col-md-3"><h4><%= @piece.location.nil? ? "No location selected" : "#{@piece.location.name}" %></h4></div>
 	</div>
 
 	<div class="row">
 		<div class="col-md-1 col-md-offset-5 right"><h4>Rating:</h4></div>
-		<div class="col-md-1"><h4><%= "#{@piece.rating}" %></h4></div>
+		<div class="col-md-3"><h4><%= "#{@piece.rating}" %></h4></div>
 	</div>
 
 	<div class="row">
 		<div class="col-md-3 col-md-offset-3 right"><h4>Number of Performances:</h4></div>
-		<div class="col-md-1"><h4><%= "#{@piece.scheduled_times.count}" %></h4></div>
+		<div class="col-md-3"><h4><%= "#{@piece.scheduled_times.count}" %></h4></div>
 	</div>
 
 	<div class="row">
 		<div class="col-md-3 col-md-offset-3 right"><h4>Participants:</h4></div>
-		<div class="col-md-2">
+		<div class="col-md-3">
 			<% @piece.contacts.each do |person| %>
 				<h4><%= "#{person.name}" %></h4>
 			<% end %>
