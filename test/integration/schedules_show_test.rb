@@ -34,24 +34,28 @@ class SchedulesShowTest < ActionDispatch::IntegrationTest
     get new_schedule_piece_path(@schedule)
     assert_template 'pieces/new'
     assert_select 'title', full_title("New Piece")
+    assert_select 'a[href=?]', schedule_path(@schedule), text: "Cancel"
   end
 
   test "edit piece display" do
     get edit_schedule_piece_path(@schedule, @piece)
     assert_template 'pieces/edit'
     assert_select 'title', full_title("Edit Piece")
+    assert_select 'a[href=?]', schedule_path(@schedule), text: "Cancel"
   end
 
   test "show piece display" do
     get schedule_piece_path(@schedule, @piece)
     assert_template 'pieces/show'
     assert_select 'title', full_title("#{@piece.title}")
+    assert_select 'a[href=?]', schedule_path(@schedule), text: "Back"
   end
 
   test "view piece display" do
     get view_schedule_path(@schedule)
     assert_template 'schedules/view'
     assert_select 'title', full_title("Schedule for #{@schedule.name}")
+    assert_select 'a[href=?]', schedule_path(@schedule), text: "Back"
   end
 
   test "unsucessful addition of a piece" do 
