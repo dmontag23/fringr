@@ -2,7 +2,7 @@ class PiecesController < ApplicationController
   
 	before_action :logged_in_user
 	before_action :find_schedule
-	before_action :find_piece, only: [:edit, :update, :show, :destroy]
+	before_action :find_piece, only: [:edit, :update, :show, :manually_schedule, :destroy]
 	before_action :find_locations_and_contacts, only: [:new, :create, :edit, :update]
 
   def new
@@ -36,6 +36,9 @@ class PiecesController < ApplicationController
   end
 
   def show
+  end
+
+  def manually_schedule
   end
 
   def destroy

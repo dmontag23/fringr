@@ -20,10 +20,14 @@ Rails.application.routes.draw do
   resources :locations,           only: [:create, :index, :destroy]
   resources :contacts,            only: [:create, :index, :destroy]
   resources :schedules,           except: [:index] do
-    resources :pieces,            except: [:index]
     member do
       get 'view'
       post 'view', to: 'schedules#schedule'
+    end
+    resources :pieces,            except: [:index] do
+      member do
+        get 'manually_schedule'
+      end
     end
   end
 

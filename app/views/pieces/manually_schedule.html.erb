@@ -1,0 +1,8 @@
+<% provide(:title, "Manually Schedule #{@piece.title}") %>
+
+<div class="container">
+
+	<h1>Manually Schedule <%= "#{@piece.title}" %></h1>
+	<%= link_to "Cancel", schedule_path(@schedule), class: "btn btn-lg btn-primary" %>
+	
+</div>

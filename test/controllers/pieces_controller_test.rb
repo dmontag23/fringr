@@ -55,6 +55,14 @@ class PiecesControllerTest < ActionDispatch::IntegrationTest
     assert_select 'div[class=?]', 'alert alert-danger'
   end
 
+  test "should redirect manually schedule when not logged in" do
+    get manually_schedule_schedule_piece_path(@schedule, @piece)
+    assert_redirected_to login_path
+    follow_redirect!
+    assert !flash.empty?
+    assert_select 'div[class=?]', 'alert alert-danger'
+  end
+
   test "should redirect destroy when not logged in" do
     assert_no_difference 'Piece.count' do
       assert_no_difference 'Participant.count' do
@@ -89,6 +97,12 @@ class PiecesControllerTest < ActionDispatch::IntegrationTest
   test "should redirect show when logged in as other user" do
     log_in_as(@other_user)
     get schedule_piece_path(@schedule, @piece)
+    assert_redirected_to root_path
+  end
+
+  test "should redirect manually schedule when logged in as other user" do
+    log_in_as(@other_user)
+    get manually_schedule_schedule_piece_path(@schedule, @piece)
     assert_redirected_to root_path
   end
 

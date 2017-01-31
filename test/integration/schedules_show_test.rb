@@ -25,6 +25,7 @@ class SchedulesShowTest < ActionDispatch::IntegrationTest
     @alt_schedule.pieces.paginate(page: 1, per_page: 10).each do |piece|
       assert_match piece.title, response.body
       assert_select "a[href=?]", schedule_piece_path(@alt_schedule, piece)
+      assert_select "a[href=?]", manually_schedule_schedule_piece_path(@alt_schedule, piece)
       assert_select "a[href=?]", edit_schedule_piece_path(@alt_schedule, piece)
       assert_select 'a', text: "Delete"
     end
@@ -34,6 +35,8 @@ class SchedulesShowTest < ActionDispatch::IntegrationTest
     get new_schedule_piece_path(@schedule)
     assert_template 'pieces/new'
     assert_select 'title', full_title("New Piece")
+    assert_select 'a[href=?]', contacts_path, text: "Add Contact"
+    assert_select 'a[href=?]', locations_path, text: "Add Location"
     assert_select 'a[href=?]', schedule_path(@schedule), text: "Cancel"
   end
 
@@ -41,6 +44,8 @@ class SchedulesShowTest < ActionDispatch::IntegrationTest
     get edit_schedule_piece_path(@schedule, @piece)
     assert_template 'pieces/edit'
     assert_select 'title', full_title("Edit Piece")
+    assert_select 'a[href=?]', contacts_path, text: "Add Contact"
+    assert_select 'a[href=?]', locations_path, text: "Add Location"
     assert_select 'a[href=?]', schedule_path(@schedule), text: "Cancel"
   end
 
@@ -56,6 +61,13 @@ class SchedulesShowTest < ActionDispatch::IntegrationTest
     assert_template 'schedules/view'
     assert_select 'title', full_title("Schedule for #{@schedule.name}")
     assert_select 'a[href=?]', schedule_path(@schedule), text: "Back"
+  end
+
+  test "manually schedule piece display" do
+    get manually_schedule_schedule_piece_path(@schedule, @piece)
+    assert_template 'pieces/manually_schedule'
+    assert_select 'title', full_title("Manually Schedule #{@piece.title}")
+    assert_select 'a[href=?]', schedule_path(@schedule), text: "Cancel"
   end
 
   test "unsucessful addition of a piece" do 
@@ -124,7 +136,7 @@ class SchedulesShowTest < ActionDispatch::IntegrationTest
     assert flash.empty?
   end
 
-  test "sucessful deletion of a schedule" do
+  test "sucessful deletion of a piece" do
     assert_difference 'Piece.count', -1 do
       assert_difference 'Participant.count', -2 do
         assert_difference 'ScheduledTime.count', -2 do
