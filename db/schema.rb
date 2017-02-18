@@ -10,10 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161118233429) do
+ActiveRecord::Schema.define(version: 20170217231448) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "conflicts", force: :cascade do |t|
+    t.integer  "contact_id"
+    t.integer  "location_id"
+    t.datetime "start_time"
+    t.datetime "end_time"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.index ["contact_id"], name: "index_conflicts_on_contact_id", using: :btree
+    t.index ["location_id"], name: "index_conflicts_on_location_id", using: :btree
+  end
 
   create_table "contacts", force: :cascade do |t|
     t.string   "name"
@@ -98,6 +109,8 @@ ActiveRecord::Schema.define(version: 20161118233429) do
     t.index ["email"], name: "index_users_on_email", using: :btree
   end
 
+  add_foreign_key "conflicts", "contacts"
+  add_foreign_key "conflicts", "locations"
   add_foreign_key "contacts", "users"
   add_foreign_key "days", "schedules"
   add_foreign_key "locations", "users"

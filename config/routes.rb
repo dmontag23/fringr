@@ -24,9 +24,10 @@ Rails.application.routes.draw do
       get 'view'
       post 'view', to: 'schedules#schedule'
     end
-    resources :pieces,            except: [:index] do
+    resources :pieces, except: [:index] do
       member do
         get 'manually_schedule'
+        patch 'manually_schedule', to: 'pieces#manually_schedule_piece'
       end
     end
   end

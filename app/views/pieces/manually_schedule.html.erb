@@ -1,8 +1,9 @@
 <% provide(:title, "Manually Schedule #{@piece.title}") %>
+<% provide(:url_path, manually_schedule_schedule_piece_path(@schedule, @piece)) %>
 
 <div class="container">
 
 	<h1>Manually Schedule <%= "#{@piece.title}" %></h1>
-	<%= link_to "Cancel", schedule_path(@schedule), class: "btn btn-lg btn-primary" %>
+  <%= render 'update_piece' %>
 	
 </div>

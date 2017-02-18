@@ -41,6 +41,9 @@ class PiecesController < ApplicationController
   def manually_schedule
   end
 
+  def manually_schedule_piece
+  end
+
   def destroy
   	@piece.destroy
     flash[:success] = "#{@piece.title} deleted"

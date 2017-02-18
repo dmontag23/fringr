@@ -2,6 +2,8 @@ require 'test_helper'
 
 class SchedulesShowTest < ActionDispatch::IntegrationTest
   
+  include SessionsHelper
+
   def setup
     @user = users(:michael)
     @other_user = users(:archer)
@@ -67,7 +69,7 @@ class SchedulesShowTest < ActionDispatch::IntegrationTest
     get manually_schedule_schedule_piece_path(@schedule, @piece)
     assert_template 'pieces/manually_schedule'
     assert_select 'title', full_title("Manually Schedule #{@piece.title}")
-    assert_select 'a[href=?]', schedule_path(@schedule), text: "Cancel"
+    assert_select 'a[href=?]', previous_url, text: "Cancel"
   end
 
   test "unsucessful addition of a piece" do 
