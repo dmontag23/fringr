@@ -142,7 +142,7 @@ class PiecesControllerTest < ActionDispatch::IntegrationTest
       assert_difference 'Participant.count', +3 do
         assert_difference 'ScheduledTime.count', +1 do
           post schedule_pieces_path(@schedule), params: { piece: { title: "Test", length: 30, setup: 15 , cleanup: 5, 
-                                                                 location_id: 1, rating: 3, mycount: 1, contact_ids: ["2", "1", "3"] } }
+                                                                 location: locations(:porter), rating: 3, mycount: 1, contact_ids: [contacts(:zach).id, contacts(:elle).id, contacts(:andrew).id] } }
           assert_redirected_to @schedule
           follow_redirect!
           assert_template 'schedules/show'
@@ -162,8 +162,8 @@ class PiecesControllerTest < ActionDispatch::IntegrationTest
     assert_no_difference 'Piece.count' do
       assert_no_difference 'Participant.count' do
         assert_no_difference 'ScheduledTime.count' do
-          patch schedule_piece_path(@schedule, @piece), params: { piece: { title: "Test", length: 30, setup: 15 , cleanup: 5, mycount: 2, 
-                                                                          location_id: 1, rating: 3 } }
+          patch schedule_piece_path(@schedule, @piece), params: { piece: { title: "Test", length: 30, setup: 15 , cleanup: 5, 
+                                                                          location: locations(:porter), rating: 3, mycount: 2 } }
           assert_not_equal @piece.title, @piece.reload.title
           follow_redirect!
           assert_template 'schedules/show'

@@ -2,10 +2,6 @@ zachmanburns:
   contact: zach
   piece: manburns
 
-zachstardust:
-  contact: zach
-  piece: stardust
-
 andrewsinner:
   contact: andrew
   piece: sinner
@@ -16,4 +12,8 @@ bradleyetioles:
 
 ellearthur:
   contact: elle
+  piece: arthur
+
+bradleyarthur:
+  contact: bradley
   piece: arthur

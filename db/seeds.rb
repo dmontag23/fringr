@@ -38,6 +38,18 @@ user = User.first
                                                 ])
 end
 
+
+start_time_content = rand(5.weeks).seconds.ago
+end_time_content = rand(2.days).seconds.from_now
+
+User.first.contacts.each do |contact|
+  contact.conflicts.create!(start_time: start_time_content, end_time: end_time_content)
+end
+
+User.first.locations.each do |location|
+  location.conflicts.create!(start_time: start_time_content, end_time: end_time_content)
+end
+
 schedule = User.first.schedules.first
 21.times do
   title_content = Faker::Lorem.word

@@ -3,7 +3,7 @@ require 'test_helper'
 class ContactTest < ActiveSupport::TestCase
   
   def setup
-    @contact = users(:michael).contacts.build(name: "Zach Smith", email: "zs@example.com")
+    @contact = contacts(:zach)
   end
 
   test "initial contact with name and email should be valid" do
@@ -56,7 +56,6 @@ class ContactTest < ActiveSupport::TestCase
   test "email addresses should be unique" do
     duplicate_contact = @contact.dup
     duplicate_contact.email = @contact.email.upcase
-    @contact.save
     assert_not duplicate_contact.valid?
   end
 
@@ -68,18 +67,20 @@ class ContactTest < ActiveSupport::TestCase
   end
 
   test "associated participants should be destroyed" do
-    @contact.save
-    @contact.participants.create!(piece: pieces(:manburns))
     assert_difference 'Participant.count', -1 do
       @contact.destroy
     end
   end
 
   test "associated pieces should not contain the contact" do
-    @contact.save
-    manburns = pieces(:manburns)
-    @contact.participants.create!(piece: manburns)
-    assert_difference 'manburns.contacts.count', -1 do
+    piece = pieces(:manburns)
+    assert_difference 'piece.contacts.count', -1 do
+      @contact.destroy
+    end
+  end
+
+  test "associated conflicts should be destroyed" do
+    assert_difference 'Conflict.count', -2 do
       @contact.destroy
     end
   end

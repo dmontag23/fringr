@@ -1,20 +1,16 @@
 porter:
-  id: 1
   name: "Porter"
   user: michael
 
 box:
-  id: 2
   name: "Black Box"
   user: michael
 
 hub:
-  id: 3
   name: "Hub"
   user: michael
 
 stairs:
-  id: 4
   name: "Stairs by Porter"
   user: michael
 

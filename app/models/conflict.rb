@@ -4,10 +4,10 @@ class Conflict < ApplicationRecord
   belongs_to :location, optional: true
 
   # Validations
+  validate :contact_xor_location
 	validates :start_time, presence: true
 	validates :end_time, presence: true
 	validate :end_time_is_greater_than_start_time
-	validate :contact_xor_location
 
   private
 
@@ -17,8 +17,9 @@ class Conflict < ApplicationRecord
   		end
   	end
 
+  	# ensures either a contact or a location id is present in the record
   	def contact_xor_location
-      errors.add(:base, "Specify a charge or a payment, not both") unless contact.blank? || location.blank?
+      errors.add(:base, :contact_or_location_blank, message: "either contact or location must be specified, not both") unless contact.blank? ^ location.blank?
     end
 
 end

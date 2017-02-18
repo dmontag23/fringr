@@ -13,14 +13,12 @@ class SchedulesHelperTest < ActionView::TestCase
   end
 
   def setup_check_piece
-    @piece.participants.create!(contact_id: 2)
-    @piece.participants.create!(contact_id: 4)
     @day_index_check_piece = 0
     @interval_length_of_piece_check_piece = [40, 55]
     @extended_interval_check_piece = [35, 70]
     @resource_monitor[0].locations_schedules[@piece.location_id] = [[0,35], [70,110]]
-    @resource_monitor[0].people_schedules[2] = [[10,35], [85,110]]
-    @resource_monitor[0].people_schedules[4] = [[10,35], [85,110]]
+    @resource_monitor[0].people_schedules[@piece.participants.first.contact_id] = [[10,35], [85,110]]
+    @resource_monitor[0].people_schedules[@piece.participants.second.contact_id] = [[10,35], [85,110]]
   end
 
   # for use in schedule all test pieces
@@ -114,24 +112,22 @@ class SchedulesHelperTest < ActionView::TestCase
 
   test "check piece should reject pieces that have a person conflict" do
     setup_check_piece
-    @resource_monitor[0].people_schedules[2][1] = [80, 110]
+    @resource_monitor[0].people_schedules[@piece.participants.first.contact_id][1] = [80, 110]
     assert_not check_piece(@day, @day_index_check_piece, @interval_length_of_piece_check_piece, @extended_interval_check_piece, @piece)
-    @resource_monitor[0].people_schedules[4][0] = [10, 40]
+    @resource_monitor[0].people_schedules[@piece.participants.second.contact_id][0] = [10, 40]
     assert_not check_piece(@day, @day_index_check_piece, @interval_length_of_piece_check_piece, @extended_interval_check_piece, @piece)
   end
 
   test "schedule piece" do
-    @piece.participants.create!(contact_id: 2)
-    @piece.participants.create!(contact_id: 4)
     current_day_resource = @resource_monitor[0]
     assert_difference 'current_day_resource.scheduled_pieces.length', +1 do
       schedule_piece(40, @day, 0, [35, 70], @piece)
       assert @day, @piece.scheduled_times.first.day
       assert 40, @piece.scheduled_times.first.start_time
       assert current_day_resource.scheduled_pieces.include? @piece
-      assert_equal [[35, 70]], current_day_resource.locations_schedules[2]
-      assert_equal [[35, 85]], current_day_resource.people_schedules[2]
-      assert_equal [[35, 85]], current_day_resource.people_schedules[4]
+      assert_equal [[35, 70]], current_day_resource.locations_schedules[@piece.location_id]
+      assert_equal [[35, 85]], current_day_resource.people_schedules[@piece.participants.first.contact_id]
+      assert_equal [[35, 85]], current_day_resource.people_schedules[@piece.participants.second.contact_id]
     end
   end
 

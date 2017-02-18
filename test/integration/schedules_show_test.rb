@@ -10,7 +10,6 @@ class SchedulesShowTest < ActionDispatch::IntegrationTest
     @schedule = schedules(:fringe2016michael)
     @alt_schedule = schedules(:schedule_1)
     @piece = pieces(:manburns)
-    @piece.participants.create!(contact_id: 4)
     log_in_as @user
   end
 
@@ -77,7 +76,7 @@ class SchedulesShowTest < ActionDispatch::IntegrationTest
       assert_no_difference 'Participant.count' do
         assert_no_difference 'ScheduledTime.count' do
           post schedule_pieces_path(@schedule), params: { piece: { title: "    ", length: 30, setup: 15 , cleanup: 5, 
-                                                                       location_id: 1, rating: 3, contact_ids: ["1", "3"] } }
+                                                                       location: locations(:porter), rating: 3, contact_ids: [contacts(:zach).id, contacts(:andrew).id] } }
           assert_template 'pieces/new'
           assert_select 'div[class=?]', 'alert alert-danger'
         end
@@ -90,7 +89,7 @@ class SchedulesShowTest < ActionDispatch::IntegrationTest
       assert_difference 'Participant.count', +2 do
         assert_difference 'ScheduledTime.count', +3 do
           post schedule_pieces_path(@schedule), params: { piece: { title: "Test", length: 30, setup: 15 , cleanup: 5, 
-                                                                       location_id: 1, rating: 3, mycount: 3, contact_ids: ["1", "3"] } }
+                                                                       location: locations(:porter), rating: 3, mycount: 3, contact_ids: [contacts(:zach).id, contacts(:andrew).id] } }
           assert_redirected_to @schedule
           follow_redirect!
           assert !flash.empty?
@@ -105,7 +104,7 @@ class SchedulesShowTest < ActionDispatch::IntegrationTest
       assert_no_difference 'Participant.count' do
         assert_no_difference 'ScheduledTime.count' do
           patch schedule_piece_path(@schedule, @piece), params: { piece: { title: "Test", length: -30, setup: 15 , cleanup: 5, 
-                                                                           location_id: 1, rating: 3 } }
+                                                                           location: locations(:porter), rating: 3 } }
           assert_template 'pieces/edit'
           assert_select 'div[class=?]', 'alert alert-danger'
         end
@@ -118,7 +117,7 @@ class SchedulesShowTest < ActionDispatch::IntegrationTest
       assert_difference 'Participant.count', +2 do
         assert_difference 'ScheduledTime.count', +1 do
           patch schedule_piece_path(@schedule, @piece), params: { piece: { title: "Test", length: 30, setup: 15 , cleanup: 5, 
-                                                                           location_id: 1, rating: 3, mycount: 3, contact_ids: ["1", "3", "2"] } }
+                                                                           location: locations(:porter), rating: 3, mycount: 3, contact_ids: [contacts(:zach).id, contacts(:andrew).id, contacts(:elle).id] } }
           assert_redirected_to @schedule
           follow_redirect!
           assert !flash.empty?
@@ -140,7 +139,7 @@ class SchedulesShowTest < ActionDispatch::IntegrationTest
 
   test "sucessful deletion of a piece" do
     assert_difference 'Piece.count', -1 do
-      assert_difference 'Participant.count', -2 do
+      assert_difference 'Participant.count', -1 do
         assert_difference 'ScheduledTime.count', -2 do
           delete schedule_piece_path(@schedule, @piece)
           assert_redirected_to @schedule
