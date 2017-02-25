@@ -18,6 +18,7 @@ ActiveRecord::Schema.define(version: 20170217231448) do
   create_table "conflicts", force: :cascade do |t|
     t.integer  "contact_id"
     t.integer  "location_id"
+    t.string   "description"
     t.datetime "start_time"
     t.datetime "end_time"
     t.datetime "created_at",  null: false

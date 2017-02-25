@@ -12,7 +12,7 @@ module SchedulesHelper
 	def schedule_all_pieces
 		@pieces_left_to_schedule =  []
 		@schedule.pieces.each do |piece|
-			piece.scheduled_times.each do |time|
+			piece.scheduled_times.each do 
 				@pieces_left_to_schedule.push(piece)
 			end
 		end

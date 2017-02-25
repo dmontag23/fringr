@@ -1,3 +1,4 @@
+# Create users
 User.create!(name:  "Example User",
              email: "example@example.com",
              password:              "password",
@@ -15,12 +16,14 @@ User.create!(name:  "Example User",
               activated_at: Time.zone.now)
 end
 
+# Create locations
 user = User.first
 5.times do
   content = Faker::GameOfThrones.city
   user.locations.create!(name: content)
 end
 
+# Create contacts
 user = User.first
 50.times do
   name_content = Faker::GameOfThrones.character
@@ -28,6 +31,7 @@ user = User.first
   user.contacts.create!(name: name_content, email: email_content)
 end
 
+# Create schedules
 user = User.first
 5.times do
   name_content = Faker::GameOfThrones.house
@@ -38,18 +42,21 @@ user = User.first
                                                 ])
 end
 
-
 start_time_content = rand(5.weeks).seconds.ago
 end_time_content = rand(2.days).seconds.from_now
 
+# Create conflicts for contacts
 User.first.contacts.each do |contact|
-  contact.conflicts.create!(start_time: start_time_content, end_time: end_time_content)
+  description_content = Faker::Lorem.word
+  contact.conflicts.create!(description: description_content, start_time: start_time_content, end_time: end_time_content)
 end
 
+# Create conflicts for locations
 User.first.locations.each do |location|
   location.conflicts.create!(start_time: start_time_content, end_time: end_time_content)
 end
 
+# Create pieces for a schedule
 schedule = User.first.schedules.first
 21.times do
   title_content = Faker::Lorem.word
