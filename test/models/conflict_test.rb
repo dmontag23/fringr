@@ -20,6 +20,11 @@ class ConflictTest < ActiveSupport::TestCase
     assert_not @conflict.valid?
   end
 
+  test "description should be present" do
+    @conflict.description = nil
+    assert_not @conflict.valid?
+  end
+
   test "start_time should be present" do
     @conflict.start_time = nil
     assert_not @conflict.valid?

@@ -25,18 +25,14 @@ class ScheduledTimeTest < ActiveSupport::TestCase
 		assert @scheduledtime.valid?
 	end
 
-	test "start time should be a number" do
-		@scheduledtime.start_time = "Hello there"
-		assert_not @scheduledtime.valid?
-	end
+  # TODO: Add validations for datetimes
+	# test "start time should be a datetime" do
+	# 	@scheduledtime.start_time = "Hello there"
+	# 	assert_not @scheduledtime.valid?
+	# end
 
-	test "start time should not be negative" do
-		@scheduledtime.start_time = -5
-		assert_not @scheduledtime.valid?
-	end
-
-	test "start time accepts valid number" do
-		@scheduledtime.start_time = 0
+	test "start time accepts valid datetime" do
+		@scheduledtime.start_time = Time.zone.now
 		assert @scheduledtime.valid?
 	end
 

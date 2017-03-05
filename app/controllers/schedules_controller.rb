@@ -12,7 +12,6 @@ class SchedulesController < ApplicationController
   end
 
   def create
-    secure_params[:days_attributes]
     @schedule = current_user.schedules.build(secure_params)
     if @schedule.save
       flash[:success] = "#{@schedule.name} added"

@@ -4,7 +4,7 @@ class CreateScheduledTimes < ActiveRecord::Migration[5.0]
 
       t.references :piece,    foreign_key: true
       t.references :day,      foreign_key: true
-      t.integer :start_time
+      t.datetime :start_time
 
       t.timestamps
     end

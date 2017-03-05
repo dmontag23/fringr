@@ -25,6 +25,7 @@ ActiveRecord::Schema.define(version: 20170217231448) do
     t.datetime "updated_at",  null: false
     t.index ["contact_id"], name: "index_conflicts_on_contact_id", using: :btree
     t.index ["location_id"], name: "index_conflicts_on_location_id", using: :btree
+    t.index ["start_time"], name: "index_conflicts_on_start_time", using: :btree
   end
 
   create_table "contacts", force: :cascade do |t|
@@ -79,7 +80,7 @@ ActiveRecord::Schema.define(version: 20170217231448) do
   create_table "scheduled_times", force: :cascade do |t|
     t.integer  "piece_id"
     t.integer  "day_id"
-    t.integer  "start_time"
+    t.datetime "start_time"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["day_id"], name: "index_scheduled_times_on_day_id", using: :btree

@@ -42,18 +42,22 @@ user = User.first
                                                 ])
 end
 
-start_time_content = rand(5.weeks).seconds.ago
-end_time_content = rand(2.days).seconds.from_now
+def populate_conflict_data
+  @description_content = Faker::Lorem.word
+  @start_time_content = rand(5.weeks).seconds.ago
+  @end_time_content = rand(2.days).seconds.from_now
+end
 
 # Create conflicts for contacts
 User.first.contacts.each do |contact|
-  description_content = Faker::Lorem.word
-  contact.conflicts.create!(description: description_content, start_time: start_time_content, end_time: end_time_content)
+  populate_conflict_data
+  contact.conflicts.create!(description: @description_content, start_time: @start_time_content, end_time: @end_time_content)
 end
 
 # Create conflicts for locations
 User.first.locations.each do |location|
-  location.conflicts.create!(start_time: start_time_content, end_time: end_time_content)
+  populate_conflict_data
+  location.conflicts.create!(description: @description_content, start_time: @start_time_content, end_time: @end_time_content)
 end
 
 # Create pieces for a schedule

@@ -10,7 +10,7 @@
 		<tr id="day-<%= day.id %>">
 	  	<% day.scheduled_times.reorder(:start_time).each do |scheduled_time| %>
 	  		<td> 
-	  			<%= "#{scheduled_time.piece.title}: #{(day.start_time + scheduled_time.start_time*60).strftime("at %l:%M %p") } in #{scheduled_time.piece.location.nil? ? "Location not found" : scheduled_time.piece.location.name}" %>
+	  			<%= "#{scheduled_time.piece.title}: #{scheduled_time.start_time.strftime("at %l:%M %p") } in #{scheduled_time.piece.location.nil? ? "Location not found" : scheduled_time.piece.location.name}" %>
 	  		</td>
 	  	<% end %>
 	  </tr>

@@ -2,9 +2,10 @@ class Piece < ApplicationRecord
   
 	belongs_to :schedule
 	belongs_to :location, optional: true
-	has_many :scheduled_times, dependent: :destroy
+	has_many :scheduled_times, inverse_of: :piece, dependent: :destroy
 	has_many :participants, inverse_of: :piece, dependent: :destroy
 	has_many :contacts, through: :participants
+	accepts_nested_attributes_for :scheduled_times
 	default_scope -> { order(created_at: :desc) }
 	attr_accessor :mycount
 

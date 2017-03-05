@@ -49,7 +49,12 @@ module SchedulesHelper
 					piece_chosen = search_day(all_possible_start_times_for_piece, day, i)
 
 					# if no piece can be fit into a day, mark the day so it is not considered again -- otherwise add a finishing time to the current day
-					piece_chosen.nil? ? days_can_still_be_considered[i] = false : finishing_times_of_pieces[i] = finishing_times_for_day.push(piece_chosen.scheduled_times.where(day: day).first.start_time + piece_chosen.length)
+					if piece_chosen.nil?
+						days_can_still_be_considered[i] = false
+					else
+						start_time_in_minutes_since_start_of_day = (piece_chosen.scheduled_times.where(day: day).first.start_time - day.start_time) / 60
+						finishing_times_of_pieces[i] = finishing_times_for_day.push(start_time_in_minutes_since_start_of_day + piece_chosen.length)
+					end
 				end
 			end
 		end
@@ -133,7 +138,7 @@ module SchedulesHelper
 	def schedule_piece(start_time, day, day_index, extended_interval, piece_chosen)
 
     # schedule piece in database
-		piece_chosen.scheduled_times.where(start_time: nil, day: nil).first.update_attributes(start_time: start_time, day: day) 
+		piece_chosen.scheduled_times.where(start_time: nil, day: nil).first.update_attributes(start_time: day.start_time + (start_time * 60), day: day) 
 
 		#update the resource monitor to include the scheduled piece
 		current_day_resources = @resource_monitor[day_index]

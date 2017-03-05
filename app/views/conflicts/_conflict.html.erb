@@ -1,0 +1,8 @@
+<tr id="conflict-<%= conflict.id %>">
+  <td><%= conflict.description %></td>
+  <td><%= conflict.start_time.to_formatted_s(:short) %></td>
+  <td><%= conflict.end_time.to_formatted_s(:short) %></td>
+  <td class="right">
+  	<%= link_to "Delete", eval("#{@parent.class.name.downcase}_conflict_path(@parent, conflict)"), method: :delete, class: "btn btn-danger", data: { confirm: "Are you sure?" } %>
+  </td>
+</tr>

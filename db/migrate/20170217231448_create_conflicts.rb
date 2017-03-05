@@ -9,5 +9,7 @@ class CreateConflicts < ActiveRecord::Migration[5.0]
 
       t.timestamps
     end
+
+    add_index :conflicts, [:start_time]
   end
 end

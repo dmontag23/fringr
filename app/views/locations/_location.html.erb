@@ -1,5 +1,8 @@
 <tr id="location-<%= location.id %>">
   <td><%= location.name %></td>
-  <td class="right"><%= button_to "Delete", location_path(location), method: :delete, class: "btn btn-danger", 
-                          data: { confirm: "Are you sure? All corresponding locations will be removed from your schedules." } %></td>
+  <td class="right">
+  	<%= link_to "View Conflicts", location_conflicts_path(location), method: :get, class: "btn btn-primary" %>
+  	<%= link_to "Delete", location_path(location), method: :delete, class: "btn btn-danger", 
+                                                     data: { confirm: "Are you sure? All corresponding locations will be removed from your schedules and any conflicts will be deleted." } %>
+  </td>
 </tr>

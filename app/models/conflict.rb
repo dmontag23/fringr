@@ -5,6 +5,7 @@ class Conflict < ApplicationRecord
 
   # Validations
   validate :contact_xor_location
+  validates :description, presence: true
 	validates :start_time, presence: true
 	validates :end_time, presence: true
 	validate :end_time_is_greater_than_start_time

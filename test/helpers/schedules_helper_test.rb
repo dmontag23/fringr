@@ -34,17 +34,17 @@ class SchedulesHelperTest < ActionView::TestCase
     piece_4 = pieces(:etoiles).reload
     piece_5 = pieces(:arthur).reload
     assert_equal @day, piece_1.scheduled_times.second.day
-    assert_equal 0, piece_1.scheduled_times.second.start_time
+    assert_equal @day.start_time, piece_1.scheduled_times.second.start_time
     assert_equal @schedule.days.second, piece_1.scheduled_times.first.day
-    assert_equal 80, piece_1.scheduled_times.first.start_time
+    assert_equal @schedule.days.second.start_time + (80 * 60), piece_1.scheduled_times.first.start_time
     assert_equal @day, piece_2.scheduled_times.first.day
-    assert_equal 0, piece_2.scheduled_times.first.start_time
+    assert_equal @day.start_time, piece_2.scheduled_times.first.start_time
     assert_equal @schedule.days.second, piece_3.scheduled_times.first.day
-    assert_equal 25, piece_3.scheduled_times.first.start_time
+    assert_equal @schedule.days.second.start_time + (25 * 60), piece_3.scheduled_times.first.start_time
     assert_equal @schedule.days.second, piece_4.scheduled_times.first.day
-    assert_equal 0, piece_4.scheduled_times.first.start_time
+    assert_equal @schedule.days.second.start_time, piece_4.scheduled_times.first.start_time
     assert_equal @day, piece_5.scheduled_times.first.day
-    assert_equal 15, piece_5.scheduled_times.first.start_time
+    assert_equal @day.start_time + (15 * 60), piece_5.scheduled_times.first.start_time
   end
 
   test "run pass on 3 pieces to verify correct scheduling" do
@@ -54,11 +54,11 @@ class SchedulesHelperTest < ActionView::TestCase
     piece_2 = pieces(:manburns).reload
     piece_3 = pieces(:sinner).reload
     assert_equal @day, piece_1.scheduled_times.first.day
-    assert_equal 0, piece_1.scheduled_times.first.start_time
+    assert_equal @day.start_time, piece_1.scheduled_times.first.start_time
     assert_equal @schedule.days.second, piece_2.scheduled_times.first.day
-    assert_equal 0, piece_2.scheduled_times.first.start_time
+    assert_equal @schedule.days.second.start_time, piece_2.scheduled_times.first.start_time
     assert_equal @schedule.days.second, piece_3.scheduled_times.first.day
-    assert_equal 35, piece_3.scheduled_times.first.start_time
+    assert_equal @schedule.days.second.start_time + (35 * 60), piece_3.scheduled_times.first.start_time
   end
 
   test "search day should return a valid piece" do

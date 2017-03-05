@@ -1,36 +1,36 @@
 manburnsday1:
   piece: manburns
   day: day1michael
-  start_time: 40
+  start_time: <%= Time.zone.parse('2016-04-08 7:40pm') %>
 
 manburnsday2:
   piece: manburns
   day: day2michael
-  start_time: 0
+  start_time: <%= Time.zone.parse('2016-04-09 7:00pm') %>
 
 stardustday1:
   piece: stardust
   day: day1michael
-  start_time: 0
+  start_time: <%= Time.zone.parse('2016-04-08 7:00pm') %>
 
 sinnerday2:
   piece: sinner
   day: day2michael
-  start_time: 40
+  start_time: <%= Time.zone.parse('2016-04-09 7:40pm') %>
 
 etioles:
   piece: etoiles
-  day: nil
-  start_time: nil
+  day: null
+  start_time: null
 
 arthur:
   piece: arthur
-  day: nil
-  start_time: nil
+  day: null
+  start_time: null
 
 <% 10.times do |n| %>
 <%= n %>_scheduled_time:
   piece: piece_<%= n %>
-  day: nil
-  start_time: nil
+  day: null
+  start_time: null
 <% end %>

@@ -13,12 +13,16 @@ Rails.application.routes.draw do
   delete '/logout',     to: 'sessions#destroy'
 
 	root 'static_pages#home'
+
+  concern :bookings do
+    resources :conflicts, only: [:create, :index, :destroy]
+  end
   
   resources :users,               only: [:new, :create, :destroy]
   resources :account_activations, only: [:edit]
   resources :password_resets,     only: [:new, :create, :edit, :update]
-  resources :locations,           only: [:create, :index, :destroy]
-  resources :contacts,            only: [:create, :index, :destroy]
+  resources :contacts,            only: [:create, :index, :destroy],       concerns: :bookings
+  resources :locations,           only: [:create, :index, :destroy],       concerns: :bookings         
   resources :schedules,           except: [:index] do
     member do
       get 'view'
