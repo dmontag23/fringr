@@ -5,7 +5,7 @@ class ContactsControllerTest < ActionDispatch::IntegrationTest
   def setup
     @user = users(:michael)
     @other_user = users(:archer)
-    @contact = @user.contacts.find_by(email: "zsmith@example.com")
+    @contact = contacts(:zach)
   end
 
   test "should redirect create when not logged in" do

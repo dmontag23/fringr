@@ -29,11 +29,7 @@ class ConflictsController < ApplicationController
 
     # Finds the parent of the conflict
     def find_parent_class
-      if params[:contact_id].present?
-        @parent = current_user.contacts.find_by(id: params[:contact_id])
-      else
-        @parent = current_user.locations.find_by(id: params[:location_id])
-      end
+      params[:contact_id].present? ? @parent = current_user.contacts.find_by(id: params[:contact_id]) : @parent = current_user.locations.find_by(id: params[:location_id])
       redirect_to root_url if @parent.nil?
     end
 

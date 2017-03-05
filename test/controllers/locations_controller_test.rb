@@ -5,7 +5,7 @@ class LocationsControllerTest < ActionDispatch::IntegrationTest
   def setup
     @user = users(:michael)
     @other_user = users(:archer)
-    @location = @user.locations.find_by(name: "Porter")
+    @location = locations(:porter)
   end
 
   test "should redirect create when not logged in" do

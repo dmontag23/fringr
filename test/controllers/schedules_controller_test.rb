@@ -5,7 +5,7 @@ class SchedulesControllerTest < ActionDispatch::IntegrationTest
   def setup
     @user = users(:michael)
     @other_user = users(:archer)
-    @schedule = @user.schedules.find_by(name: "Fringe 2016")
+    @schedule = schedules(:fringe2016michael)
   end
 
   test "should redirect new when not logged in" do
