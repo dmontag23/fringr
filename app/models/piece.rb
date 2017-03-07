@@ -15,7 +15,6 @@ class Piece < ApplicationRecord
 	validates :setup, presence: true, numericality: {greater_than_or_equal_to: 1}
 	validates :cleanup, presence: true, numericality: {greater_than_or_equal_to: 1}
 	validates :rating, presence: true
-	validates :mycount, presence: true, numericality: {greater_than_or_equal_to: 1}
   validates_inclusion_of :rating, :in => (1..4)
   validates_presence_of :scheduled_times
   validates_presence_of :participants

@@ -39,4 +39,9 @@ class DayTest < ActiveSupport::TestCase
     assert_not @day1.valid?
   end
 
+  test "end time should not be 24 hours greater than start time" do
+    @day1.end_time = Time.zone.parse('2016-04-09 7:00pm')
+    assert_not @day1.valid?
+  end
+
 end

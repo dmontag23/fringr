@@ -81,18 +81,6 @@ class PieceTest < ActiveSupport::TestCase
 		end
 	end
 
-	test "mycount should be present" do
-		@manburns.mycount = nil
-		assert_not @manburns.valid?
-	end
-
-	test "mycount should not be 0 or negative" do
-		@manburns.mycount = 0
-		assert_not @manburns.valid?
-		@manburns.mycount = -5
-		assert_not @manburns.valid?
-	end
-
 	test "schedule_id should be present" do
 		@manburns.schedule_id = nil
 		assert_not @manburns.valid?

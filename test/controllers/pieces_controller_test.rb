@@ -174,4 +174,28 @@ class PiecesControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "successful manual schedule of piece with friendly forwarding" do
+    get manually_schedule_schedule_piece_path(@schedule, @piece)
+    assert_redirected_to login_path
+    log_in_as(@user)
+    assert_redirected_to manually_schedule_schedule_piece_path(@schedule, @piece)
+    assert_nil session[:forwarding_url]
+    assert_no_difference 'Piece.count' do
+      assert_no_difference 'Participant.count' do
+        assert_no_difference 'ScheduledTime.count' do
+          patch manually_schedule_schedule_piece_path(@schedule, @piece), params: { piece: { title: "Test", length: 30, setup: 15 , cleanup: 5, 
+                                                                          location: locations(:porter), rating: 3, mycount: 2, 
+                                                                          scheduled_times_attributes: [id: scheduled_times(:manburnsday1).id, 
+                                                                                                       start_time: Time.zone.parse('2016-04-08 7:10pm')] } }
+          assert_equal @piece.scheduled_times.first.start_time, Time.zone.parse('2016-04-08 7:10pm')
+          assert_redirected_to @schedule
+          follow_redirect!
+          assert_template 'schedules/show'
+          assert !flash.empty?
+          assert_select 'div[class=?]', 'alert alert-success'
+        end
+      end
+    end
+  end
+
 end

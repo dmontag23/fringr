@@ -31,9 +31,18 @@ class ScheduledTimeTest < ActiveSupport::TestCase
 	# 	assert_not @scheduledtime.valid?
 	# end
 
-	test "start time accepts valid datetime" do
-		@scheduledtime.start_time = Time.zone.now
-		assert @scheduledtime.valid?
+	test "start time rejects datetime outside of scheduled range" do
+		@scheduledtime.start_time = Time.zone.parse('2016-04-08 6:59pm')
+		assert_not @scheduledtime.valid?(:manually_schedule_piece)
+		@scheduledtime.start_time = Time.zone.parse('2016-04-08 8:01pm')
+		assert_not @scheduledtime.valid?(:manually_schedule_piece)
+	end
+
+	test "start time accepts valid datetime within scheduled range" do
+		@scheduledtime.start_time = Time.zone.parse('2016-04-08 7:00pm')
+		assert @scheduledtime.valid?(:manually_schedule_piece)
+		@scheduledtime.start_time = Time.zone.parse('2016-04-08 8:00pm')
+		assert @scheduledtime.valid?(:manually_schedule_piece)
 	end
 
 end

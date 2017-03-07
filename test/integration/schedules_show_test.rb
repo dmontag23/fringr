@@ -137,6 +137,28 @@ class SchedulesShowTest < ActionDispatch::IntegrationTest
     assert flash.empty?
   end
 
+  test "sucessful scheduling of pieces" do 
+    post view_schedule_path @schedule
+    assert_redirected_to view_schedule_path @schedule
+    follow_redirect!
+    assert !flash.empty?
+    assert_select 'div[class=?]', 'alert alert-success'
+    get root_path
+    assert flash.empty?
+  end
+
+  test "unsucessful deletion of a piece" do
+    assert_no_difference 'Piece.count' do
+      assert_no_difference 'Participant.count' do
+        assert_no_difference 'ScheduledTime.count' do
+          log_in_as @other_user
+          delete schedule_piece_path(@schedule, @piece)
+          assert_redirected_to root_path
+        end
+      end
+    end
+  end
+
   test "sucessful deletion of a piece" do
     assert_difference 'Piece.count', -1 do
       assert_difference 'Participant.count', -1 do
@@ -149,6 +171,48 @@ class SchedulesShowTest < ActionDispatch::IntegrationTest
         end
       end
     end
+  end
+
+  test "unsucessful manual scheduling of a piece" do
+    assert_no_difference 'ScheduledTime.count' do
+      patch manually_schedule_schedule_piece_path(@schedule, @piece), params: { piece: { title: "Test", length: 30, setup: 15 , cleanup: 5, 
+                                                                                location: locations(:porter), rating: 3, mycount: 2, 
+                                                                                scheduled_times_attributes: [id: scheduled_times(:manburnsday1).id, 
+                                                                                                             start_time: Time.zone.parse('2016-04-08 9:10pm')] } }
+      assert_template 'pieces/manually_schedule'
+      assert_select 'div[class=?]', 'alert alert-danger'
+    end 
+  end
+
+  test "sucessful manual scheduling of a piece" do
+    assert_no_difference 'ScheduledTime.count' do
+      patch manually_schedule_schedule_piece_path(@schedule, @piece), params: { piece: { title: "Test", length: 30, setup: 15 , cleanup: 5, 
+                                                                                location: locations(:porter), rating: 3, mycount: 2, 
+                                                                                scheduled_times_attributes: [id: scheduled_times(:manburnsday1).id,
+                                                                                                             start_time:""] } }
+      assert_redirected_to @schedule
+      follow_redirect!
+      assert_template 'schedules/show'
+      assert !flash.empty?
+      assert_select 'div[class=?]', 'alert alert-success'
+      get root_path
+      assert flash.empty?
+      assert_nil @piece.scheduled_times.first.start_time
+      assert_nil @piece.scheduled_times.first.day
+      patch manually_schedule_schedule_piece_path(@schedule, @piece), params: { piece: { title: "Test", length: 30, setup: 15 , cleanup: 5, 
+                                                                                location: locations(:porter), rating: 3, mycount: 2, 
+                                                                                scheduled_times_attributes: [id: scheduled_times(:manburnsday1).id,
+                                                                                                             start_time: Time.zone.parse('2016-04-08 7:18pm')] } }
+      assert_redirected_to @schedule
+      follow_redirect!
+      assert_template 'schedules/show'
+      assert !flash.empty?
+      assert_select 'div[class=?]', 'alert alert-success'
+      get root_path
+      assert flash.empty?
+      assert_equal Time.zone.parse('2016-04-08 7:18pm'), @piece.scheduled_times.first.start_time
+      assert_equal days(:day1michael), @piece.scheduled_times.first.day
+    end 
   end
 
 end
