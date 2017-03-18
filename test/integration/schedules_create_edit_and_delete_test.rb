@@ -13,6 +13,9 @@ class SchedulesCreateEditAndDeleteTest < ActionDispatch::IntegrationTest
     assert_template 'schedules/new'
     assert_select 'title', full_title("New Schedule")
     assert_select 'a[href=?]', root_path, text: "Cancel"
+    @schedule.days.each do
+      assert_select 'input[placeholder=?]', "Click to add time", count: 2
+    end
   end
 
   test "edit schedule display" do

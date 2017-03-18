@@ -69,6 +69,9 @@ class SchedulesShowTest < ActionDispatch::IntegrationTest
     assert_template 'pieces/manually_schedule'
     assert_select 'title', full_title("Manually Schedule #{@piece.title}")
     assert_select 'a[href=?]', previous_url, text: "Cancel"
+    @piece.scheduled_times.each do
+      assert_select 'input[placeholder=?]', "Click to add time"
+    end
   end
 
   test "unsucessful addition of a piece" do 
