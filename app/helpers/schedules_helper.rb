@@ -10,13 +10,22 @@ module SchedulesHelper
 	end
 
 	def schedule_all_pieces
+		@resource_monitor = Array.new#(@schedule.days.count) { DayResourceMonitor.new(current_user.locations, current_user.contacts) }
+		@schedule.days.each do |day|
+			@resource_monitor.push DayResourceMonitor.new(current_user.locations, current_user.contacts, day)
+		end
 		@pieces_left_to_schedule =  []
 		@schedule.pieces.each do |piece|
-			piece.scheduled_times.each do 
-				@pieces_left_to_schedule.push(piece)
+			piece.scheduled_times.each do |time|
+				if time.start_time.nil?
+					@pieces_left_to_schedule.push(piece)  
+				else
+					start_time = (time.start_time - time.day.start_time) / 60
+					extended_interval = [start_time - piece.setup, start_time + piece.length + piece.cleanup]
+					update_resource_monitor_for_scheduled_piece(@schedule.days.to_a.index(time.day), extended_interval, piece)
+				end 
 			end
 		end
-		@resource_monitor = Array.new(@schedule.days.count) { DayResourceMonitor.new(current_user.locations, current_user.contacts) }
 		run_pass
 		run_pass
 	end
@@ -91,7 +100,9 @@ module SchedulesHelper
 			extended_interval = [interval_length_of_piece[0] - piece_chosen.setup, interval_length_of_piece[1] + piece_chosen.cleanup]
 			valid_piece = check_piece(day, day_index, interval_length_of_piece, extended_interval, piece_chosen)
 			if valid_piece
-				schedule_piece(start_time, day, day_index, extended_interval, piece_chosen)
+    		# schedule piece in database
+				piece_chosen.scheduled_times.where(start_time: nil, day: nil).first.update_attributes(start_time: day.start_time + (start_time * 60), day: day) 
+				update_resource_monitor_for_scheduled_piece(day_index, extended_interval, piece_chosen)
 				return piece_chosen
 			else
 				pieces_to_select.delete(piece_chosen)
@@ -135,12 +146,9 @@ module SchedulesHelper
 
 	end
 
-	def schedule_piece(start_time, day, day_index, extended_interval, piece_chosen)
+	#update the resource monitor to include the scheduled piece
+	def update_resource_monitor_for_scheduled_piece(day_index, extended_interval, piece_chosen)
 
-    # schedule piece in database
-		piece_chosen.scheduled_times.where(start_time: nil, day: nil).first.update_attributes(start_time: day.start_time + (start_time * 60), day: day) 
-
-		#update the resource monitor to include the scheduled piece
 		current_day_resources = @resource_monitor[day_index]
 		current_day_resources.scheduled_pieces.push piece_chosen
 		current_day_resources.locations_schedules[piece_chosen.location_id].push extended_interval

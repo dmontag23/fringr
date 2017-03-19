@@ -7,7 +7,10 @@ class SchedulesHelperTest < ActionView::TestCase
     @schedule = schedules(:fringe2016michael)
     @day = days(:day1michael)
     @piece = pieces(:arthur)
-    @resource_monitor = Array.new(@schedule.days.count) { DayResourceMonitor.new(@user.locations, @user.contacts) }
+    @resource_monitor = Array.new#(@schedule.days.count) { DayResourceMonitor.new(@user.locations, @user.contacts) }
+    @schedule.days.each do |day|
+      @resource_monitor.push DayResourceMonitor.new(@user.locations, @user.contacts, day)
+    end
     @schedule.pieces.each { |piece| piece.scheduled_times.each { |time| time.update_attributes(day: nil, start_time: nil) } }
     log_in_as @user
   end
@@ -84,6 +87,8 @@ class SchedulesHelperTest < ActionView::TestCase
   test "select piece should reject invalid pieces and recurse to accept a valid piece" do
     @resource_monitor[0].locations_schedules[1] = [[20, 45]]
     assert_equal @piece, select_piece(35, @day, 0, [pieces(:manburns), @piece, pieces(:etoiles)])
+    assert @day, @piece.scheduled_times.first.day
+    assert 35, @piece.scheduled_times.first.start_time
   end
 
   test "check piece should initially be valid" do
@@ -121,9 +126,7 @@ class SchedulesHelperTest < ActionView::TestCase
   test "schedule piece" do
     current_day_resource = @resource_monitor[0]
     assert_difference 'current_day_resource.scheduled_pieces.length', +1 do
-      schedule_piece(40, @day, 0, [35, 70], @piece)
-      assert @day, @piece.scheduled_times.first.day
-      assert 40, @piece.scheduled_times.first.start_time
+      update_resource_monitor_for_scheduled_piece(0, [35, 70], @piece)
       assert current_day_resource.scheduled_pieces.include? @piece
       assert_equal [[35, 70]], current_day_resource.locations_schedules[@piece.location_id]
       assert_equal [[35, 85]], current_day_resource.people_schedules[@piece.participants.first.contact_id]
