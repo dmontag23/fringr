@@ -20,7 +20,7 @@ module SchedulesHelper
 				if time.start_time.nil?
 					@pieces_left_to_schedule.push(piece)  
 				else
-					start_time = (time.start_time - time.day.start_time) / 60
+					start_time = (Time.zone.at(time.start_time) - Time.zone.at(time.day.start_time)) / 60
 					extended_interval = [start_time - piece.setup, start_time + piece.length + piece.cleanup]
 					update_resource_monitor_for_scheduled_piece(@schedule.days.to_a.index(time.day), extended_interval, piece)
 				end 
@@ -61,7 +61,7 @@ module SchedulesHelper
 					if piece_chosen.nil?
 						days_can_still_be_considered[i] = false
 					else
-						start_time_in_minutes_since_start_of_day = (piece_chosen.scheduled_times.where(day: day).first.start_time - day.start_time) / 60
+						start_time_in_minutes_since_start_of_day = (Time.zone.at(piece_chosen.scheduled_times.where(day: day).first.start_time) - Time.zone.at(day.start_time)) / 60
 						finishing_times_of_pieces[i] = finishing_times_for_day.push(start_time_in_minutes_since_start_of_day + piece_chosen.length)
 					end
 				end
