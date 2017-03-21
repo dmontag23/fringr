@@ -43,6 +43,7 @@ class PiecesController < ApplicationController
 
   def manually_schedule_piece
     @piece.attributes = secure_params
+    debugger
     if @piece.save(context: :manually_schedule_piece) 
        flash[:success] = "#{@piece.title} has been updated."
        redirect_to @schedule
