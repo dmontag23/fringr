@@ -4,6 +4,7 @@ class ContactTest < ActiveSupport::TestCase
   
   def setup
     @contact = contacts(:zach)
+    @other_contact = contacts(:zachh)
   end
 
   test "initial contact with name and email should be valid" do
@@ -53,10 +54,11 @@ class ContactTest < ActiveSupport::TestCase
     end
   end
 
-  test "email addresses should be unique" do
+  test "email addresses should be unique by user" do
     duplicate_contact = @contact.dup
     duplicate_contact.email = @contact.email.upcase
     assert_not duplicate_contact.valid?
+    assert @other_contact.valid?
   end
 
   test "email addresses should be saved as lower-case" do

@@ -18,6 +18,11 @@ bradley:
   email: bjames@example.com
   user: michael
 
+zachh:
+  name: Zach Hollis
+  email: zsmith@example.com
+  user: archer
+
 <% 30.times do |n| %>
 contact_<%= n %>:
   name: <%= Faker::Internet.name %>
