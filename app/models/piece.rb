@@ -17,6 +17,5 @@ class Piece < ApplicationRecord
 	validates :rating, presence: true
   validates_inclusion_of :rating, :in => (1..4)
   validates_presence_of :scheduled_times
-  validates_presence_of :participants
 
 end

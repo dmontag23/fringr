@@ -108,10 +108,5 @@ class PieceTest < ActiveSupport::TestCase
   	@manburns.scheduled_times.destroy_all
   	assert_not @manburns.valid?
 	end
-
-  test "pieces should contain at least 1 participant" do 
-  	@manburns.participants.destroy_all
-  	assert_not @manburns.valid?
-	end
   
 end
