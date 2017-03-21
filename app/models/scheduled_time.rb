@@ -12,7 +12,7 @@ class ScheduledTime < ApplicationRecord
   		schedule = Schedule.find_by(id: Piece.find_by(id: piece_id).schedule_id)
 	    update_day = nil
 	    schedule.days.each do |day|
-	  		update_day = day if Time.zone.at(start_time) >= Time.zone.at(day.start_time) and Time.zone.at(start_time) <= Time.zone.at(day.end_time)
+	  		update_day = day if start_time >= Time.zone.at(day.start_time) and start_time <= Time.zone.at(day.end_time)
 	  		break if !update_day.nil?
 	    end
 	    update_day.nil? ? errors.add(:start_time, "must be during one of the scheduled times") : update_attribute(:day, update_day)
