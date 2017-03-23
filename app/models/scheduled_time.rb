@@ -4,7 +4,7 @@ class ScheduledTime < ApplicationRecord
 	belongs_to :piece
 
 	# Validations
-	validate :time_is_within_scheduled_days
+	#validate :time_is_within_scheduled_days
 
 	    # ensures the time selected by the user is within the appropriate days of the schedule
   def time_is_within_scheduled_days
