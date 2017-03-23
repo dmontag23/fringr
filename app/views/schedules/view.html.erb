@@ -9,9 +9,9 @@
 		<th colspan=<%= day.scheduled_times.count %>><%= "#{day.start_time.to_date}" %></th>
 		<tr id="day-<%= day.id %>">
 	  	<% day.scheduled_times.reorder(:start_time).each do |scheduled_time| %>
-		  <td> 
-		  	<%= "#{scheduled_time.piece.title}: #{Time.zone.at(scheduled_time.start_time).strftime("at %l:%M %p") } in #{scheduled_time.piece.location.nil? ? "Location not found" : scheduled_time.piece.location.name}" %>
-		  </td>
+		  	<td> 
+		  		<%= "#{scheduled_time.piece.title}: #{scheduled_time.start_time.strftime("at %l:%M %p") } in #{scheduled_time.piece.location.nil? ? "Location not found" : scheduled_time.piece.location.name}" %>
+		  	</td>
 	  	<% end %>
 	  </tr>
 		<% end %>
