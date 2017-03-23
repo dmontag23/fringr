@@ -4,11 +4,11 @@ class ScheduledTime < ApplicationRecord
 	belongs_to :piece
 
 	# Validations
-	validate :time_is_within_scheduled_days, on: :manually_schedule_piece
+	validate :time_is_within_scheduled_days
 
 	    # ensures the time selected by the user is within the appropriate days of the schedule
   def time_is_within_scheduled_days
-  	if start_time
+  	if piece_id and start_time
   		schedule = Schedule.find_by(id: Piece.find_by(id: piece_id).schedule_id)
 	    update_day = nil
 	    schedule.days.each do |day|
