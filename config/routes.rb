@@ -36,4 +36,8 @@ Rails.application.routes.draw do
     end
   end
 
+  namespace :api do
+    resources :calendar_events
+  end
+  
 end
