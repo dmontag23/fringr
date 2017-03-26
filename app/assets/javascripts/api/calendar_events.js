@@ -6,6 +6,7 @@ initialize_calendar = function() {
     calendar.fullCalendar({
       header: {
         left: 'prevYear,prev,next,nextYear',
+        center: 'title',
         right: 'today,month,agendaWeek,basicDay'
       },
       slotDuration: '00:05:00',
