@@ -41,6 +41,11 @@ class SchedulesController < ApplicationController
   end
 
   def schedule
+    @pieces_to_check.each do |piece|
+      piece.scheduled_times.each do |time|
+        time.update_attributes(start_time: nil, day: nil)
+      end
+    end
     if @pieces_to_check.count != 0
       schedule_all_pieces
       flash[:success] = "Your schedule has been sucessfully created"
