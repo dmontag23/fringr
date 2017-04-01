@@ -13,6 +13,10 @@ module Api
 
   private
 
+    $colors = ['red', 'orange', 'green', 'blue', 'purple', 'aqua', 'silver', 'maroon', 'lime']
+    $locations = Array.new
+
+
     # Finds the schedule associated with the piece being accessed 
     def find_schedule
       @schedule = current_user.schedules.find_by(id: params[:schedule_id])
@@ -24,7 +28,9 @@ module Api
       @schedule.days.each do |day|
         day.scheduled_times.each do |time|
           piece = time.piece
-          events.push({title: piece.title, start: time.start_time, end: time.start_time + piece.length * 60})
+          $locations.push(piece.location_id)
+          $locations = $locations.uniq
+          events.push({title: piece.title, start: time.start_time, end: time.start_time + piece.length * 60, color: $colors[$locations.index(piece.location_id)]})
         end
       end
       return events
