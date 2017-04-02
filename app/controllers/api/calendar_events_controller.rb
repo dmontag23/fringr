@@ -5,6 +5,17 @@ module Api
     before_action :logged_in_user
     before_action :find_schedule
 
+    def create
+      event = JSON.parse params[:event_json]
+      scheduled_time = ScheduledTime.where(id: event["time_id"]).first
+      scheduled_time.attributes = {day_id: event["day_id"], start_time: event["start"]}
+      if scheduled_time.save(context: :manually_schedule_piece) 
+        render json: event, status: :ok
+      else
+        render json: {errors: scheduled_time.errors.full_messages}, status: 422
+      end
+    end 
+
     def index
       events = convert_pieces_to_json_events
       render json: events, status: :ok
@@ -30,7 +41,8 @@ module Api
           piece = time.piece
           $locations.push(piece.location_id)
           $locations = $locations.uniq
-          events.push({title: piece.title, start: time.start_time, end: time.start_time + piece.length * 60, color: $colors[$locations.index(piece.location_id)]})
+          events.push({title: piece.title, start: time.start_time, end: time.start_time + piece.length * 60, 
+                       color: $colors[$locations.index(piece.location_id)], day_id: day.id, time_id: time.id})
         end
       end
       return events
