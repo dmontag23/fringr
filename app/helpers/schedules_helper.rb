@@ -10,7 +10,7 @@ module SchedulesHelper
 	end
 
 	def schedule_all_pieces
-		@resource_monitor = Array.new#(@schedule.days.count) { DayResourceMonitor.new(current_user.locations, current_user.contacts) }
+		@resource_monitor = Array.new
 		@schedule.days.each do |day|
 			@resource_monitor.push DayResourceMonitor.new(current_user.locations, current_user.contacts, day)
 		end
@@ -98,7 +98,7 @@ module SchedulesHelper
 			piece_chosen = score_pieces(start_time, day, pieces_to_select) # weight the pieces and pick the piece with the highest weight
 			interval_length_of_piece[1] = start_time + piece_chosen.length
 			extended_interval = [interval_length_of_piece[0] - piece_chosen.setup, interval_length_of_piece[1] + piece_chosen.cleanup]
-			valid_piece = check_piece(day, day_index, interval_length_of_piece, extended_interval, piece_chosen)
+			valid_piece = check_piece(day, day_index, interval_length_of_piece, extended_interval, piece_chosen)[:is_valid]
 			if valid_piece
     		# schedule piece in database
 				piece_chosen.scheduled_times.where(start_time: nil, day: nil).first.update_attributes(start_time: day.start_time + (start_time * 60), day: day) 
@@ -111,23 +111,37 @@ module SchedulesHelper
 		end
 	end
 
-	# returns false if a piece cannot be scheduled in a given time slot and true if it can
+	# returns false if a piece cannot be scheduled in a given time slot and true if it can along with conflict errors
 	def check_piece(day, day_index, interval_length_of_piece, extended_interval, piece_chosen)
 
+		# initialize hash to return
+		conflicts = {is_valid: true, errors: ""}
+
 		# if the piece is longer than the end time of the day, return a conflict
-		return false if ((day.end_time - day.start_time)/60).to_i < interval_length_of_piece[1]
+		if ((day.end_time - day.start_time)/60).to_i < interval_length_of_piece[1]
+			conflicts[:is_valid] = false
+			conflicts[:errors] += "The day ends at: " + day.end_time.strftime("%I:%M%p") + "\n" +
+			"#{piece_chosen.title} cannot end at " + day.start_time.advance(minutes: interval_length_of_piece[1]).strftime("%I:%M%p") + "\n"
+		end
 
 
 		current_day_resources = @resource_monitor[day_index]
 		
 		# check to make sure the piece is not already playing that day
-		return false if current_day_resources.scheduled_pieces.include? piece_chosen
+		if current_day_resources.scheduled_pieces.include? piece_chosen
+			conflicts[:is_valid] = false
+			conflicts[:errors] += "#{piece_chosen.title} is already playing on this day\n"
+		end
 
 		#check the locations for conflicts
 		location_schedule = current_day_resources.locations_schedules[piece_chosen.location_id] # get the schedule for the location the piece is to be performed in
 		if !location_schedule.empty?
 			location_schedule.each do |interval|
-				return false if (extended_interval[0] < interval[1] && extended_interval[1] > interval[0])
+				if (extended_interval[0] < interval[1] && extended_interval[1] > interval[0])
+			    conflicts[:is_valid] = false
+					conflicts[:errors] += "#{piece_chosen.location.name} is already booked from " + 
+					day.start_time.advance(minutes: interval[0]).strftime("%I:%M%p") + " to " + day.start_time.advance(minutes: interval[1]).strftime("%I:%M%p") + "\n"
+				end
 			end
 		end
 
@@ -137,12 +151,16 @@ module SchedulesHelper
 			person_schedule = current_day_resources.people_schedules[person.id]
 			if !person_schedule.empty?
 				person_schedule.each do |interval|
-					return false if (extended_interval[0] < interval[1] && (extended_interval[1] + @schedule.actor_transition_time) > interval[0])
+					if (extended_interval[0] < interval[1] && (extended_interval[1] + @schedule.actor_transition_time) > interval[0])
+			      conflicts[:is_valid] = false
+						conflicts[:errors] += "#{person.name} is booked from " + 
+						day.start_time.advance(minutes: interval[0]).strftime("%I:%M%p") + " to " + day.start_time.advance(minutes: interval[1]).strftime("%I:%M%p") + "\n"
+					end
 				end
 			end
 		end
 
-		return true
+		return conflicts
 
 	end
 

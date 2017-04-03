@@ -93,34 +93,34 @@ class SchedulesHelperTest < ActionView::TestCase
 
   test "check piece should initially be valid" do
     setup_check_piece
-    assert check_piece(@day, @day_index_check_piece, @interval_length_of_piece_check_piece, @extended_interval_check_piece, @piece)
+    assert check_piece(@day, @day_index_check_piece, @interval_length_of_piece_check_piece, @extended_interval_check_piece, @piece)[:is_valid]
   end
 
   test "check piece should reject pieces that go past the end of the day" do
     setup_check_piece
     @interval_length_of_piece_check_piece = [50, 65]
     @extended_interval_check_piece = [45, 80]
-    assert_not check_piece(@day, @day_index_check_piece, @interval_length_of_piece_check_piece, @extended_interval_check_piece, @piece)
+    assert_not check_piece(@day, @day_index_check_piece, @interval_length_of_piece_check_piece, @extended_interval_check_piece, @piece)[:is_valid]
   end
 
   test "check piece should reject pieces that are already scheduled on the same day" do
     setup_check_piece
     @resource_monitor[0].scheduled_pieces.push @piece
-    assert_not check_piece(@day, @day_index_check_piece, @interval_length_of_piece_check_piece, @extended_interval_check_piece, @piece)
+    assert_not check_piece(@day, @day_index_check_piece, @interval_length_of_piece_check_piece, @extended_interval_check_piece, @piece)[:is_valid]
   end
 
   test "check piece should reject pieces that have a location conflict" do
     setup_check_piece
     @resource_monitor[0].locations_schedules[@piece.location_id] = [[0,25], [40,65], [85,110]]
-    assert_not check_piece(@day, @day_index_check_piece, @interval_length_of_piece_check_piece, @extended_interval_check_piece, @piece)
+    assert_not check_piece(@day, @day_index_check_piece, @interval_length_of_piece_check_piece, @extended_interval_check_piece, @piece)[:is_valid]
   end
 
   test "check piece should reject pieces that have a person conflict" do
     setup_check_piece
     @resource_monitor[0].people_schedules[@piece.participants.first.contact_id][1] = [80, 110]
-    assert_not check_piece(@day, @day_index_check_piece, @interval_length_of_piece_check_piece, @extended_interval_check_piece, @piece)
+    assert_not check_piece(@day, @day_index_check_piece, @interval_length_of_piece_check_piece, @extended_interval_check_piece, @piece)[:is_valid]
     @resource_monitor[0].people_schedules[@piece.participants.second.contact_id][0] = [10, 40]
-    assert_not check_piece(@day, @day_index_check_piece, @interval_length_of_piece_check_piece, @extended_interval_check_piece, @piece)
+    assert_not check_piece(@day, @day_index_check_piece, @interval_length_of_piece_check_piece, @extended_interval_check_piece, @piece)[:is_valid]
   end
 
   test "schedule piece" do

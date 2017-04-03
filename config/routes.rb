@@ -37,6 +37,7 @@ Rails.application.routes.draw do
   end
 
   namespace :api do
+    get 'calendar_events/check_piece', to: 'calendar_events#check_piece'
     resources :calendar_events
   end
   
