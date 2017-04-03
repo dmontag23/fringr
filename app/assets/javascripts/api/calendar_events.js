@@ -3,13 +3,17 @@ initialize_calendar = function() {
   $('.calendar').each(function(){
     var calendar = $(this);
     var schedule_id = calendar.attr('schedule_id')
+    var default_start_day = calendar.attr('default_start_day')
     calendar.fullCalendar({
       header: {
         left: 'prevYear,prev,next,nextYear',
         center: 'title',
         right: 'today,month,agendaWeek,basicDay'
       },
+      defaultView: 'agendaWeek',
       slotDuration: '00:05:00',
+      firstDay: 4,
+      defaultDate: moment(default_start_day),
       editable: true,
       // do not allow resize event to alter duration
       eventDurationEditable: false,
@@ -23,13 +27,13 @@ initialize_calendar = function() {
       eventDrop: function(event, delta, revertFunc, jsEvent, ui, view) { 
         
         checkForConflicts(event, revertFunc)
-        //saveEvent(event, revertFunc)
 
       }
     }); // end of options
   })
 };
 $(document).on('turbolinks:load', initialize_calendar);
+$('#calendar').fullCalendar('gotoDate', currentDate);
 
 function checkForConflicts(event, revertFunc){
 // Ajax call passes event's JSON to application in a query

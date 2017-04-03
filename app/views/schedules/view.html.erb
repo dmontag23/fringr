@@ -2,7 +2,7 @@
 
 <div class="container">
 	<h1>Schedule for <%= "#{@schedule.name}" %></h1>
-	<div class="calendar", schedule_id=<%= "#{@schedule.id}" %>></div>
+	<div class="calendar", schedule_id=<%= "#{@schedule.id}"%>, default_start_day=<%= "#{@schedule.days.order(:start_time).first.start_time}" %>></div>
 	<div class="row">
 		<div class="col-md-4 col-md-offset-4">
 			<div class="center"><h3>Pieces Not Scheduled:</h3></div>
