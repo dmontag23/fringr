@@ -56,4 +56,7 @@ Rails.application.configure do
 
   # Disable Rails's static asset server
   config.public_file_server.enabled = false
+
+  # Set the path for 
+  config.action_mailer.preview_path = "#{Rails.root}/spec/mailers/previews"
 end

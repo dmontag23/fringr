@@ -34,6 +34,9 @@ gem 'jbuilder', '~> 2.5'
 gem 'bcrypt', '~> 3.1.7'
 #Use Faker gem to create fake names
 gem 'faker', '1.6.6'
+#Use RSpec and Capybara for testing
+gem "rspec-rails", '~> 3.5'
+gem 'capybara', '~> 2.8'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
@@ -54,10 +57,6 @@ end
 
 group :test do
   gem 'rails-controller-testing', '0.1.1'
-  gem 'minitest-reporters',       '1.1.9'
-  gem 'guard',                    '2.13.0'
-  gem 'guard-minitest',           '2.4.4'
-  
   # Use simplecov to view code coverage from tests
   gem 'simplecov', :require => false
 end
