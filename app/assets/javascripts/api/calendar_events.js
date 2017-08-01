@@ -26,7 +26,7 @@ initialize_calendar = function() {
       },
       eventDrop: function(event, delta, revertFunc, jsEvent, ui, view) { 
         
-        checkForConflicts(event, revertFunc)
+        checkForConflicts(event, revertFunc);
 
       }
     }); // end of options
@@ -44,15 +44,15 @@ function checkForConflicts(event, revertFunc){
     url: '/api/calendar_events/check_piece',
     dataType: "json",
     success: function(data){
-      saveEvent(event, revertFunc)
+      saveEvent(event, revertFunc);
     },
     error: function(xhr){
-      var errors = $.parseJSON(xhr.responseText).errors
-      alert(errors)
+      var errors = $.parseJSON(xhr.responseText).errors;
+      alert(errors);
       if (confirm("Override")) {
-        saveEvent(event, revertFunc)
+        saveEvent(event, revertFunc);
       } else {
-        revertFunc()
+        revertFunc();
       }
     }
   })
@@ -68,12 +68,12 @@ function saveEvent(event, revertFunc){
     url: '/api/calendar_events/',
     dataType: "json",
     success: function(data){
-      alert("Saved")
+      alert("Saved");
     },
     error: function(xhr){
-      var errors = $.parseJSON(xhr.responseText).errors
-      alert(errors)
-      revertFunc()
+      var errors = $.parseJSON(xhr.responseText).errors;
+      alert(errors);
+      revertFunc();
     }
   })
 };
