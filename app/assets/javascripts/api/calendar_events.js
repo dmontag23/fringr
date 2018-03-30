@@ -33,7 +33,7 @@ initialize_calendar = function() {
   })
 };
 $(document).on('turbolinks:load', initialize_calendar);
-$('#calendar').fullCalendar('gotoDate', currentDate);
+//$('#calendar').fullCalendar('today'); TODO: figure out whu I was using this
 
 function checkForConflicts(event, revertFunc){
 // Ajax call passes event's JSON to application in a query
